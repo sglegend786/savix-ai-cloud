@@ -3,6 +3,6 @@ pymongo
 APScheduler
 plyer
 PyJWT
-
 certifi
-python-dotenvrequests
+python-dotenv
+requests
