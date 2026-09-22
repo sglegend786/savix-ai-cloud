@@ -66,7 +66,11 @@ def inject_theme():
 
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from win11toast import toast
+try:
+    from win11toast import toast
+except ImportError:
+    def toast(*args, **kwargs):
+        print("Toast notification skipped (Running on Cloud/Linux)", args)
 import smtplib
 from email.message import EmailMessage
 
