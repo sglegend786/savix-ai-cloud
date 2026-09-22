@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | HealthCare+{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="row g-3 mb-2">
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ stats.total_reports }}</div><div class="stat-label">{{ t('dashboard.total_reports') }}</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ stats.normal_parameters }}</div><div class="stat-label">{{ t('dashboard.normal_parameters') }}</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ stats.borderline_parameters }}</div><div class="stat-label">{{ t('dashboard.borderline') }}</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ stats.health_score }}%</div><div class="stat-label">{{ t('dashboard.health_score') }}</div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    {% if best_hospital %}
+    <div class="app-card">
+      <div class="app-card-title"><span><i class="bi bi-trophy text-warning"></i> {{ t('dashboard.best_hospital') }}</span>
+        <a href="{{ url_for('user.best_hospital') }}" class="small">{{ t('dashboard.view_full_details') }}</a></div>
+      <div class="d-flex gap-3 align-items-center">
+        <img src="{{ best_hospital.image_url or '/static/images/hospital_default.jpg' }}" class="hospital-thumb" style="width:120px;height:90px" alt="">
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="mb-0 fw-bold">{{ best_hospital.hospital_name }}</h5>
+            <span class="rating-pill">{{ best_hospital.rating }} ★</span>
+          </div>
+          <div class="small text-muted mt-1">
+            <i class="bi bi-geo-alt"></i> {{ best_hospital.distance_km }} km &nbsp;
+            <i class="bi bi-people"></i> {{ best_hospital.doctor_count }} Doctors &nbsp;
+            <i class="bi bi-currency-rupee"></i> Avg ₹{{ best_hospital.avg_cost|round|int }}
+          </div>
+          <div class="small text-success mt-1">{{ t('dashboard.match_score') }}: {{ best_hospital.score }}%</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="app-card">
+      <div class="app-card-title"><span><i class="bi bi-bar-chart"></i> {{ t('dashboard.compare_hospitals') }}</span>
+        <a href="{{ url_for('user.compare_hospitals') }}" class="small">{{ t('dashboard.view_all') }}</a></div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead><tr><th>{{ t('dashboard.hospital') }}</th><th>{{ t('dashboard.cost') }}</th><th>{{ t('dashboard.distance') }}</th><th>{{ t('dashboard.doctors') }}</th><th>{{ t('dashboard.rating') }}</th><th></th></tr></thead>
+          <tbody>
+          {% for h in hospitals %}
+            <tr>
+              <td>{{ h.hospital_name }}</td>
+              <td>₹{{ h.avg_cost|round|int }}</td>
+              <td>{{ h.distance_km }} km</td>
+              <td>{{ h.doctor_count }}</td>
+              <td><span class="rating-pill">{{ h.rating }} ★</span></td>
+              <td><a href="{{ url_for('user.hospital_detail', hospital_id=h._id) }}" class="btn btn-sm btn-primary">View</a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-card-title"><span><i class="bi bi-calendar-check"></i> {{ t('dashboard.upcoming_appointments') }}</span>
+        <a href="{{ url_for('appointment.my_appointments') }}" class="small">{{ t('dashboard.view_all') }}</a></div>
+      {% if upcoming_appts %}
+        {% for a in upcoming_appts %}
+        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+          <div>
+            <strong>{{ a.doctor_name }}</strong> — {{ a.hospital_name }}<br>
+            <span class="small text-muted">{{ a.date }} {{ a.time }}</span>
+          </div>
+          <span class="badge {{ 'bg-success' if a.status == 'Confirmed' else 'bg-warning text-dark' }}">{{ a.status }}</span>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted small mb-0">{{ t('dashboard.no_upcoming_appointments') }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="app-card">
+      <div class="app-card-title">{{ t('dashboard.quick_actions') }}</div>
+      <div class="row g-2 text-center">
+        <div class="col-6"><a href="{{ url_for('reports.upload_report') }}" class="btn btn-outline-primary w-100 btn-sm"><i class="bi bi-upload"></i><br>{{ t('dashboard.add_report') }}</a></div>
+        <div class="col-6"><a href="{{ url_for('user.problem_analysis') }}" class="btn btn-outline-primary w-100 btn-sm"><i class="bi bi-clipboard2-pulse"></i><br>{{ t('dashboard.problem_analysis') }}</a></div>
+        <div class="col-6"><a href="{{ url_for('doctor.list_doctors') }}" class="btn btn-outline-primary w-100 btn-sm"><i class="bi bi-people"></i><br>{{ t('dashboard.find_doctor') }}</a></div>
+        <div class="col-6"><a href="{{ url_for('reports.report_dashboard') }}" class="btn btn-outline-primary w-100 btn-sm"><i class="bi bi-graph-up"></i><br>{{ t('dashboard.report_analysis') }}</a></div>
+      </div>
+    </div>
+
+    {% if latest_prescription %}
+    <div class="app-card">
+      <div class="app-card-title"><span>{{ t('dashboard.latest_prescription') }}</span>
+        <a href="{{ url_for('appointment.my_prescriptions') }}" class="small">{{ t('dashboard.view_all') }}</a></div>
+      <strong>{{ latest_prescription.doctor_name }}</strong>
+      <div class="small text-muted">{{ latest_prescription.date.strftime('%d %b %Y') }}</div>
+      <a href="{{ url_for('appointment.view_prescription', prescription_id=latest_prescription._id) }}" class="btn btn-sm btn-primary w-100 mt-2">{{ t('dashboard.view_prescription') }}</a>
+    </div>
+    {% endif %}
+
+    <div class="app-card">
+      <div class="app-card-title">{{ t('dashboard.report_analysis') }}</div>
+      <p class="small mb-1">{{ t('dashboard.overall_health_score') }}</p>
+      <h3 class="fw-bold text-success">{{ stats.health_score }}%</h3>
+      <div class="small">
+        <div><span class="status-normal">●</span> {{ t('dashboard.normal') }}: {{ stats.normal_parameters }}</div>
+        <div><span class="text-warning">●</span> {{ t('dashboard.borderline') }}: {{ stats.borderline_parameters }}</div>
+        <div><span class="status-attention">●</span> {{ t('dashboard.needs_attention') }}: {{ stats.attention_parameters }}</div>
+      </div>
+      <a href="{{ url_for('reports.report_dashboard') }}" class="btn btn-sm btn-outline-primary w-100 mt-2">{{ t('dashboard.view_detailed_analysis') }}</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

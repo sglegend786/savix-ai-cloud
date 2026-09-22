@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ report.report_name }} | HealthCare+{% endblock %}
+{% block page_title %}Report View{% endblock %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="app-card">
+      <div class="app-card-title">{{ report.report_name }}</div>
+      <p class="small text-muted mb-2">{{ report.report_type }} • Uploaded {{ report.upload_date.strftime('%d %b %Y') }}</p>
+      {% if report.file_ext == 'pdf' %}
+        <embed src="{{ url_for('reports.serve_report_file', report_id=report._id) }}" type="application/pdf" width="100%" height="500px">
+      {% else %}
+        <img src="{{ url_for('reports.serve_report_file', report_id=report._id) }}" class="img-fluid rounded border" alt="Report image">
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="app-card">
+      <div class="app-card-title">Report Analysis</div>
+      <p class="small text-muted"><i class="bi bi-info-circle"></i> {{ analysis.disclaimer }}</p>
+      <table class="table table-sm">
+        <thead><tr><th>Parameter</th><th>Value</th><th>Reference</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for p in analysis.parameters %}
+          <tr>
+            <td>{{ p.parameter }}</td>
+            <td>{{ p.value }} {{ p.unit }}</td>
+            <td>{{ p.reference_range }}</td>
+            <td class="status-{{ p.status|lower }}">{{ p.status }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="4" class="text-muted">Unable to confidently extract parameters for this report type. Please verify the original report with a doctor.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% if analysis.recommended_department %}
+      <p class="small mt-2">Suggested Department (based on abnormal values): <strong>{{ analysis.recommended_department }}</strong></p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

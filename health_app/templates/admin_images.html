@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Image Moderation | {{ t('app_name') }}{% endblock %}
+{% block page_title %}Image Moderation{% endblock %}
+{% block content %}
+<div class="app-card">
+  <form method="GET" class="d-flex gap-2 align-items-end">
+    <div>
+      <label class="form-label small">{{ t('common.status') }}</label>
+      <select name="status" class="form-select form-select-sm">
+        {% for s in ['Pending', 'Approved', 'Rejected'] %}
+        <option {{ 'selected' if status == s }}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-sm btn-outline-primary">{{ t('common.filter') }}</button>
+  </form>
+</div>
+
+{% macro moderation_row(img_src, label, sub, entity, entity_id) %}
+<div class="col-md-4">
+  <div class="app-card h-100">
+    <img src="{{ img_src }}" class="img-upload-preview w-100 mb-2" alt=""
+         onerror="this.src='/static/images/hospital_default.jpg'">
+    <div class="fw-semibold small">{{ label }}</div>
+    <div class="small text-muted mb-2">{{ sub }}</div>
+    <div class="card-action-row">
+      <form method="POST" action="{{ url_for('admin.moderate_image', entity=entity, entity_id=entity_id, action='approve') }}">
+        <button class="btn btn-sm btn-success">{{ t('common.approve') }}</button>
+      </form>
+      <form method="POST" action="{{ url_for('admin.moderate_image', entity=entity, entity_id=entity_id, action='reject') }}">
+        <button class="btn btn-sm btn-outline-warning">{{ t('common.reject') }}</button>
+      </form>
+      <form method="POST" action="{{ url_for('admin.moderate_image', entity=entity, entity_id=entity_id, action='delete') }}">
+        <button class="btn btn-sm btn-outline-danger">{{ t('common.delete') }}</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+<div class="app-card-title mt-3">Hospital Profile Images</div>
+<div class="row g-3">
+  {% for h in hospitals %}
+    {{ moderation_row(url_for('media.hospital_image', filename=h.image_filename) if h.image_filename else '/static/images/hospital_default.jpg',
+                       h.hospital_name, h.city or '', 'hospital', h._id) }}
+  {% else %}<p class="text-muted small">None.</p>{% endfor %}
+</div>
+
+<div class="app-card-title mt-3">Doctor Photographs</div>
+<div class="row g-3">
+  {% for d in doctors %}
+    {{ moderation_row(url_for('media.doctor_image', filename=d.image_filename) if d.image_filename else '/static/images/doctor_default.jpg',
+                       d.name, d.specialization or '', 'doctor', d._id) }}
+  {% else %}<p class="text-muted small">None.</p>{% endfor %}
+</div>
+
+<div class="app-card-title mt-3">Hospital Gallery Images</div>
+<div class="row g-3">
+  {% for g in gallery %}
+    {{ moderation_row(url_for('media.hospital_image', filename=g.filename), g.hospital_name, 'Gallery', 'gallery', g._id) }}
+  {% else %}<p class="text-muted small">None.</p>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}HealthCare+ | Smart Health Management System{% endblock %}
+{% block public_content %}
+<div class="public-nav">
+  <i class="bi bi-shield-plus fs-3 text-primary"></i>
+  <div>
+    <div class="brand-title">HealthCare+</div>
+    <div class="brand-sub">Health Management System</div>
+  </div>
+</div>
+
+<section class="hero">
+  <h1>{{ t('landing.hero_title') }}</h1>
+  <p>{{ t('landing.hero_subtitle') }}</p>
+</section>
+
+<div class="auth-card-grid">
+  <a class="auth-choice-card" href="{{ url_for('auth.hospital_login') }}">
+    <i class="bi bi-hospital"></i>
+    <h5>{{ t('landing.hospital_login') }}</h5>
+    <p>{{ t('landing.hospital_login_desc') }}</p>
+  </a>
+  <a class="auth-choice-card" href="{{ url_for('auth.hospital_register') }}">
+    <i class="bi bi-building-add"></i>
+    <h5>{{ t('landing.hospital_register') }}</h5>
+    <p>{{ t('landing.hospital_register_desc') }}</p>
+  </a>
+  <a class="auth-choice-card" href="{{ url_for('auth.user_login') }}">
+    <i class="bi bi-person"></i>
+    <h5>{{ t('landing.user_login') }}</h5>
+    <p>{{ t('landing.user_login_desc') }}</p>
+  </a>
+  <a class="auth-choice-card" href="{{ url_for('auth.user_register') }}">
+    <i class="bi bi-person-plus"></i>
+    <h5>{{ t('landing.user_register') }}</h5>
+    <p>{{ t('landing.user_register_desc') }}</p>
+  </a>
+  <a class="auth-choice-card" href="{{ url_for('auth.health_worker_login') }}">
+    <i class="bi bi-heart-pulse"></i>
+    <h5>{{ t('landing.worker_login') }}</h5>
+    <p>{{ t('landing.worker_login_desc') }}</p>
+  </a>
+  <a class="auth-choice-card" href="{{ url_for('auth.health_worker_register') }}">
+    <i class="bi bi-person-badge"></i>
+    <h5>{{ t('landing.worker_register') }}</h5>
+    <p>{{ t('landing.worker_register_desc') }}</p>
+  </a>
+  <a class="auth-choice-card" href="{{ url_for('admin.login') }}">
+    <i class="bi bi-shield-lock"></i>
+    <h5>{{ t('landing.admin_login') }}</h5>
+    <p>{{ t('landing.admin_login_desc') }}</p>
+  </a>
+</div>
+
+<div class="features-section">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="feature-card"><i class="bi bi-bar-chart"></i>
+        <h6 class="fw-bold">Compare &amp; Recommend</h6>
+        <p class="small text-muted mb-0">Compare hospitals and doctors on rating, cost, distance and availability. Get an automatically scored best match.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card"><i class="bi bi-clipboard2-pulse"></i>
+        <h6 class="fw-bold">Symptom-Based Guidance</h6>
+        <p class="small text-muted mb-0">Describe your problem and get an informational department recommendation — never a diagnosis.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card"><i class="bi bi-file-earmark-medical"></i>
+        <h6 class="fw-bold">Report Tracking &amp; Analysis</h6>
+        <p class="small text-muted mb-0">Upload medical reports and analyze one, a few, or all of them together with simple trend charts.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card"><i class="bi bi-signpost-split"></i>
+        <h6 class="fw-bold">Referral Tracking</h6>
+        <p class="small text-muted mb-0">Track a rural patient's journey from village to specialist, with a live status timeline.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card"><i class="bi bi-wifi-off"></i>
+        <h6 class="fw-bold">Works Without Internet</h6>
+        <p class="small text-muted mb-0">Frontline health workers can keep registering patients offline; records sync automatically once connectivity returns.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card"><i class="bi bi-heart-pulse"></i>
+        <h6 class="fw-bold">Frontline Worker Support</h6>
+        <p class="small text-muted mb-0">ASHA/ANM workers get AI-assisted triage, high-risk alerts and follow-up tracking built for the field.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

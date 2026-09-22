@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Health Worker Dashboard | HealthCare+{% endblock %}
+{% block page_title %}Health Worker Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3 mb-3">
+  <div class="col-6 col-md-3">
+    <div class="stat-box"><div class="stat-value">{{ patient_count }}</div><div class="stat-label">{{ t('nav.my_patients') }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-box"><div class="stat-value">{{ today_patient_count }}</div><div class="stat-label">{{ t('dashboard.todays_patients') }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-box"><div class="stat-value text-danger">{{ high_risk_count }}</div><div class="stat-label">{{ t('nav.high_risk') }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-box"><div class="stat-value">{{ pending_referral_count }}</div><div class="stat-label">{{ t('dashboard.pending_referrals') }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-box"><div class="stat-value text-warning">{{ missed_followup_count }}</div><div class="stat-label">{{ t('nav.follow_ups') }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-box"><div class="stat-value text-danger">{{ alert_referral_count }}</div><div class="stat-label">{{ t('nav.referrals') }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-box"><div class="stat-value" id="dashOfflinePending">0</div><div class="stat-label">{{ t('nav.offline_queue') }}</div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-box"><div class="stat-value">0</div><div class="stat-label">{{ t('nav.emergency') }}</div></div>
+  </div>
+</div>
+
+<div class="d-flex gap-2 mb-3 flex-wrap">
+  <a href="{{ url_for('health_worker.new_visit') }}" class="btn btn-primary"><i class="bi bi-clipboard2-plus"></i> {{ t('nav.new_patient_visit') }}</a>
+  <a href="{{ url_for('health_worker.patients') }}" class="btn btn-outline-primary"><i class="bi bi-search"></i> {{ t('common.search') }} {{ t('nav.patients') }}</a>
+  <a href="{{ url_for('referral.dashboard') }}" class="btn btn-outline-primary"><i class="bi bi-signpost-split"></i> {{ t('nav.referral_dashboard') }}</a>
+  <a href="{{ url_for('health_worker.high_risk') }}" class="btn btn-outline-danger"><i class="bi bi-exclamation-triangle"></i> High-Risk Patients</a>
+  <a href="{{ url_for('health_worker.followups') }}" class="btn btn-outline-secondary"><i class="bi bi-calendar-week"></i> Follow-ups</a>
+  <a href="{{ url_for('health_worker.offline_queue') }}" class="btn btn-outline-secondary"><i class="bi bi-hdd-network"></i> Offline Queue</a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="app-card">
+      <div class="app-card-title">Recent Visits</div>
+      {% for v in recent_visits %}
+      <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+        <div>
+          <div class="fw-semibold">{{ v.patient_snapshot.name }}</div>
+          <div class="small text-muted">{{ v.patient_snapshot.village }} &middot; {{ v.created_at.strftime('%d %b %Y, %H:%M') if v.created_at }}</div>
+        </div>
+        <span class="badge badge-priority-{{ v.triage.priority | lower }}">{{ v.triage.priority }}</span>
+      </div>
+      {% else %}
+      <p class="text-muted small mb-0">No visits recorded yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="app-card">
+      <div class="app-card-title">Recent Referrals</div>
+      {% for r in recent_referrals %}
+      <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+        <div>
+          <div class="fw-semibold">{{ r.patientName }} <span class="small text-muted">({{ r.referralId }})</span></div>
+          <div class="small text-muted">{{ r.fromFacility }} &rarr; {{ r.toFacility }}</div>
+        </div>
+        <a href="{{ url_for('referral.detail', referral_id=r._id) }}" class="badge bg-secondary text-decoration-none">{{ r.status.replace('_',' ').title() }}</a>
+      </div>
+      {% else %}
+      <p class="text-muted small mb-0">No referrals created yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.SavixOffline && window.SavixOffline.pendingCount) {
+    window.SavixOffline.pendingCount().then(function (n) {
+      var el = document.getElementById("dashOfflinePending");
+      if (el) el.textContent = n;
+    });
+  }
+});
+</script>
+{% endblock %}

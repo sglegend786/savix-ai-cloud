@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Blood Finder | HealthCare+{% endblock %}
+{% block page_title %}Smart Blood Finder{% endblock %}
+{% block content %}
+<div class="app-card">
+  <form method="GET" class="row g-2 align-items-end mb-3">
+    <div class="col-md-4">
+      <label class="form-label small">Blood Group</label>
+      <select name="group" class="form-select">
+        <option value="">Any</option>
+        {% for g in groups %}<option {{ 'selected' if group == g }}>{{ g }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label small">Urgency</label>
+      <select name="urgency" class="form-select">
+        <option>Normal</option><option {{ 'selected' if urgency == 'Urgent' }}>Urgent</option><option {{ 'selected' if urgency == 'Emergency' }}>Emergency</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <button type="submit" class="btn btn-primary w-100">Search</button>
+    </div>
+  </form>
+  <a href="{{ url_for('blood.requests_list') }}" class="small">View my blood requests &rarr;</a>
+</div>
+
+{% for b in banks %}
+<div class="app-card">
+  <div class="d-flex justify-content-between align-items-start">
+    <div>
+      <div class="fw-bold">{{ b.bank_name }} <span class="small text-muted fw-normal">{{ b.facility }} &middot; {{ b.distance_km }} km</span></div>
+      <div class="mt-1">
+        {% for grp, units in b.stock.items() %}
+        <span class="vital-chip {{ 'bg-danger text-white' if units < 3 else '' }}">{{ grp }}: {{ units }} unit{{ 's' if units != 1 }}{% if units < 3 %} LOW{% endif %}</span>
+        {% endfor %}
+      </div>
+      <div class="small text-muted mt-1">Contact: {{ b.contact }} &middot; Last updated: {{ b.last_updated.strftime('%d %b %Y, %H:%M') if b.last_updated }}</div>
+    </div>
+    <form method="POST" action="{{ url_for('blood.create_request') }}" class="d-flex gap-2 align-items-end">
+      <input type="hidden" name="bank_id" value="{{ b._id }}">
+      <input type="hidden" name="bank_name" value="{{ b.bank_name }}">
+      <div>
+        <label class="form-label small mb-0">Group</label>
+        <select name="blood_group" class="form-select form-select-sm">
+          {% for g in groups %}<option {{ 'selected' if g == group }}>{{ g }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="form-label small mb-0">Patient</label>
+        <input type="text" name="patient_name" class="form-control form-control-sm" style="width:120px" required>
+      </div>
+      <input type="hidden" name="urgency" value="{{ urgency or 'Normal' }}">
+      <button type="submit" class="btn btn-sm btn-danger">Request</button>
+    </form>
+  </div>
+</div>
+{% else %}
+<p class="text-muted">No blood banks match this search.</p>
+{% endfor %}
+{% endblock %}

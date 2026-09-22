@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Prescriptions | HealthCare+{% endblock %}
+{% block page_title %}My Prescriptions{% endblock %}
+{% block content %}
+<div class="app-card">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Doctor</th><th>Hospital</th><th>Date</th><th></th></tr></thead>
+      <tbody>
+      {% for p in prescriptions %}
+        <tr>
+          <td>{{ p.doctor_name }}</td>
+          <td>{{ p.hospital_name }}</td>
+          <td>{{ p.date.strftime('%d %b %Y') }}</td>
+          <td><a href="{{ url_for('appointment.view_prescription', prescription_id=p._id) }}" class="btn btn-sm btn-primary">View</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4" class="text-muted text-center">No prescriptions yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

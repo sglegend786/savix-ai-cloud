@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ t('nav.doctors') }} | {{ t('app_name') }}{% endblock %}
+{% block page_title %}{{ t('nav.doctors') }}{% endblock %}
+{% block content %}
+
+<div class="app-card">
+  <form method="GET" class="row g-2 align-items-end">
+    <div class="col-md-3">
+      <label class="form-label small">{{ t('common.search') }}</label>
+      <input type="text" name="q" value="{{ q }}" class="form-control form-control-sm" placeholder="{{ t('common.search_doctors') }}">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small">{{ t('doctor.department') }}</label>
+      <select name="department" class="form-select form-select-sm">
+        <option value="">{{ t('common.all') }}</option>
+        {% for d in departments %}<option {{ 'selected' if selected_department == d }}>{{ d }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small">{{ t('doctor.specialization') }}</label>
+      <input type="text" name="specialization" value="{{ specialization }}" class="form-control form-control-sm">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label small">{{ t('hospital.title') }}</label>
+      <select name="hospital" class="form-select form-select-sm">
+        <option value="">{{ t('common.all') }}</option>
+        {% for h in all_hospitals %}
+        <option value="{{ h._id }}" {{ 'selected' if hospital_filter == h._id|string }}>{{ h.hospital_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small">Sort</label>
+      <select name="sort" class="form-select form-select-sm">
+        <option value="">{{ t('common.all') }}</option>
+        <option value="name" {{ 'selected' if sort_by == 'name' }}>{{ t('common.name') }}</option>
+        <option value="rating" {{ 'selected' if sort_by == 'rating' }}>Rating</option>
+        <option value="availability" {{ 'selected' if sort_by == 'availability' }}>{{ t('doctor.availability') }}</option>
+      </select>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-sm btn-primary">{{ t('common.filter') }}</button>
+    </div>
+  </form>
+</div>
+
+<div class="row g-3">
+  {% for d in doctors %}
+  <div class="col-md-6 col-lg-4">
+    <div class="app-card h-100 text-center">
+      <img src="{{ d.image_url or '/static/images/doctor_default.jpg' }}" class="doctor-avatar mb-2" style="height:110px" alt="{{ d.name }}"
+           onerror="this.src='/static/images/doctor_default.jpg'">
+      <h6 class="fw-bold mb-0">
+        {{ d.name }}
+        {% if d.verified %}<span class="verified-badge"><i class="bi bi-patch-check-fill"></i> {{ t('common.verified') }}</span>{% endif %}
+      </h6>
+      <p class="small text-muted mb-1">{{ d.specialization }}</p>
+      {% if d.qualification %}<p class="small mb-1">{{ d.qualification }}</p>{% endif %}
+      <p class="small mb-1"><i class="bi bi-hospital"></i> {{ d.hospital_name }}</p>
+      <p class="small mb-1">
+        <span class="rating-pill">{{ d.rating }} ★</span>
+        <span class="badge bg-light text-dark">{{ d.experience_years }} yrs</span>
+        <span class="badge bg-light text-dark">₹{{ d.consultation_fee|round|int }}</span>
+      </p>
+      <p class="small mb-2">
+        {% if d.available_today %}<span class="badge bg-success">{{ t('doctor.available_today') }}</span>
+        {% else %}<span class="badge bg-secondary">{{ t('doctor.not_available_today') }}</span>{% endif %}
+      </p>
+      <a href="{{ url_for('doctor.doctor_detail', doctor_id=d._id) }}" class="btn btn-sm btn-outline-primary w-100">{{ t('common.view_profile') }}</a>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">{{ t('errors.no_results') }}</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment | HealthCare+{% endblock %}
+{% block page_title %}Book Appointment{% endblock %}
+{% block content %}
+<div class="app-card" style="max-width:600px">
+  <div class="app-card-title">Book Appointment with {{ doctor.name }}</div>
+  <p class="small text-muted">{{ doctor.specialization }} • {{ hospital.hospital_name if hospital else '' }} • ₹{{ doctor.consultation_fee|round|int }}</p>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">Date</label>
+      <input type="date" name="date" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Time Slot</label>
+      <select name="time" class="form-select" required>
+        <option value="09:00 AM">09:00 AM</option>
+        <option value="10:30 AM">10:30 AM</option>
+        <option value="12:00 PM">12:00 PM</option>
+        <option value="02:00 PM">02:00 PM</option>
+        <option value="04:00 PM">04:00 PM</option>
+        <option value="06:00 PM">06:00 PM</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Reason for Visit</label>
+      <textarea name="reason" class="form-control" rows="3" placeholder="Briefly describe your issue"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Confirm Booking</button>
+  </form>
+</div>
+{% endblock %}

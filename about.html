@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About Us — SAVIX | The Minds Behind Connected Healthcare 3.0</title>
+<meta name="description" content="Learn about SAVIX_AI: our team of scientists, doctors, and changemakers committed to democratizing preventive health, biometric tracking, and emergency care.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FFFFFF'/><text x='50' y='68' text-anchor='middle' font-size='46' font-weight='900' font-family='sans-serif' fill='%23000000'>Sx</text></svg>">
+<link rel="stylesheet" href="assets/style.css?v=8">
+<style>
+  .team-grid-fittr {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .team-card-fittr {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    padding: 24px;
+    transition: all 0.3s ease;
+  }
+  .team-card-fittr:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-4px);
+  }
+  .team-avatar-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #1E293B, #0F172A);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 980px) {
+    .team-grid-fittr { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .team-grid-fittr { grid-template-columns: 1fr; }
+  }
+</style>
+<script id="savix_theme_init">if(localStorage.getItem('savix_theme') === 'light'){document.documentElement.setAttribute('data-theme', 'light');}</script>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a class="fittr-brand" href="index.html">
+        <span class="brand-badge">Sx</span>
+        <span>SAVIX</span>
+      </a>
+      <nav aria-label="Primary Navigation">
+        <ul class="fittr-nav-list" id="navLinks">
+          <li class="fittr-nav-item"><a href="index.html">Home</a></li>
+          <li class="fittr-nav-item"><a href="ecosystem.html">Ecosystem</a></li>
+          <li class="fittr-nav-item"><a href="services.html">Services</a></li>
+          <li class="fittr-nav-item"><a href="about.html" aria-current="page">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <a class="expert-talk" href="services.html#care">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>Talk to an expert</span>
+      </a>
+      <button class="btn-fittr-white" type="button" data-open-login>
+        <span>Get Started</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <button class="icon-btn-header nav-toggle-btn" id="navToggle" type="button" aria-label="Toggle menu">?</button>
+    </div>
+  </div>
+</header>
+
+<main style="padding-top:120px;padding-bottom:80px">
+
+  <!-- Mission Hero -->
+  <section id="mission">
+    <div class="wrap">
+      <div style="max-width:780px;margin-bottom:60px">
+        <div class="eyebrow-fittr">OUR VISION &amp; PURPOSE</div>
+        <h1 class="futureFramework__text-gradient" style="font-size:clamp(34px,4.5vw,56px);font-weight:700;line-height:1.06;margin-bottom:18px">
+          SAVIX_AI doesn't just monitor your health—it connects your entire healthcare journey.
+        </h1>
+        <p style="font-size:16.5px;color:var(--text-ash-2);line-height:1.65">
+          SAVIX_AI is an AI-powered personalized health management ecosystem that continuously connects wearable health data, doctors, hospitals, medical reports, prescriptions, pharmacies, healthcare schemes, healthcare finances, daily health activities, and emergency services to provide proactive, personalized, and connected healthcare.
+        </p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:80px">
+        <div class="framework-preview-box">
+          <div class="eyebrow-fittr">INTELLIGENCE LAYER</div>
+          <h3 style="font-size:22px;color:#FFFFFF;margin-bottom:10px">One Unified Digital Twin</h3>
+          <p style="font-size:14.5px;color:var(--text-ash-2);line-height:1.65;margin:0">
+            A single adaptive AI connects wearable streams, bloodwork scans, verified doctors, and emergency response. Patients get clear, plain-language guidance without navigating fifteen disjointed menus.
+          </p>
+        </div>
+
+        <div class="framework-preview-box">
+          <div class="eyebrow-fittr">ACCESSIBILITY &amp; REACH</div>
+          <h3 style="font-size:22px;color:#FFFFFF;margin-bottom:10px">Built for Universal Impact</h3>
+          <p style="font-size:14.5px;color:var(--text-ash-2);line-height:1.65;margin:0">
+            Our low-cost sensor hardware, 12+ regional Indian language voice assistant, and subsidized scheme matching ensure families in tier-2/3 cities and rural towns enjoy the exact same high-precision healthcare as metro centers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Minds Behind the Mission (Fittr Team Grid) -->
+  <section class="team-section-fittr" style="padding:90px 0;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle)">
+    <div class="wrap">
+      <div class="eyebrow-fittr">THE MINDS BEHIND THE MISSION</div>
+      <h2 class="futureFramework__text-gradient" style="font-size:clamp(32px,4vw,48px);font-weight:700;margin-bottom:12px">
+        Driven by science, united by purpose
+      </h2>
+      <p style="font-size:16px;color:var(--text-ash-2);max-width:620px">
+        A dedicated team of clinicians, biomedical scientists, AI engineers, and public health advocates committed to transforming the future of healthcare.
+      </p>
+
+      <div class="team-grid-fittr">
+        <div class="team-card-fittr">
+          <div class="team-avatar-box">??</div>
+          <h4 style="font-size:17px;font-weight:700;color:#FFFFFF;margin-bottom:4px">Dr. Vid Karmakar, PhD</h4>
+          <div style="font-size:12px;color:var(--text-green);margin-bottom:8px">Chief Scientific Officer</div>
+          <p style="font-size:13px;color:var(--text-ash-2);line-height:1.5;margin:0">Leading metabolic longevity biomarkers and continuous PPG sensor research.</p>
+        </div>
+
+        <div class="team-card-fittr">
+          <div class="team-avatar-box">??</div>
+          <h4 style="font-size:17px;font-weight:700;color:#FFFFFF;margin-bottom:4px">Dr. Ashwin Naik, MBBS</h4>
+          <div style="font-size:12px;color:var(--text-green);margin-bottom:8px">Clinical Health Advisory</div>
+          <p style="font-size:13px;color:var(--text-ash-2);line-height:1.5;margin:0">Pioneering accessible healthcare delivery and public-private telehealth networks.</p>
+        </div>
+
+        <div class="team-card-fittr">
+          <div class="team-avatar-box">??</div>
+          <h4 style="font-size:17px;font-weight:700;color:#FFFFFF;margin-bottom:4px">Menno Henselmans</h4>
+          <div style="font-size:12px;color:var(--text-green);margin-bottom:8px">Scientific Advisory Board</div>
+          <p style="font-size:13px;color:var(--text-ash-2);line-height:1.5;margin:0">International researcher specializing in Bayesian physiological data modeling.</p>
+        </div>
+
+        <div class="team-card-fittr">
+          <div class="team-avatar-box">??</div>
+          <h4 style="font-size:17px;font-weight:700;color:#FFFFFF;margin-bottom:4px">Dr. Madhur Verma, MD</h4>
+          <div style="font-size:12px;color:var(--text-green);margin-bottom:8px">Community Medicine Advisor</div>
+          <p style="font-size:13px;color:var(--text-ash-2);line-height:1.5;margin:0">AIIMS alumnus driving regional language healthcare access and rural outreach.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clinical AI Ethics Disclaimer -->
+  <section id="disclaimer" style="padding:90px 0">
+    <div class="wrap">
+      <div class="framework-preview-box" style="border-color:rgba(255,255,255,0.25)">
+        <div class="eyebrow-fittr">CLINICAL AI ETHICS &amp; SAFETY</div>
+        <h2 style="font-size:28px;font-weight:700;color:#FFFFFF;margin-bottom:12px">A Support Layer, Not a Replacement for Clinical Diagnosis</h2>
+        <p style="font-size:15px;color:var(--text-ash-2);line-height:1.7;margin:0">
+          SAVIX_AI is engineered to explain, translate, and support — never to substitute certified medical practitioners. When our algorithms parse laboratory bloodwork or continuous vitals, they flag biomarker reference deviations and translate complex terminology into accessible language. It empowers patients with clear, informed questions for their licensed doctor.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" style="padding-bottom:100px">
+    <div class="wrap">
+      <div class="eyebrow-fittr">HELP &amp; FREQUENTLY ASKED QUESTIONS</div>
+      <h2 class="futureFramework__text-gradient" style="font-size:36px;font-weight:700;margin-bottom:32px">Everything you need to know</h2>
+
+      <div class="footer-accordions" style="border:none;padding:0">
+        <div class="f-acc-item">
+          <button class="f-acc-trigger">
+            <span>Do I need the SAVIX watch to use the platform?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="f-acc-panel">
+            <p>No. Doctor video consultations, lab report analysis, generic medicine price compare, government scheme matching, and habit tracking all work standalone. Pairing the watch adds continuous 24×7 vitals on top.</p>
+          </div>
+        </div>
+
+        <div class="f-acc-item">
+          <button class="f-acc-trigger">
+            <span>How does the generic medicine price compare save money?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="f-acc-panel">
+            <p>When an e-prescription is issued, our engine searches local Jan Aushadhi stores and licensed retailers to find identical certified chemical generic salts, saving up to 70%.</p>
+          </div>
+        </div>
+
+        <div class="f-acc-item">
+          <button class="f-acc-trigger">
+            <span>How does the 1-Tap Emergency SOS dispatch work?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="f-acc-panel">
+            <p>Triggering the SOS sends your live GPS coordinates, blood group, emergency contacts, and active prescriptions simultaneously to emergency medical services (108/112) and designated family contacts.</p>
+          </div>
+        </div>
+
+        <div class="f-acc-item">
+          <button class="f-acc-trigger">
+            <span>Which Indian languages are currently supported?</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="f-acc-panel">
+            <p>The platform supports Hindi, Marathi, Gujarati, Bengali, Tamil, Telugu, Kannada, Malayalam, Punjabi, Odia, and English, including voice translation for prescription summaries.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="fittr-footer">
+  <div class="wrap">
+    <div class="footer-top-grid">
+      <!-- Col 1: Brand & Contact -->
+      <div>
+        <a class="fittr-brand" href="index.html" style="margin-bottom:12px;display:inline-flex">
+          <span class="brand-badge">Sx</span>
+          <span>SAVIX</span>
+        </a>
+        <p style="font-size:13.5px;color:var(--text-ash-2);line-height:1.6;margin-bottom:16px">
+          The largest connected AI health, diagnostics, and medical ecosystem. Unifying continuous monitoring, expert doctors, generic medicine, and emergency response into one single record.
+        </p>
+
+        <div class="footer-contact-box">
+          <div class="footer-country-tabs">
+            <button class="active">India</button> |
+            <button>USA</button> |
+            <button>Singapore</button>
+          </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> 
+            <a href="tel:8077892854" style="color: inherit; text-decoration: none;">8077892854</a>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> 
+            <a href="mailto:shubhamgoeltps@gmail.com" style="color: inherit; text-decoration: none;">shubhamgoeltps@gmail.com</a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg> 
+              <span>Support: <a href="mailto:savix.admin.17@gmail.com" style="color: inherit; text-decoration: none;">savix.admin.17@gmail.com</a></span>
+            </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg> 
+            <a href="https://www.linkedin.com/in/shubham-goel-5832a828a?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" style="color: inherit; text-decoration: none;">Shubham Goel</a>
+          </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="margin-top:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span style="line-height:1.4">Uttar Pradesh, Allahabad, 35/7 Lukerganj, B.Tech Student, CSE Department, United College of Engineering and Research, Allahabad</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2: Company -->
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html#mission">Our Vision</a></li>
+          <li><a href="mailto:savix.admin.17@gmail.com">Help &amp; Support</a></li>
+          <li><a href="about.html#faq">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Offerings -->
+      <div class="footer-col">
+        <h4>Offerings</h4>
+        <ul>
+          <li><a href="services.html#care">Doctor Consultations</a></li>
+          <li><a href="services.html#wearables">SAVIX Watch Pro</a></li>
+                    <li><a href="ecosystem.html">Corporate Wellness</a></li>
+          <li><a href="services.html#diagnostics">Diagnostic Labs</a></li>
+          <li><a href="services.html#emergency">1-Tap SOS Network</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Tools -->
+      <div class="footer-col">
+        <h4>Free Health Tools</h4>
+        <ul>
+          <li><a href="services.html">BMR Calculator</a></li>
+          <li><a href="services.html">Macro Calculator</a></li>
+          <li><a href="services.html">Body Fat Calculator</a></li>
+          <li><a href="services.html">1RM Strength Calculator</a></li>
+          <li><a href="services.html">Biomarker OCR Tool</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 5: Legal -->
+      <div class="footer-col">
+        <h4>Legal &amp; Privacy</h4>
+        <ul>
+          <li><a href="about.html#disclaimer">Terms &amp; Conditions</a></li>
+          <li><a href="about.html#disclaimer">Privacy Policy</a></li>
+          <li><a href="about.html#disclaimer">Clinical AI Ethics</a></li>
+          <li><a href="about.html#disclaimer">Device Warranty</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SEO & Knowledge Accordions -->
+    <div class="footer-accordions">
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>The world's most accessible health &amp; medical monitoring platform</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>SAVIX_AI bridges continuous sensor hardware, diagnostic laboratory OCR, and certified physicians. Designed to reduce medical expenses across urban and rural communities alike.</p>
+        </div>
+      </div>
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>Heart Rate Variability (HRV) &amp; Recovery Science</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>HRV is one of the most accurate clinical indicators of autonomous nervous system balance, physical strain, and cardiovascular healthspan.</p>
+        </div>
+      </div>
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>Generic Medicine Price Comparison &amp; Jan Aushadhi</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>Our intelligent pharmacy compare automatically matches branded doctor prescriptions with identical certified generic salts, saving families up to 70%.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom-bar">
+      <div>Ã¯Â¿Â½ 2026 SAVIX_AI. All rights reserved.</div>
+
+      <div class="certifications-badge-group">
+        <div class="cert-badge"><span>??</span> HIPAA Compliant</div>
+        <div class="cert-badge"><span>???</span> GDPR Certified</div>
+        <div class="cert-badge"><span>?</span> DPDPA Verified</div>
+      </div>
+
+      <div class="social-icons-group">
+        <a class="social-icon-btn" href="#" aria-label="Instagram">IG</a>
+        <a class="social-icon-btn" href="#" aria-label="LinkedIn">IN</a>
+        <a class="social-icon-btn" href="#" aria-label="Twitter">X</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="loginModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="eyebrow-fittr">SAVIX PORTAL</div>
+    <h2 id="loginTitle" style="font-size:24px;font-weight:700;margin-bottom:8px">Login / Register</h2>
+    <div class="field"><label for="mobileInput">Mobile Number</label><input id="mobileInput" type="tel" inputmode="numeric" placeholder="Enter 10-digit mobile number"></div>
+    <div class="field"><label for="passwordInput">Password</label><input id="passwordInput" type="password" placeholder="Enter password"></div>
+    <div style="display:flex;gap:12px;margin-top:20px">
+      <button class="btn-fittr-glass" type="button" id="closeModal" style="flex:1">Cancel</button>
+      <button class="btn-fittr-white" type="button" id="continueLogin" style="flex:1">Continue</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/script.js"></script>
+  
+  <button id="themeToggleBtn" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: #FFF; color: #000; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;" aria-label="Toggle Theme">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('themeToggleBtn');
+      const htmlElement = document.documentElement;
+      
+      const sunIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+      const moonIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      
+      const savedTheme = localStorage.getItem('savix_theme');
+      if (savedTheme) {
+        htmlElement.setAttribute('data-theme', savedTheme);
+        toggleBtn.innerHTML = savedTheme === 'light' ? moonIcon : sunIcon;
+        toggleBtn.style.background = savedTheme === 'light' ? '#0F172A' : '#FFF';
+        toggleBtn.style.color = savedTheme === 'light' ? '#FFF' : '#000';
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        htmlElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('savix_theme', newTheme);
+        toggleBtn.innerHTML = newTheme === 'light' ? moonIcon : sunIcon;
+        toggleBtn.style.background = newTheme === 'light' ? '#0F172A' : '#FFF';
+        toggleBtn.style.color = newTheme === 'light' ? '#FFF' : '#000';
+      });
+    });
+  </script>
+</body>
+</html>

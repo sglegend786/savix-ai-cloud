@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}My Appointments | HealthCare+{% endblock %}
+{% block page_title %}My Appointments{% endblock %}
+{% block content %}
+
+{% for a in appointments %}
+  {% if a.token_number and a.queue_status in ['WAITING', 'IN_PROGRESS'] %}
+  <div class="app-card border-primary mb-2">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <div class="fw-bold">Token TKN-{{ a.token_number }} &middot; {{ a.doctor_name }} at {{ a.hospital_name }}</div>
+        {% if a.queue_status == 'IN_PROGRESS' %}
+        <span class="badge bg-success">You're being called in now</span>
+        {% else %}
+        <span class="badge bg-warning text-dark">WAITING</span>
+        <span class="small text-muted ms-1">{{ a.position }} patient(s) ahead &middot; est. wait ~{{ a.wait_minutes }} min</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
+
+<div class="app-card">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Doctor</th><th>Hospital</th><th>Date</th><th>Time</th><th>Status</th><th>Token</th><th></th></tr></thead>
+      <tbody>
+      {% for a in appointments %}
+        <tr>
+          <td>{{ a.doctor_name }}</td>
+          <td>{{ a.hospital_name }}</td>
+          <td>{{ a.date }}</td>
+          <td>{{ a.time }}</td>
+          <td><span class="badge {{ 'bg-success' if a.status == 'Confirmed' else ('bg-secondary' if a.status == 'Completed' else ('bg-danger' if a.status == 'Cancelled' else 'bg-warning text-dark')) }}">{{ a.status }}</span></td>
+          <td>{% if a.token_number %}TKN-{{ a.token_number }}{% else %}-{% endif %}</td>
+          <td>
+            {% if a.status in ['Pending', 'Confirmed'] %}
+            <form method="POST" action="{{ url_for('appointment.cancel_appointment', appt_id=a._id) }}" onsubmit="return confirm('Cancel this appointment?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="text-muted text-center">No appointments yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

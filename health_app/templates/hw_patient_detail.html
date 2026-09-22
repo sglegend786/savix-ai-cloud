@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}{{ patient.name }} | HealthCare+{% endblock %}
+{% block page_title %}Patient: {{ patient.name }}{% endblock %}
+{% block content %}
+<div class="app-card">
+  <div class="app-card-title">Patient Details {% if patient.high_risk %}<span class="badge bg-danger">High-Risk</span>{% endif %}</div>
+  <div class="row small">
+    <div class="col-md-3"><strong>Age/Gender:</strong> {{ patient.age }} / {{ patient.gender }}</div>
+    <div class="col-md-3"><strong>Village:</strong> {{ patient.village }}</div>
+    <div class="col-md-3"><strong>Phone:</strong> {{ patient.phone }}</div>
+    <div class="col-md-3"><strong>Facility:</strong> {{ patient.facility }}</div>
+    <div class="col-md-3"><strong>ABHA ID:</strong> {{ patient.abha_id or 'Not linked' }}</div>
+    <div class="col-md-3"><strong>Consent:</strong> {% if patient.consent_given %}<span class="badge bg-success">Given</span>{% else %}<span class="badge bg-secondary">Not recorded</span>{% endif %}</div>
+    {% if patient.medical_history %}
+    <div class="col-12 mt-2"><strong>Medical History:</strong> {{ patient.medical_history }}</div>
+    {% endif %}
+    <div class="col-12 mt-2">
+      <strong>Allergies:</strong>
+      {% if patient.allergies %}
+        {% for a in patient.allergies %}<span class="badge bg-danger me-1">{{ a }}</span>{% endfor %}
+      {% else %}
+        <span class="text-muted">None recorded</span>
+      {% endif %}
+    </div>
+  </div>
+  <a href="{{ url_for('emergency.trigger', patient_id=patient._id) }}" class="btn btn-sm btn-danger mt-2"><i class="bi bi-exclamation-octagon"></i> Trigger Emergency SOS</a>
+  <a href="{{ url_for('health_worker.patient_timeline', patient_id=patient._id) }}" class="btn btn-sm btn-outline-secondary mt-2"><i class="bi bi-clock-history"></i> View Health Timeline</a>
+  <a href="{{ url_for('wearable.dashboard', patient_id=patient._id) }}" class="btn btn-sm btn-outline-secondary mt-2"><i class="bi bi-smartwatch"></i> Wearable Monitoring (Demo)</a>
+</div>
+
+{% if journey %}
+<div class="app-card">
+  <div class="app-card-title">Patient Journey</div>
+  <div class="row small">
+    <div class="col-md-6"><strong>Current Step:</strong> {{ journey.current_step }}</div>
+    <div class="col-md-6"><strong>Next Step:</strong> {{ journey.next_step }}</div>
+    <div class="col-md-6"><strong>Pending Action:</strong> {{ journey.pending_action }}</div>
+    {% if journey.recommended_facility %}<div class="col-md-6"><strong>Recommended Facility:</strong> {{ journey.recommended_facility }}</div>{% endif %}
+    {% if journey.appointment %}<div class="col-md-6"><strong>Appointment:</strong> {{ journey.appointment }}</div>{% endif %}
+    {% if journey.follow_up %}<div class="col-md-6"><strong>Follow-up:</strong> {{ journey.follow_up }}</div>{% endif %}
+  </div>
+</div>
+{% endif %}
+
+{% if health_score.score is not none %}
+<div class="app-card">
+  <div class="app-card-title">Personal Health Score <span class="badge bg-primary">{{ health_score.score }}/100</span></div>
+  <ul class="small mb-0">
+    {% for p in health_score.positives %}<li class="text-success">+ {{ p }}</li>{% endfor %}
+    {% for n in health_score.negatives %}<li class="text-danger">- {{ n }}</li>{% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+{% if allergy_conflicts %}
+<div class="app-card border-danger">
+  <div class="app-card-title text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Allergy Alerts</div>
+  {% for c in allergy_conflicts %}
+    {% for w in c.warnings %}
+    <p class="small text-danger mb-1"><i class="bi bi-x-octagon"></i> {{ w }}</p>
+    {% endfor %}
+  {% endfor %}
+  <p class="small text-muted mb-0">Rule-based keyword matching only — always confirm with a pharmacist/doctor before administering.</p>
+</div>
+{% endif %}
+
+{% if treatment_review_alert %}
+<div class="app-card border-warning">
+  <div class="app-card-title text-warning"><i class="bi bi-capsule"></i> Medication Review Alert</div>
+  <p class="small mb-0">{{ treatment_review_alert }}</p>
+</div>
+{% endif %}
+
+{% if trend.level != 'INSUFFICIENT_DATA' %}
+<div class="app-card {{ 'border-danger' if trend.level == 'HIGH RISK' }}">
+  <div class="app-card-title">
+    Deterioration Early Warning
+    <span class="badge badge-priority-{{ 'high' if trend.level == 'HIGH RISK' else ('medium' if trend.level == 'WATCH' else 'low') }}">{{ trend.level }}</span>
+  </div>
+  <p class="small text-muted mb-1"><i class="bi bi-info-circle"></i> Based on {{ trend.visit_count }} recorded visit(s). Decision support only — not a diagnosis.</p>
+  <ul class="small mb-0">
+    {% for r in trend.reasons %}<li>{{ r }}</li>{% endfor %}
+  </ul>
+</div>
+{% else %}
+<div class="app-card"><p class="small text-muted mb-0"><i class="bi bi-info-circle"></i> {{ trend.reasons[0] }}</p></div>
+{% endif %}
+
+<div class="app-card">
+  <div class="app-card-title">AI Health Intelligence</div>
+  <ul class="small mb-0">
+    {% for i in insights %}<li>{{ i }}</li>{% endfor %}
+  </ul>
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Medication Adherence</div>
+  {% for a in adherence_records %}
+  <div class="border-bottom py-1 small">
+    <strong>{{ a.medicine_name }}</strong> ({{ a.dosage }}, {{ a.duration }}) —
+    <span class="badge bg-{{ 'success' if a.adherence_status == 'Good' else ('warning text-dark' if a.adherence_status == 'Partial' else 'danger') }}">{{ a.adherence_status }}</span>
+    {% if a.allergy_warnings %}<span class="badge bg-danger">Allergy Conflict</span>{% endif %}
+    <div class="text-muted">{{ a.created_at.strftime('%d %b %Y') if a.created_at }} {{ a.notes }}</div>
+  </div>
+  {% else %}
+  <p class="text-muted small mb-2">No medication adherence recorded yet.</p>
+  {% endfor %}
+  <form method="POST" action="{{ url_for('health_worker.record_adherence', patient_id=patient._id) }}" class="row g-2 mt-2">
+    <div class="col-md-4"><input type="text" name="medicine_name" class="form-control form-control-sm" placeholder="Medicine name" required></div>
+    <div class="col-md-3"><input type="text" name="dosage" class="form-control form-control-sm" placeholder="Dosage"></div>
+    <div class="col-md-3"><input type="text" name="duration" class="form-control form-control-sm" placeholder="Duration"></div>
+    <div class="col-md-2">
+      <select name="adherence_status" class="form-select form-select-sm">
+        <option>Good</option><option>Partial</option><option>Poor</option>
+      </select>
+    </div>
+    <div class="col-12"><input type="text" name="notes" class="form-control form-control-sm" placeholder="Notes (optional)"></div>
+    <div class="col-12"><button type="submit" class="btn btn-sm btn-outline-primary">Record</button></div>
+  </form>
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Visit History ({{ visits | length }})</div>
+  {% for v in visits %}
+  <div class="border-bottom py-2">
+    <div class="d-flex justify-content-between">
+      <div class="fw-semibold">{{ v.created_at.strftime('%d %b %Y, %H:%M') if v.created_at }}</div>
+      <span class="badge badge-priority-{{ v.triage.priority | lower }}">{{ v.triage.priority }}</span>
+    </div>
+    <div class="small text-muted">
+      HR {{ v.vitals.heart_rate or '-' }} | SpO2 {{ v.vitals.spo2 or '-' }}% | Temp {{ v.vitals.temperature or '-' }}°F | BP {{ v.vitals.bp_systolic or '-' }}/{{ v.vitals.bp_diastolic or '-' }}
+    </div>
+    <div class="small">Symptoms: {{ v.symptoms.selected | join(', ') if v.symptoms.selected else '-' }}</div>
+    <div class="small">{{ v.triage.message }}</div>
+  </div>
+  {% else %}
+  <p class="text-muted small mb-0">No visits recorded yet.</p>
+  {% endfor %}
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Referral History</div>
+  {% for r in referrals %}
+  <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+    <div>
+      <div class="fw-semibold">{{ r.referralId }} &mdash; {{ r.fromFacility }} &rarr; {{ r.toFacility }}</div>
+      <div class="small text-muted">{{ r.reason }}</div>
+    </div>
+    <a href="{{ url_for('referral.detail', referral_id=r._id) }}" class="badge bg-secondary text-decoration-none">{{ r.status }}</a>
+  </div>
+  {% else %}
+  <p class="text-muted small mb-0">No referrals for this patient yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

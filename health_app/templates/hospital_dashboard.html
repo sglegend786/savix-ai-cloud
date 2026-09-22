@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Hospital Dashboard | HealthCare+{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="hospital-hero mb-3">
+  <div>
+    <div class="hospital-hero-eyebrow">{{ t('dashboard.welcome_back') }}</div>
+    <h4 class="mb-1">{{ hospital.hospital_name }}
+      {% if hospital.verified %}<span class="verified-badge bg-white"><i class="bi bi-patch-check-fill"></i> {{ t('common.verified') }}</span>{% endif %}
+    </h4>
+    <p class="mb-0 small opacity-75">
+      {% if hospital.city %}<i class="bi bi-geo-alt"></i> {{ hospital.city }}{% if hospital.state %}, {{ hospital.state }}{% endif %} &nbsp;{% endif %}
+      {% if hospital.emergency %}<span class="badge bg-light text-danger ms-1"><i class="bi bi-heart-pulse-fill"></i> {{ t('hospital.emergency_facility') }}</span>{% endif %}
+      {% if hospital.available_247 %}<span class="badge bg-light text-success ms-1">{{ t('hospital.available_247') }}</span>{% endif %}
+    </p>
+  </div>
+  <div class="hospital-hero-actions">
+    <a href="{{ url_for('hospital.live_queue') }}" class="btn btn-light btn-sm"><i class="bi bi-people"></i> {{ t('nav.live_queue') }}</a>
+    <a href="{{ url_for('hospital.profile') }}" class="btn btn-outline-light btn-sm"><i class="bi bi-pencil"></i> {{ t('common.edit') }}</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-2">
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ doctor_count }}</div><div class="stat-label">{{ t('dashboard.total_doctors') }}</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ dept_count }}</div><div class="stat-label">{{ t('nav.departments') }}</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ appt_count }}</div><div class="stat-label">{{ t('dashboard.total_appointments') }}</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ hospital.rating }}</div><div class="stat-label">{{ t('dashboard.rating') }}</div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="app-card">
+      <div class="app-card-title"><span><i class="bi bi-building"></i> {{ hospital.hospital_name }}</span>
+        <a href="{{ url_for('hospital.profile') }}" class="small">{{ t('common.edit') }}</a></div>
+      <p class="small text-muted mb-1"><i class="bi bi-geo-alt"></i> {{ hospital.address }}, {{ hospital.city }}, {{ hospital.state }} - {{ hospital.pincode }}</p>
+      <p class="small mb-1">{{ t('common.status') }}: {{ hospital.hospital_type }} &nbsp; | &nbsp; {{ t('dashboard.cost') }}: ₹{{ hospital.avg_cost|round|int }}</p>
+      <p class="small mb-0">
+        {% if hospital.emergency %}<span class="badge bg-danger">{{ t('hospital.emergency_facility') }}</span>{% endif %}
+        {% if hospital.available_247 %}<span class="badge bg-success">{{ t('hospital.available_247') }}</span>{% endif %}
+      </p>
+    </div>
+
+    <div class="app-card">
+      <div class="app-card-title"><span><i class="bi bi-calendar-check"></i> {{ t('dashboard.pending_appointments') }}</span>
+        <a href="{{ url_for('hospital.manage_appointments') }}" class="small">{{ t('dashboard.view_all') }}</a></div>
+      {% if pending_appts %}
+        {% for a in pending_appts %}
+        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+          <div><strong>{{ a.user_name }}</strong> with {{ a.doctor_name }}<br><span class="small text-muted">{{ a.date }} {{ a.time }}</span></div>
+          <span class="badge bg-warning text-dark">{{ a.status }}</span>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted small mb-0">{{ t('dashboard.no_upcoming_appointments') }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="app-card">
+      <div class="app-card-title">{{ t('dashboard.quick_actions') }}</div>
+      <div class="row g-2 text-center">
+        <div class="col-6"><a href="{{ url_for('doctor.manage_doctors') }}" class="btn btn-outline-primary w-100 btn-sm"><i class="bi bi-person-plus"></i><br>{{ t('common.add') }} {{ t('nav.doctors') }}</a></div>
+        <div class="col-6"><a href="{{ url_for('hospital.departments') }}" class="btn btn-outline-primary w-100 btn-sm"><i class="bi bi-grid"></i><br>{{ t('department.add') }}</a></div>
+        <div class="col-6"><a href="{{ url_for('hospital.facilities') }}" class="btn btn-outline-primary w-100 btn-sm"><i class="bi bi-heart-pulse"></i><br>{{ t('common.add') }} {{ t('nav.facilities') }}</a></div>
+        <div class="col-6"><a href="{{ url_for('hospital.patient_reports') }}" class="btn btn-outline-primary w-100 btn-sm"><i class="bi bi-file-earmark-medical"></i><br>{{ t('nav.patient_reports') }}</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

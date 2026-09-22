@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Report Analysis Dashboard | HealthCare+{% endblock %}
+{% block page_title %}Health Analysis Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3 mb-2">
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ stats.total_reports }}</div><div class="stat-label">Total Reports</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ stats.normal_parameters }}</div><div class="stat-label">Normal</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ stats.borderline_parameters }}</div><div class="stat-label">Borderline</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="stat-value">{{ stats.attention_parameters }}</div><div class="stat-label">Needs Attention</div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="app-card">
+      <div class="app-card-title">Parameter Breakdown (Demo Visualization)</div>
+      <canvas id="pieChart" height="220"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="app-card">
+      <div class="app-card-title">Report Timeline</div>
+      <canvas id="timelineChart" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="app-card d-flex gap-2">
+  <a href="{{ url_for('reports.my_reports') }}" class="btn btn-outline-primary btn-sm">My Reports</a>
+  <a href="{{ url_for('reports.analyze_all') }}" class="btn btn-primary btn-sm">Analyze All Reports</a>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+fetch("{{ url_for('reports.report_dashboard_data') }}")
+  .then(res => res.json())
+  .then(data => {
+    new Chart(document.getElementById('pieChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Normal', 'Borderline', 'Needs Attention'],
+        datasets: [{
+          data: [data.normal_parameters, data.borderline_parameters, data.attention_parameters],
+          backgroundColor: ['#16a34a', '#d97706', '#dc2626']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const labels = data.timeline.map(t => t.date);
+    const values = data.timeline.map(t => t.abnormal_count);
+    new Chart(document.getElementById('timelineChart'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Abnormal Parameters per Report',
+          data: values,
+          borderColor: '#2563eb',
+          backgroundColor: 'rgba(37,99,235,.15)',
+          fill: true,
+          tension: .3
+        }]
+      },
+      options: { scales: { y: { beginAtZero: true } } }
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Pharmacy | HealthCare+{% endblock %}
+{% block page_title %}Smart Pharmacy{% endblock %}
+{% block content %}
+<div class="app-card">
+  <form method="GET" class="d-flex gap-2 mb-3">
+    <input type="text" name="medicine" value="{{ query }}" class="form-control" placeholder="Search a medicine name, e.g. Paracetamol">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  {% if query and not results %}
+  <p class="text-muted small mb-0">No pharmacy currently lists "{{ query }}". Try a different spelling or a generic name.</p>
+  {% endif %}
+
+  {% if results %}
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Medicine</th><th>Pharmacy</th><th>Price</th><th>Distance</th><th>Stock</th><th>Contact</th></tr></thead>
+      <tbody>
+      {% for r in results %}
+        <tr class="{{ 'table-success' if loop.first }}">
+          <td>{{ r.medicine_name }} {% if r.is_generic %}<span class="badge bg-info text-dark">Generic</span>{% endif %}</td>
+          <td>{{ r.pharmacy_name }}</td>
+          <td class="fw-semibold">₹{{ r.price }}</td>
+          <td>{{ r.distance_km }} km</td>
+          <td>{% if r.in_stock %}<span class="badge bg-success">In Stock</span>{% else %}<span class="badge bg-secondary">Out of Stock</span>{% endif %}</td>
+          <td class="small">{{ r.contact }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="small text-muted">Lowest price is highlighted. Prices are as listed by each pharmacy and may change.</p>
+  {% endif %}
+
+  {% if alternatives %}
+  <div class="app-card mt-2">
+    <div class="app-card-title">Generic / Alternative Options</div>
+    <ul class="small mb-1">
+      {% for a in alternatives %}
+      <li>{{ a.medicine_name }} at {{ a.pharmacy_name }} — ₹{{ a.price }}</li>
+      {% endfor %}
+    </ul>
+    <p class="small text-danger mb-0"><i class="bi bi-exclamation-circle"></i> Requires confirmation from your doctor/pharmacist before switching. This does not automatically replace any prescription.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

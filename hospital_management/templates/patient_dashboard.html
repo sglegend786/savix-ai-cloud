@@ -1,0 +1,43 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4><i class="bi bi-person-hearts text-primary"></i> Patient Dashboard</h4>
+                <p>Welcome, <strong>{{ name }}</strong>. Here you can access your personalized healthcare tools.</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-clipboard2-pulse"></i> AI Triage</h5>
+                        <p class="card-text">Check your symptoms and get an immediate AI assessment.</p>
+                        <button class="btn btn-light btn-sm">Start Triage</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-calendar-heart"></i> Appointments</h5>
+                        <p class="card-text">Book an appointment with your preferred hospital.</p>
+                        <button class="btn btn-light btn-sm">Find Doctors</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-info text-white mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-file-earmark-medical"></i> Care Records</h5>
+                        <p class="card-text">View your past consultations and prescriptions.</p>
+                        <button class="btn btn-light btn-sm">View Records</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

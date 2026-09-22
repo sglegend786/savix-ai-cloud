@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ecosystem � SAVIX | Connected Health &amp; Diagnostic Architecture</title>
+<meta name="description" content="Explore the SAVIX_AI Connected Healthcare Ecosystem. Connecting continuous biometrics, diagnostic OCR, verified doctors, generic pharmacies, finance, and emergency SOS into one unified platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FFFFFF'/><text x='50' y='68' text-anchor='middle' font-size='46' font-weight='900' font-family='sans-serif' fill='%23000000'>Sx</text></svg>">
+<link rel="stylesheet" href="assets/style.css?v=8">
+<style>
+  .eco-hub-fittr {
+    background: linear-gradient(135deg, #0A1118 0%, #16222F 100%);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-2xl);
+    padding: 44px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  .eco-nodes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .eco-node-fittr {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    padding: 24px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .eco-node-fittr:hover {
+    border-color: #FFFFFF;
+    background: var(--bg-card-hover);
+    transform: translateY(-4px);
+  }
+  .eco-node-fittr.emergency-node {
+    border-color: rgba(255, 118, 118, 0.4);
+  }
+  .node-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-green);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .node-indicator.emergency { color: var(--text-red); }
+  .node-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+  }
+  .node-desc {
+    font-size: 13.5px;
+    color: var(--text-ash-2);
+  }
+  .flow-grid-fittr {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 40px;
+  }
+  .flow-box-fittr {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    transition: all 0.25s ease;
+  }
+  .flow-box-fittr:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-3px);
+  }
+  .flow-num {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: #FFFFFF;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 900px) {
+    .eco-nodes-grid { grid-template-columns: 1fr; }
+    .flow-grid-fittr { grid-template-columns: 1fr 1fr; }
+    .eco-hub-fittr { flex-direction: column; text-align: left; }
+  }
+  @media (max-width: 600px) {
+    .flow-grid-fittr { grid-template-columns: 1fr; }
+  }
+</style>
+<script id="savix_theme_init">if(localStorage.getItem('savix_theme') === 'light'){document.documentElement.setAttribute('data-theme', 'light');}</script>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a class="fittr-brand" href="index.html">
+        <span class="brand-badge">Sx</span>
+        <span>SAVIX</span>
+      </a>
+      <nav aria-label="Primary Navigation">
+        <ul class="fittr-nav-list" id="navLinks">
+          <li class="fittr-nav-item"><a href="index.html">Home</a></li>
+          <li class="fittr-nav-item"><a href="ecosystem.html" aria-current="page">Ecosystem</a></li>
+          <li class="fittr-nav-item"><a href="services.html">Services</a></li>
+          <li class="fittr-nav-item"><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <a class="expert-talk" href="services.html#care">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>Talk to an expert</span>
+      </a>
+      <button class="btn-fittr-white" type="button" data-open-login>
+        <span>Get Started</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <button class="icon-btn-header nav-toggle-btn" id="navToggle" type="button" aria-label="Toggle menu">?</button>
+    </div>
+  </div>
+</header>
+
+<main style="padding-top:120px;padding-bottom:80px">
+
+  <section>
+    <div class="wrap">
+      <div style="max-width:760px;margin-bottom:60px">
+        <div class="eyebrow-fittr">CONNECTED ARCHITECTURE</div>
+        <h1 class="futureFramework__text-gradient" style="font-size:clamp(34px,4.5vw,56px);font-weight:700;line-height:1.06;margin-bottom:18px">
+          One unified AI layer connecting your entire clinical health journey.
+        </h1>
+        <p style="font-size:16.5px;color:var(--text-ash-2);line-height:1.65">
+          Rather than ten disjointed health apps, every module below reads from and writes to your single encrypted digital health twin. Tap any node to inspect its live capabilities.
+        </p>
+      </div>
+
+      <!-- Central Hub -->
+      <div class="eco-hub-fittr">
+        <div style="width:72px;height:72px;background:#FFFFFF;border-radius:18px;color:#000;display:grid;place-items:center;font-weight:800;font-size:18px;flex-shrink:0">
+          CORE
+        </div>
+        <div>
+          <h3 style="font-size:26px;font-weight:700;color:#FFFFFF;margin-bottom:6px">SAVIX Intelligent Health Cloud</h3>
+          <p style="font-size:15px;color:rgba(255,255,255,0.7);line-height:1.6;margin:0">
+            The central clinical intelligence layer. It securely synchronizes wearable telemetry, bloodwork reports, verified doctor prescriptions, generic price-matching, and 1-tap rapid emergency dispatches.
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Nodes -->
+      <div class="eco-nodes-grid">
+        <div class="eco-node-fittr" data-node="Wearable & Vitals">
+          <span class="node-indicator">? Continuous</span>
+          <h4 class="node-title">Wearable &amp; Vitals</h4>
+          <p class="node-desc">Real-time Heart Rate, SpO2, HRV, recovery scores, and activity telemetry.</p>
+        </div>
+
+        <div class="eco-node-fittr" data-node="Health Profile">
+          <span class="node-indicator">? ABHA Compliant</span>
+          <h4 class="node-title">Unified Health ID</h4>
+          <p class="node-desc">Lifetime 256-bit encrypted medical history, past scans, and consultations.</p>
+        </div>
+
+        <div class="eco-node-fittr" data-node="AI Report Analysis">
+          <span class="node-indicator">? Diagnostic OCR</span>
+          <h4 class="node-title">AI Lab Test Breakdown</h4>
+          <p class="node-desc">Instant plain-language translation of blood biomarkers and reference ranges.</p>
+        </div>
+
+        <div class="eco-node-fittr" data-node="Hospitals & Doctors">
+          <span class="node-indicator">? Verified Telehealth</span>
+          <h4 class="node-title">Doctors &amp; Specialists</h4>
+          <p class="node-desc">Instant HD video visits with top physicians across all medical specialties.</p>
+        </div>
+
+        <div class="eco-node-fittr" data-node="Pharmacy & Medicines">
+          <span class="node-indicator">? Generic Savings</span>
+          <h4 class="node-title">Pharmacy Price Compare</h4>
+          <p class="node-desc">Searches nearest Jan Aushadhi &amp; retail stores to save up to 70% on prescriptions.</p>
+        </div>
+
+        <div class="eco-node-fittr" data-node="Healthcare Finances">
+          <span class="node-indicator">? Budget & Credit</span>
+          <h4 class="node-title">Health Finances</h4>
+          <p class="node-desc">Expense tracker, automated emergency savings, and micro-health credit.</p>
+        </div>
+
+        <div class="eco-node-fittr" data-node="Daily Health Tasks">
+          <span class="node-indicator">? Daily Routine</span>
+          <h4 class="node-title">Daily Health Routines</h4>
+          <p class="node-desc">Pill reminders, hydration tracking, sleep hygiene, and vital monitoring.</p>
+        </div>
+
+        <div class="eco-node-fittr" data-node="Government Schemes">
+          <span class="node-indicator">? PM-JAY Matcher</span>
+          <h4 class="node-title">Government Schemes</h4>
+          <p class="node-desc">Automated qualification check for Ayushman Bharat &amp; state health subsidies.</p>
+        </div>
+
+        <div class="eco-node-fittr emergency-node" data-node="Emergency SOS">
+          <span class="node-indicator emergency">? Rapid Dispatch</span>
+          <h4 class="node-title">1-Tap Emergency SOS</h4>
+          <p class="node-desc">Simultaneous GPS broadcast to 108/112 ambulance services and family contacts.</p>
+        </div>
+      </div>
+
+      <!-- Node Detail Drawer -->
+      <div class="framework-preview-box" id="ecoDetail" style="display:none;margin-bottom:60px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+          <div>
+            <div class="eyebrow-fittr" id="ecoDetailTag">SERVICE DETAILS</div>
+            <h3 id="ecoDetailTitle" style="font-size:24px;font-weight:700;color:#FFFFFF;margin-bottom:8px">Select a Node</h3>
+            <p id="ecoDetailText" style="font-size:14.5px;color:var(--text-ash-2);margin:0"></p>
+          </div>
+          <button class="btn-fittr-glass" id="ecoDetailClose" type="button" style="height:32px;padding:0 14px;font-size:12px">Close</button>
+        </div>
+        <ul id="ecoDetailList" style="padding-left:20px;color:var(--text-ash-1);line-height:1.7;font-size:14px"></ul>
+      </div>
+
+      
+      <!-- End-to-End Care Workflow -->
+      <div style="margin-top:80px">
+        <div class="eyebrow-fittr">CARE PIPELINE</div>
+        <h2 class="futureFramework__text-gradient" style="font-size:36px;font-weight:700;margin-bottom:12px">The 14-Step Healthcare Journey</h2>
+        <p style="font-size:16px;color:rgba(255,255,255,0.6);max-width:600px">Connecting your entire healthcare journey from continuous monitoring to emergency response.</p>
+
+        <div class="flow-grid-fittr" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+          <div class="flow-box-fittr"><div class="flow-num">01</div><h4 style="font-size:16px;margin-bottom:6px">Patient</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">The center of the ecosystem.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">02</div><h4 style="font-size:16px;margin-bottom:6px">Wearable + Data</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Continuous vitals monitoring.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">03</div><h4 style="font-size:16px;margin-bottom:6px">Health Profile</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Structured digital health history.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">04</div><h4 style="font-size:16px;margin-bottom:6px">AI Intelligence</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Central intelligence connecting data.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">05</div><h4 style="font-size:16px;margin-bottom:6px">Hospital & Doctor</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Consultations and expert care.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">06</div><h4 style="font-size:16px;margin-bottom:6px">Prescription & History</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Digital and structured records.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">07</div><h4 style="font-size:16px;margin-bottom:6px">Tests & AI Reports</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Upload and simplify diagnostic lab results.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">08</div><h4 style="font-size:16px;margin-bottom:6px">Pharmacy & Compare</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Find affordable medicine options.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">09</div><h4 style="font-size:16px;margin-bottom:6px">Government Schemes</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Identify applicable health subsidies.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">10</div><h4 style="font-size:16px;margin-bottom:6px">Financial Management</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Track medical expenses and savings.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">11</div><h4 style="font-size:16px;margin-bottom:6px">Daily Health Tasks</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Schedules for meds, water, and sleep.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">12</div><h4 style="font-size:16px;margin-bottom:6px">Multilingual Assistant</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Translate medical reports to local languages.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">13</div><h4 style="font-size:16px;margin-bottom:6px">Emergency SOS</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Location-aware rapid dispatch.</p></div>
+          <div class="flow-box-fittr"><div class="flow-num">14</div><h4 style="font-size:16px;margin-bottom:6px">Personalized Action</h4><p style="font-size:13px;color:var(--text-ash-2);margin:0">Actionable, proactive health steps.</p></div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="fittr-footer">
+  <div class="wrap">
+    <div class="footer-top-grid">
+      <!-- Col 1: Brand & Contact -->
+      <div>
+        <a class="fittr-brand" href="index.html" style="margin-bottom:12px;display:inline-flex">
+          <span class="brand-badge">Sx</span>
+          <span>SAVIX</span>
+        </a>
+        <p style="font-size:13.5px;color:var(--text-ash-2);line-height:1.6;margin-bottom:16px">
+          The largest connected AI health, diagnostics, and medical ecosystem. Unifying continuous monitoring, expert doctors, generic medicine, and emergency response into one single record.
+        </p>
+
+        <div class="footer-contact-box">
+          <div class="footer-country-tabs">
+            <button class="active">India</button> |
+            <button>USA</button> |
+            <button>Singapore</button>
+          </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> 
+            <a href="tel:8077892854" style="color: inherit; text-decoration: none;">8077892854</a>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> 
+            <a href="mailto:shubhamgoeltps@gmail.com" style="color: inherit; text-decoration: none;">shubhamgoeltps@gmail.com</a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg> 
+              <span>Support: <a href="mailto:savix.admin.17@gmail.com" style="color: inherit; text-decoration: none;">savix.admin.17@gmail.com</a></span>
+            </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg> 
+            <a href="https://www.linkedin.com/in/shubham-goel-5832a828a?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" style="color: inherit; text-decoration: none;">Shubham Goel</a>
+          </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="margin-top:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span style="line-height:1.4">Uttar Pradesh, Allahabad, 35/7 Lukerganj, B.Tech Student, CSE Department, United College of Engineering and Research, Allahabad</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2: Company -->
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html#mission">Our Vision</a></li>
+          <li><a href="mailto:savix.admin.17@gmail.com">Help &amp; Support</a></li>
+          <li><a href="about.html#faq">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Offerings -->
+      <div class="footer-col">
+        <h4>Offerings</h4>
+        <ul>
+          <li><a href="services.html#care">Doctor Consultations</a></li>
+          <li><a href="services.html#wearables">SAVIX Watch Pro</a></li>
+                    <li><a href="ecosystem.html">Corporate Wellness</a></li>
+          <li><a href="services.html#diagnostics">Diagnostic Labs</a></li>
+          <li><a href="services.html#emergency">1-Tap SOS Network</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Tools -->
+      <div class="footer-col">
+        <h4>Free Health Tools</h4>
+        <ul>
+          <li><a href="services.html">BMR Calculator</a></li>
+          <li><a href="services.html">Macro Calculator</a></li>
+          <li><a href="services.html">Body Fat Calculator</a></li>
+          <li><a href="services.html">1RM Strength Calculator</a></li>
+          <li><a href="services.html">Biomarker OCR Tool</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 5: Legal -->
+      <div class="footer-col">
+        <h4>Legal &amp; Privacy</h4>
+        <ul>
+          <li><a href="about.html#disclaimer">Terms &amp; Conditions</a></li>
+          <li><a href="about.html#disclaimer">Privacy Policy</a></li>
+          <li><a href="about.html#disclaimer">Clinical AI Ethics</a></li>
+          <li><a href="about.html#disclaimer">Device Warranty</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SEO & Knowledge Accordions -->
+    <div class="footer-accordions">
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>The world's most accessible health &amp; medical monitoring platform</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>SAVIX_AI bridges continuous sensor hardware, diagnostic laboratory OCR, and certified physicians. Designed to reduce medical expenses across urban and rural communities alike.</p>
+        </div>
+      </div>
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>Heart Rate Variability (HRV) &amp; Recovery Science</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>HRV is one of the most accurate clinical indicators of autonomous nervous system balance, physical strain, and cardiovascular healthspan.</p>
+        </div>
+      </div>
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>Generic Medicine Price Comparison &amp; Jan Aushadhi</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>Our intelligent pharmacy compare automatically matches branded doctor prescriptions with identical certified generic salts, saving families up to 70%.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom-bar">
+      <div>ï¿½ 2026 SAVIX_AI. All rights reserved.</div>
+
+      <div class="certifications-badge-group">
+        <div class="cert-badge"><span>??</span> HIPAA Compliant</div>
+        <div class="cert-badge"><span>???</span> GDPR Certified</div>
+        <div class="cert-badge"><span>?</span> DPDPA Verified</div>
+      </div>
+
+      <div class="social-icons-group">
+        <a class="social-icon-btn" href="#" aria-label="Instagram">IG</a>
+        <a class="social-icon-btn" href="#" aria-label="LinkedIn">IN</a>
+        <a class="social-icon-btn" href="#" aria-label="Twitter">X</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="loginModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="eyebrow-fittr">SAVIX PORTAL</div>
+    <h2 id="loginTitle" style="font-size:24px;font-weight:700;margin-bottom:8px">Login / Register</h2>
+    <div class="field"><label for="mobileInput">Mobile Number</label><input id="mobileInput" type="tel" inputmode="numeric" placeholder="Enter 10-digit mobile number"></div>
+    <div class="field"><label for="passwordInput">Password</label><input id="passwordInput" type="password" placeholder="Enter password"></div>
+    <div style="display:flex;gap:12px;margin-top:20px">
+      <button class="btn-fittr-glass" type="button" id="closeModal" style="flex:1">Cancel</button>
+      <button class="btn-fittr-white" type="button" id="continueLogin" style="flex:1">Continue</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/script.js"></script>
+  
+  <button id="themeToggleBtn" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: #FFF; color: #000; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;" aria-label="Toggle Theme">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('themeToggleBtn');
+      const htmlElement = document.documentElement;
+      
+      const sunIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+      const moonIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      
+      const savedTheme = localStorage.getItem('savix_theme');
+      if (savedTheme) {
+        htmlElement.setAttribute('data-theme', savedTheme);
+        toggleBtn.innerHTML = savedTheme === 'light' ? moonIcon : sunIcon;
+        toggleBtn.style.background = savedTheme === 'light' ? '#0F172A' : '#FFF';
+        toggleBtn.style.color = savedTheme === 'light' ? '#FFF' : '#000';
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        htmlElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('savix_theme', newTheme);
+        toggleBtn.innerHTML = newTheme === 'light' ? moonIcon : sunIcon;
+        toggleBtn.style.background = newTheme === 'light' ? '#0F172A' : '#FFF';
+        toggleBtn.style.color = newTheme === 'light' ? '#FFF' : '#000';
+      });
+    });
+  </script>
+</body>
+</html>

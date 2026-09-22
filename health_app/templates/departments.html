@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Departments | HealthCare+{% endblock %}
+{% block page_title %}Departments{% endblock %}
+{% block content %}
+<div class="row g-3">
+  {% for d in departments %}
+  <div class="col-md-6 col-lg-4">
+    <div class="app-card h-100">
+      <h6 class="fw-bold">{{ d.name }}</h6>
+      <p class="small mb-1">Doctors: {{ d.doctor_count }}</p>
+      <p class="small mb-1">Available Today: {{ d.available_count }}</p>
+      <p class="small mb-1">Hospitals offering this: {{ d.hospital_count }}</p>
+      {% if d.best_doctor %}
+      <p class="small mb-2">Best Doctor: <strong>{{ d.best_doctor.name }}</strong> ({{ d.best_doctor.rating }} ★)</p>
+      {% endif %}
+      <a href="{{ url_for('doctor.list_doctors', department=d.name) }}" class="btn btn-sm btn-outline-primary w-100">View Doctors</a>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">No departments found yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

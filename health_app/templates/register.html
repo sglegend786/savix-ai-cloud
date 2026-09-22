@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Hospital' if role == 'hospital' else ('Health Worker' if role == 'health_worker' else 'User') }} Registration | HealthCare+{% endblock %}
+{% block public_content %}
+<div class="public-nav">
+  <a href="{{ url_for('index') }}" class="text-white text-decoration-none d-flex align-items-center gap-2">
+    <i class="bi bi-shield-plus fs-3 text-primary"></i>
+    <div><div class="brand-title">HealthCare+</div></div>
+  </a>
+</div>
+
+<div class="auth-form-wrap {{ 'wide' if role == 'hospital' }}">
+{% if role == 'hospital' %}
+  <h4 class="fw-bold mb-1">Hospital Registration</h4>
+  <p class="text-muted small mb-4">Register your hospital on HealthCare+.</p>
+  <form method="POST">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Hospital Name *</label>
+        <input type="text" name="hospital_name" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Hospital ID Code</label>
+        <input type="text" name="hospital_id_code" class="form-control" placeholder="e.g. HSP-001">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">{{ t('auth.email') }} *</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">{{ t('auth.phone') }}</label>
+        <input type="text" name="phone" class="form-control">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">{{ t('auth.password') }} *</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Hospital Type</label>
+        <select name="hospital_type" class="form-select">
+          <option>Multi-Specialty</option>
+          <option>General</option>
+          <option>Specialty Clinic</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Address</label>
+        <input type="text" name="address" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">City</label>
+        <input type="text" name="city" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">State</label>
+        <input type="text" name="state" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Pincode</label>
+        <input type="text" name="pincode" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Latitude</label>
+        <input type="text" name="latitude" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Longitude</label>
+        <input type="text" name="longitude" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Approx. Distance (km, demo)</label>
+        <input type="number" step="0.1" name="distance_km" class="form-control" value="5">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Avg. Consultation Cost (₹)</label>
+        <input type="number" step="1" name="avg_cost" class="form-control" value="1000">
+      </div>
+      <div class="col-md-3 form-check mt-4">
+        <input type="checkbox" class="form-check-input" name="emergency" id="emergency">
+        <label class="form-check-label" for="emergency">Emergency Facility</label>
+      </div>
+      <div class="col-md-3 form-check mt-4">
+        <input type="checkbox" class="form-check-input" name="available_247" id="available_247">
+        <label class="form-check-label" for="available_247">24x7 Available</label>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Facilities (comma separated)</label>
+        <input type="text" name="facilities" class="form-control" placeholder="ICU, Pharmacy, Ambulance, Lab">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Departments (comma separated)</label>
+        <input type="text" name="departments" class="form-control" placeholder="Cardiology, Orthopedics, Neurology">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100 mt-4">Register Hospital</button>
+  </form>
+  <p class="text-center mt-3 small">Already registered? <a href="{{ url_for('auth.hospital_login') }}">{{ t('auth.login_here') }}</a></p>
+
+{% elif role == 'health_worker' %}
+  <h4 class="fw-bold mb-1">Health Worker Registration</h4>
+  <p class="text-muted small mb-4">For ASHA / ANM / PHC frontline health workers.</p>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.full_name') }} *</label>
+      <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.email') }} *</label>
+      <input type="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.phone') }}</label>
+      <input type="text" name="phone" class="form-control">
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-6">
+        <label class="form-label">Worker Type</label>
+        <select name="worker_type" class="form-select">
+          <option>ASHA</option>
+          <option>ANM</option>
+          <option>PHC Worker</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <label class="form-label">Attached Facility (PHC)</label>
+        <input type="text" name="facility" class="form-control" placeholder="e.g. PHC Barabanki">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Villages Covered (comma separated)</label>
+      <input type="text" name="village_coverage" class="form-control" placeholder="Rampur, Sultanpur">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.password') }} *</label>
+      <input type="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">{{ t('auth.register_button') }}</button>
+  </form>
+  <p class="text-center mt-3 small">{{ t('auth.already_have_account') }} <a href="{{ url_for('auth.health_worker_login') }}">{{ t('auth.login_here') }}</a></p>
+
+{% else %}
+  <h4 class="fw-bold mb-1">Patient Registration</h4>
+  <p class="text-muted small mb-4">Create your HealthCare+ account.</p>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.full_name') }} *</label>
+      <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.email') }} *</label>
+      <input type="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.phone') }}</label>
+      <input type="text" name="phone" class="form-control">
+    </div>
+    <div class="row g-3 mb-3">
+      <div class="col-6">
+        <label class="form-label">Age</label>
+        <input type="number" name="age" class="form-control">
+      </div>
+      <div class="col-6">
+        <label class="form-label">Gender</label>
+        <select name="gender" class="form-select">
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.password') }} *</label>
+      <input type="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">{{ t('auth.register_button') }}</button>
+  </form>
+  <p class="text-center mt-3 small">{{ t('auth.already_have_account') }} <a href="{{ url_for('auth.user_login') }}">{{ t('auth.login_here') }}</a></p>
+{% endif %}
+</div>
+{% endblock %}

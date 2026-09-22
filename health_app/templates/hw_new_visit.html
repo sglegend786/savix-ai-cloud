@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}New Patient Visit | HealthCare+{% endblock %}
+{% block page_title %}New Patient Visit{% endblock %}
+{% block content %}
+
+<form method="POST" id="visitForm" class="offline-capable-form" data-record-type="visit"
+      action="{{ url_for('health_worker.new_visit') }}">
+  <div class="app-card">
+    <div class="app-card-title">1. Patient Registration</div>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Patient Name *</label>
+        <input type="text" name="patient_name" class="form-control" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Age</label>
+        <input type="number" name="age" class="form-control">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Gender</label>
+        <select name="gender" class="form-select">
+          <option>Female</option><option>Male</option><option>Other</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Village</label>
+        <input type="text" name="village" class="form-control">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Phone</label>
+        <input type="text" name="phone" class="form-control">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">ABHA ID (optional)</label>
+        <input type="text" name="abha_id" class="form-control" placeholder="14-digit Ayushman Bharat Health Account ID">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Medical History (optional)</label>
+        <textarea name="medical_history" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Known Allergies (comma separated, optional)</label>
+        <input type="text" name="allergies" class="form-control" placeholder="e.g. penicillin, aspirin, peanuts">
+        <div class="small text-muted">Used to flag possible medication conflicts when medicines are recorded for this patient.</div>
+      </div>
+      <div class="col-12 form-check ms-1">
+        <input type="checkbox" name="consent_given" value="1" class="form-check-input" id="consentCheck">
+        <label class="form-check-label small" for="consentCheck">Patient/guardian consents to sharing health records for referral coordination</label>
+        <div class="small text-muted">ABDM/ABHA integration-ready — live integration requires authorized API access and credentials.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-card">
+    <div class="app-card-title">2. Vitals</div>
+    <p class="small text-muted">Designed for future integration with connected medical devices — values can also be entered manually.</p>
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <label class="form-label">Heart Rate (bpm)</label>
+        <input type="number" name="heart_rate" class="form-control">
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label">SpO2 (%)</label>
+        <input type="number" name="spo2" class="form-control">
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label">Temperature (°F)</label>
+        <input type="number" step="0.1" name="temperature" class="form-control">
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label">Blood Pressure (sys/dia)</label>
+        <div class="d-flex gap-1">
+          <input type="number" name="bp_systolic" class="form-control" placeholder="Sys">
+          <input type="number" name="bp_diastolic" class="form-control" placeholder="Dia">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-card">
+    <div class="app-card-title">3. Symptoms</div>
+    <div class="symptom-grid mb-3">
+      {% for s in symptom_options %}
+      <label class="symptom-chip">
+        <input type="checkbox" name="symptoms" value="{{ s | lower }}"> {{ s }}
+      </label>
+      {% endfor %}
+    </div>
+    <label class="form-label">Additional Notes</label>
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <button type="button" id="voiceIntakeBtn" class="btn btn-sm btn-outline-secondary"><i class="bi bi-mic"></i> Voice Input</button>
+      <select id="voiceIntakeLang" class="form-select form-select-sm" style="width:auto;">
+        <option value="en-IN">English</option>
+        <option value="hi-IN">हिन्दी (Hindi)</option>
+      </select>
+    </div>
+    <div id="voiceIntakeStatus" class="small text-muted mb-2"></div>
+    <textarea name="symptom_notes" class="form-control" rows="2"></textarea>
+  </div>
+
+  <div class="app-card">
+    <div class="app-card-title">Follow-up (optional)</div>
+    <div class="col-md-4">
+      <label class="form-label">Follow-up Date</label>
+      <input type="date" name="follow_up_date" class="form-control">
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-clipboard2-check"></i> Save &amp; Run Triage</button>
+  <p class="small text-muted mt-2 mb-0" id="offlineHint" style="display:none;">
+    <i class="bi bi-wifi-off"></i> No internet right now — this record will be saved on this device and synced automatically once connectivity returns.
+  </p>
+</form>
+
+{% if triage_result %}
+<div class="app-card mt-3">
+  <div class="app-card-title">
+    4. AI-Assisted Triage Result
+    <span class="badge badge-priority-{{ triage_result.priority | lower }}">{{ triage_result.priority }} PRIORITY</span>
+  </div>
+  <p class="small text-muted"><i class="bi bi-info-circle"></i> This is decision support only. It does not diagnose any disease — always confirm with a qualified doctor.</p>
+  <p class="fw-semibold">{{ triage_result.message }}</p>
+  <p><strong>Suggested department:</strong> {{ triage_result.suggested_department }}</p>
+  <ul class="small">
+    {% for reason in triage_result.reasons %}
+    <li>{{ reason }}</li>
+    {% endfor %}
+  </ul>
+  {% if triage_result.referral_required and submitted %}
+  <a href="{{ url_for('health_worker.refer_from_visit', visit_id=submitted.visit_id) }}" class="btn btn-danger">
+    <i class="bi bi-signpost-split"></i> Create Referral Now
+  </a>
+  {% endif %}
+  {% if submitted %}
+  <a href="{{ url_for('health_worker.patient_detail', patient_id=submitted.patient_id) }}" class="btn btn-outline-secondary">View Patient</a>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/voice_intake.js') }}"></script>
+<script>
+  // Populated so offline.js can build a local record if the device is offline.
+  window.SAVIX_SYMPTOM_FORM = true;
+</script>
+{% endblock %}

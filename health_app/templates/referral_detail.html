@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Referral {{ referral.referralId }} | HealthCare+{% endblock %}
+{% block page_title %}Referral {{ referral.referralId }}{% endblock %}
+{% block content %}
+
+{% if referral.status == 'CANCELLED' %}
+<div class="alert alert-secondary"><i class="bi bi-x-circle"></i> This referral was cancelled.</div>
+{% else %}
+{% set current_index = timeline_statuses.index(referral.status) if referral.status in timeline_statuses else 0 %}
+<div class="app-card">
+  <div class="app-card-title">Status Timeline</div>
+  <div class="referral-timeline">
+    {% for s in timeline_statuses %}
+    <div class="step {{ 'done' if loop.index0 < current_index }}{{ 'current' if loop.index0 == current_index }}">
+      {{ status_labels[s] }}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% if alerts %}
+<div class="app-card border-danger">
+  <div class="app-card-title text-danger"><i class="bi bi-exclamation-triangle"></i> Alerts</div>
+  <ul class="mb-0 small text-danger">
+    {% for a in alerts %}<li>{{ a }}</li>{% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<div class="app-card">
+  <div class="app-card-title">
+    Referral Dropout Risk
+    <span class="badge badge-priority-{{ risk.level | lower }}">{{ risk.level }} RISK</span>
+  </div>
+  <p class="small text-muted mb-1"><i class="bi bi-info-circle"></i> Explainable workflow risk estimate — not a medical diagnosis.</p>
+  <ul class="small mb-0">
+    {% for reason in risk.reasons %}<li>{{ reason }}</li>{% endfor %}
+  </ul>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="app-card">
+      <div class="app-card-title">Referral Details</div>
+      <div class="row small">
+        <div class="col-md-6"><strong>Patient:</strong> {{ referral.patientName }}</div>
+        <div class="col-md-6"><strong>Priority:</strong> <span class="badge badge-priority-{{ referral.priority | lower }}">{{ referral.priority }}</span></div>
+        <div class="col-md-6"><strong>From:</strong> {{ referral.fromFacility }}</div>
+        <div class="col-md-6"><strong>To:</strong> {{ referral.toFacility }}</div>
+        <div class="col-md-6"><strong>Specialist:</strong> {{ referral.specialist or '-' }}</div>
+        <div class="col-md-6"><strong>Health Worker:</strong> {{ referral.healthWorkerName }}</div>
+        <div class="col-md-6"><strong>Appointment Date:</strong> {{ referral.appointmentDate or '-' }}</div>
+        <div class="col-md-6"><strong>Expected Arrival:</strong> {{ referral.expectedArrivalDate or '-' }}</div>
+        <div class="col-md-6"><strong>Actual Arrival:</strong> {{ referral.actualArrivalDate or '-' }}</div>
+        <div class="col-md-6"><strong>Follow-up Date:</strong> {{ referral.followUpDate or '-' }}</div>
+        <div class="col-md-6"><strong>Consultation:</strong> {{ referral.consultationStatus or '-' }}</div>
+        <div class="col-md-6"><strong>Treatment:</strong> {{ referral.treatmentStatus or '-' }}</div>
+        {% if referral.symptoms %}
+        <div class="col-12 mt-2"><strong>Symptoms:</strong> {{ referral.symptoms | join(', ') }}</div>
+        {% endif %}
+        <div class="col-12 mt-2"><strong>Reason:</strong> {{ referral.reason }}</div>
+        {% if referral.notes %}
+        <div class="col-12 mt-2"><strong>Notes:</strong> {{ referral.notes }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="app-card">
+      <div class="app-card-title">Update Status</div>
+      <form method="POST" action="{{ url_for('referral.set_status', referral_id=referral._id) }}">
+        <div class="mb-2">
+          <label class="form-label small">New Status</label>
+          <select name="status" class="form-select">
+            {% for s in statuses %}
+            <option value="{{ s }}" {{ 'selected' if referral.status == s }}>{{ status_labels[s] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="form-label small">Note (optional)</label>
+          <textarea name="note" class="form-control" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Update Status</button>
+      </form>
+    </div>
+
+    {% if referral.status_notes %}
+    <div class="app-card">
+      <div class="app-card-title">History</div>
+      {% for n in referral.status_notes | reverse %}
+      <div class="border-bottom py-1 small">
+        <strong>{{ status_labels[n.status] if n.status in status_labels else n.status }}</strong> — {{ n.note }}
+        <div class="text-muted">{{ n.at.strftime('%d %b %Y, %H:%M') if n.at }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

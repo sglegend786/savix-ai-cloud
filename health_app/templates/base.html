@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}HealthCare+{% endblock %}</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+{% block head_extra %}{% endblock %}
+{% block extra_head %}{% endblock %}
+</head>
+<body class="{% if current_role %}has-sidebar{% endif %}" data-role="{{ current_role or '' }}">
+
+{% if current_role %}
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand" style="padding: 16px 8px;">
+<a href="/" style="display:inline-flex; align-items:center; text-decoration:none; gap:8px; margin-bottom:0;">
+  <span style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#0F172A; color:#FFFFFF; border-radius:8px; font-weight:900; font-size:15px; font-family:sans-serif; box-shadow:0 2px 10px rgba(0,0,0,0.2);">Sx</span>
+  <span style="font-weight:800; font-size:20px; letter-spacing:-0.5px; color:#FFFFFF; font-family:sans-serif; margin-bottom:0; line-height:1;">SAVIX</span>
+</a>
+</div>
+
+    {% if current_role == 'user' %}
+    <nav class="nav-section">
+      <a href="{{ url_for('user.dashboard') }}" class="nav-link {{ 'active' if request.endpoint == 'user.dashboard' }}"><i class="bi bi-speedometer2"></i> {{ t('nav.dashboard') }}</a>
+      <a href="{{ url_for('user.profile') }}" class="nav-link {{ 'active' if request.endpoint == 'user.profile' }}"><i class="bi bi-person"></i> {{ t('nav.my_profile') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.support_services') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('blood.search') }}" class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('blood.') }}"><i class="bi bi-droplet"></i> {{ t('nav.blood_finder') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.hospitals') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('user.hospitals') }}" class="nav-link {{ 'active' if request.endpoint == 'user.hospitals' }}"><i class="bi bi-hospital"></i> {{ t('nav.hospitals') }}</a>
+      <a href="{{ url_for('user.compare_hospitals') }}" class="nav-link {{ 'active' if request.endpoint == 'user.compare_hospitals' }}"><i class="bi bi-bar-chart"></i> {{ t('nav.compare_hospitals') }}</a>
+      <a href="{{ url_for('user.best_hospital') }}" class="nav-link {{ 'active' if request.endpoint == 'user.best_hospital' }}"><i class="bi bi-trophy"></i> {{ t('nav.best_hospital') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.doctors') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('doctor.list_doctors') }}" class="nav-link {{ 'active' if request.endpoint == 'doctor.list_doctors' }}"><i class="bi bi-people"></i> {{ t('nav.doctors') }}</a>
+      <a href="{{ url_for('doctor.compare_doctors') }}" class="nav-link {{ 'active' if request.endpoint == 'doctor.compare_doctors' }}"><i class="bi bi-arrow-left-right"></i> {{ t('nav.compare_doctors') }}</a>
+      <a href="{{ url_for('doctor.best_doctor') }}" class="nav-link {{ 'active' if request.endpoint == 'doctor.best_doctor' }}"><i class="bi bi-star"></i> {{ t('nav.best_doctor') }}</a>
+      <a href="{{ url_for('user.departments_overview') }}" class="nav-link {{ 'active' if request.endpoint == 'user.departments_overview' }}"><i class="bi bi-grid"></i> {{ t('nav.departments') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.patient_treatment') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('user.problem_analysis') }}" class="nav-link {{ 'active' if request.endpoint == 'user.problem_analysis' }}"><i class="bi bi-clipboard2-pulse"></i> {{ t('nav.problem_analysis') }}</a>
+      <a href="{{ url_for('appointment.my_appointments') }}" class="nav-link {{ 'active' if request.endpoint in ['appointment.my_appointments','appointment.book_appointment'] }}"><i class="bi bi-calendar-check"></i> {{ t('nav.appointments') }}</a>
+      <a href="{{ url_for('user.live_consultation') }}" class="nav-link {{ 'active' if request.endpoint == 'user.live_consultation' }}"><i class="bi bi-camera-video"></i> {{ t('nav.live_consultation') }}</a>
+      <a href="{{ url_for('appointment.my_prescriptions') }}" class="nav-link {{ 'active' if request.endpoint == 'appointment.my_prescriptions' }}"><i class="bi bi-file-earmark-medical"></i> {{ t('nav.prescriptions') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.reports') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('reports.my_reports') }}" class="nav-link {{ 'active' if request.endpoint == 'reports.my_reports' }}"><i class="bi bi-file-earmark-text"></i> {{ t('nav.my_reports') }}</a>
+      <a href="{{ url_for('reports.report_dashboard') }}" class="nav-link {{ 'active' if request.endpoint == 'reports.report_dashboard' }}"><i class="bi bi-graph-up"></i> {{ t('nav.report_analysis') }}</a>
+      <a href="{{ url_for('reports.analyze_all') }}" class="nav-link {{ 'active' if request.endpoint == 'reports.analyze_all' }}"><i class="bi bi-collection"></i> {{ t('nav.all_reports_analysis') }}</a>
+    </nav>
+    {% endif %}
+
+    {% if current_role == 'health_worker' %}
+    <nav class="nav-section">
+      <a href="{{ url_for('health_worker.dashboard') }}" class="nav-link {{ 'active' if request.endpoint == 'health_worker.dashboard' }}"><i class="bi bi-speedometer2"></i> {{ t('nav.dashboard') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.patient_care') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('health_worker.new_visit') }}" class="nav-link {{ 'active' if request.endpoint == 'health_worker.new_visit' }}"><i class="bi bi-clipboard2-plus"></i> {{ t('nav.new_patient_visit') }}</a>
+      <a href="{{ url_for('health_worker.patients') }}" class="nav-link {{ 'active' if request.endpoint in ['health_worker.patients','health_worker.patient_detail'] }}"><i class="bi bi-people"></i> {{ t('nav.my_patients') }}</a>
+      <a href="{{ url_for('health_worker.high_risk') }}" class="nav-link {{ 'active' if request.endpoint == 'health_worker.high_risk' }}"><i class="bi bi-exclamation-triangle"></i> {{ t('nav.high_risk') }}</a>
+      <a href="{{ url_for('health_worker.followups') }}" class="nav-link {{ 'active' if request.endpoint == 'health_worker.followups' }}"><i class="bi bi-calendar-week"></i> {{ t('nav.follow_ups') }}</a>
+      <a href="{{ url_for('health_worker.offline_queue') }}" class="nav-link {{ 'active' if request.endpoint == 'health_worker.offline_queue' }}"><i class="bi bi-hdd-network"></i> {{ t('nav.offline_queue') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.support_services') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('emergency.dashboard') }}" class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('emergency.') }}"><i class="bi bi-exclamation-octagon"></i> {{ t('nav.emergency') }}</a>
+      <a href="{{ url_for('blood.search') }}" class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('blood.') }}"><i class="bi bi-droplet"></i> {{ t('nav.blood_finder') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.referrals') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('referral.dashboard') }}" class="nav-link {{ 'active' if request.endpoint == 'referral.dashboard' }}"><i class="bi bi-signpost-split"></i> {{ t('nav.referral_dashboard') }}</a>
+    </nav>
+    {% endif %}
+
+    {% if current_role == 'admin' %}
+    <nav class="nav-section">
+      <a href="{{ url_for('admin.dashboard') }}" class="nav-link {{ 'active' if request.endpoint == 'admin.dashboard' }}"><i class="bi bi-speedometer2"></i> {{ t('nav.dashboard') }}</a>
+      <a href="{{ url_for('admin.images') }}" class="nav-link {{ 'active' if request.endpoint == 'admin.images' }}"><i class="bi bi-image"></i> {{ t('nav.image_moderation') }}</a>
+      <a href="{{ url_for('admin.verify_list') }}" class="nav-link {{ 'active' if request.endpoint == 'admin.verify_list' }}"><i class="bi bi-patch-check"></i> {{ t('nav.verify_profiles') }}</a>
+    </nav>
+    {% endif %}
+
+    {% if current_role == 'hospital' %}
+    <nav class="nav-section">
+      <a href="{{ url_for('hospital.dashboard') }}" class="nav-link {{ 'active' if request.endpoint == 'hospital.dashboard' }}"><i class="bi bi-speedometer2"></i> {{ t('nav.dashboard') }}</a>
+    </nav>
+    <div class="nav-heading">{{ t('nav_headings.hospital_management') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('hospital.profile') }}" class="nav-link {{ 'active' if request.endpoint == 'hospital.profile' }}"><i class="bi bi-building"></i> {{ t('nav.my_hospital') }}</a>
+      <a href="{{ url_for('doctor.manage_doctors') }}" class="nav-link {{ 'active' if request.endpoint == 'doctor.manage_doctors' }}"><i class="bi bi-people"></i> {{ t('nav.doctors') }}</a>
+      <a href="{{ url_for('hospital.departments') }}" class="nav-link {{ 'active' if request.endpoint == 'hospital.departments' }}"><i class="bi bi-grid"></i> {{ t('nav.departments') }}</a>
+      <a href="{{ url_for('hospital.facilities') }}" class="nav-link {{ 'active' if request.endpoint == 'hospital.facilities' }}"><i class="bi bi-heart-pulse"></i> {{ t('nav.facilities') }}</a>
+      <a href="{{ url_for('hospital.manage_appointments') }}" class="nav-link {{ 'active' if request.endpoint == 'hospital.manage_appointments' }}"><i class="bi bi-calendar-check"></i> {{ t('nav.appointments') }}</a>
+      <a href="{{ url_for('hospital.live_queue') }}" class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('hospital.live_queue') or request.endpoint == 'hospital.queue_call_next' }}"><i class="bi bi-people"></i> {{ t('nav.live_queue') }}</a>
+      <a href="{{ url_for('hospital.patient_reports') }}" class="nav-link {{ 'active' if request.endpoint == 'hospital.patient_reports' }}"><i class="bi bi-file-earmark-medical"></i> {{ t('nav.patient_reports') }}</a>
+      <a href="{{ url_for('referral.dashboard') }}" class="nav-link {{ 'active' if request.endpoint == 'referral.dashboard' }}"><i class="bi bi-signpost-split"></i> {{ t('nav.incoming_referrals') }}</a>
+      <a href="{{ url_for('emergency.dashboard') }}" class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('emergency.') }}"><i class="bi bi-exclamation-octagon"></i> {{ t('nav.emergency_alerts') }}</a>
+      <a href="{{ url_for('blood.search') }}" class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('blood.') }}"><i class="bi bi-droplet"></i> {{ t('nav.blood_finder') }}</a>
+      <a href="{{ url_for('hospital_resources.dashboard') }}" class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('hospital_resources.') }}"><i class="bi bi-hdd-rack"></i> {{ t('nav.hospital_resources') }}</a>
+    </nav>
+    {% endif %}
+
+    <div class="nav-heading">{{ t('nav_headings.settings') }}</div>
+    <nav class="nav-section">
+      <a href="{{ url_for('auth.logout') }}" class="nav-link"><i class="bi bi-box-arrow-right"></i> {{ t('nav.logout') }}</a>
+    </nav>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <button class="btn btn-sm btn-light d-lg-none" id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <div class="topbar-title">{% block page_title %}{{ t('nav.dashboard') }}{% endblock %}</div>
+      <div class="topbar-user d-flex align-items-center gap-2">
+        <span class="lang-switcher small">
+          {% for code, label in supported_languages.items() %}
+            {% if not loop.first %}<span class="text-muted">|</span>{% endif %}
+            <a href="{{ url_for('set_language', lang=code) }}"
+               class="text-decoration-none {{ 'fw-bold text-primary' if current_lang == code else 'text-muted' }}">{{ label }}</a>
+          {% endfor %}
+        </span>
+        {% if current_role == 'health_worker' %}
+        <a href="{{ url_for('health_worker.offline_queue') }}" class="text-decoration-none d-flex align-items-center gap-2">
+        <span id="connStatusBadge" class="badge bg-secondary" title="Connection status">Checking...</span>
+        <span id="pendingSyncBadge" class="badge bg-warning text-dark d-none" title="Records waiting to sync"></span>
+        </a>
+        {% endif %}
+        <i class="bi bi-person-circle"></i> {{ current_name }}
+        <span class="badge bg-primary ms-1">{{ 'Hospital Admin' if current_role == 'hospital' else ('Health Worker' if current_role == 'health_worker' else ('Administrator' if current_role == 'admin' else 'Patient')) }}</span>
+      </div>
+    </header>
+    {% if current_role == 'health_worker' %}
+    <div id="offlineBanner" class="offline-banner d-none">
+      <i class="bi bi-wifi-off"></i>
+      <span>Internet unavailable. Data will be saved on this device and synchronized when connectivity returns.</span>
+    </div>
+    <div id="syncBanner" class="sync-banner d-none">
+      <i class="bi bi-arrow-repeat spin"></i>
+      <span id="syncBannerText">Connection restored. Synchronizing...</span>
+    </div>
+    {% endif %}
+    <main class="content-area">
+      {% include '_flash.html' %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% else %}
+  {% include '_flash.html' %}
+  {% if content_404 %}
+    <div class="container text-center py-5">
+      <h1>404</h1>
+      <p>{{ t('errors.not_found') }}</p>
+      <a href="{{ url_for('index') }}" class="btn btn-primary">Go Home</a>
+    </div>
+  {% else %}
+    <div class="public-lang-switcher">
+      {% for code, label in supported_languages.items() %}
+        {% if not loop.first %}<span class="text-white-50">|</span>{% endif %}
+        <a href="{{ url_for('set_language', lang=code) }}"
+           class="text-decoration-none {{ 'fw-bold text-white' if current_lang == code else 'text-white-50' }}">{{ label }}</a>
+      {% endfor %}
+    </div>
+    {% block public_content %}{% endblock %}
+  {% endif %}
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% if current_role == 'health_worker' %}
+<script src="{{ url_for('static', filename='js/offline.js') }}"></script>
+{% endif %}
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

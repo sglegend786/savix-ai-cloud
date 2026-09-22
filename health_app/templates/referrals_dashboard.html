@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Referral Dashboard | HealthCare+{% endblock %}
+{% block page_title %}Referral Dashboard{% endblock %}
+{% block content %}
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-md-2">
+    <div class="stat-box"><div class="stat-value">{{ active_count }}</div><div class="stat-label">Active Referrals</div></div>
+  </div>
+  <div class="col-6 col-md-2">
+    <div class="stat-box"><div class="stat-value">{{ pending_count }}</div><div class="stat-label">Pending (Referred)</div></div>
+  </div>
+  <div class="col-6 col-md-2">
+    <div class="stat-box"><div class="stat-value">{{ completed_count }}</div><div class="stat-label">Completed</div></div>
+  </div>
+  <div class="col-6 col-md-2">
+    <div class="stat-box"><div class="stat-value text-danger">{{ high_priority_count }}</div><div class="stat-label">High Priority</div></div>
+  </div>
+  <div class="col-6 col-md-2">
+    <a href="?alerts=1" class="text-decoration-none">
+      <div class="stat-box"><div class="stat-value text-danger">{{ alert_count }}</div><div class="stat-label">With Alerts</div></div>
+    </a>
+  </div>
+</div>
+
+<div class="app-card">
+  <form method="GET" class="row g-2 align-items-end mb-3">
+    <div class="col-md-4">
+      <label class="form-label small">Search Patient</label>
+      <input type="text" name="q" value="{{ q }}" class="form-control form-control-sm">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label small">Status</label>
+      <select name="status" class="form-select form-select-sm">
+        <option value="">All</option>
+        {% for s in statuses %}
+        <option value="{{ s }}" {{ 'selected' if current_status == s }}>{{ status_labels[s] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label small">Priority</label>
+      <select name="priority" class="form-select form-select-sm">
+        <option value="">All</option>
+        {% for p in ['High', 'Medium', 'Low'] %}
+        <option {{ 'selected' if current_priority == p }}>{{ p }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-sm btn-outline-primary w-100">Filter</button>
+    </div>
+  </form>
+
+  {% if session.get('role') == 'health_worker' %}
+  <a href="{{ url_for('referral.create') }}" class="btn btn-primary btn-sm mb-3"><i class="bi bi-plus-circle"></i> New Referral</a>
+  {% endif %}
+
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Referral ID</th><th>Patient</th><th>From &rarr; To</th><th>Priority</th><th>Status</th><th>Appt. Date</th><th>Alerts</th><th></th></tr></thead>
+      <tbody>
+      {% for r in referrals %}
+        <tr>
+          <td class="small">{{ r.referralId }}</td>
+          <td>{{ r.patientName }}</td>
+          <td class="small">{{ r.fromFacility }} &rarr; {{ r.toFacility }}</td>
+          <td><span class="badge badge-priority-{{ r.priority | lower }}">{{ r.priority }}</span></td>
+          <td><span class="badge bg-secondary">{{ status_labels[r.status] if r.status in status_labels else r.status }}</span></td>
+          <td>{{ r.appointmentDate or '-' }}</td>
+          <td>
+            {% if r.alerts %}
+            <span class="badge bg-danger" title="{{ r.alerts | join(' | ') }}">{{ r.alerts | length }} alert(s)</span>
+            {% else %}
+            <span class="text-muted small">-</span>
+            {% endif %}
+          </td>
+          <td><a href="{{ url_for('referral.detail', referral_id=r._id) }}" class="btn btn-sm btn-outline-primary">View</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="8" class="text-muted text-center">No referrals found.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

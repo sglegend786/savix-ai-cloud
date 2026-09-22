@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Facilities | HealthCare+{% endblock %}
+{% block page_title %}Manage Facilities{% endblock %}
+{% block content %}
+<div class="app-card" style="max-width:500px">
+  <form method="POST" class="d-flex gap-2">
+    <input type="text" name="facility" class="form-control" placeholder="e.g. ICU, Pharmacy, Ambulance" required>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Current Facilities</div>
+  {% if hospital.facilities %}
+    {% for f in hospital.facilities %}
+    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+      <span>{{ f }}</span>
+      <form method="POST" action="{{ url_for('hospital.remove_facility') }}" onsubmit="return confirm('Remove this facility?');">
+        <input type="hidden" name="facility" value="{{ f }}">
+        <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+      </form>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-muted small mb-0">No facilities added yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

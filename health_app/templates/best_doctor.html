@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Best Doctor | HealthCare+{% endblock %}
+{% block page_title %}Best Doctor{% endblock %}
+{% block content %}
+<div class="app-card">
+  <form method="GET" class="d-flex gap-2 flex-wrap">
+    <select name="department" class="form-select w-auto" onchange="this.form.submit()">
+      <option value="">All Departments</option>
+      {% for d in departments %}
+        <option value="{{ d }}" {{ 'selected' if d == selected_department }}>{{ d }}</option>
+      {% endfor %}
+    </select>
+  </form>
+</div>
+
+{% if doctor %}
+<div class="app-card text-center">
+  <span class="badge-best mb-2 d-inline-block"><i class="bi bi-star"></i> BEST DOCTOR</span>
+  <img src="{{ doctor.image_url or '/static/images/doctor_default.jpg' }}" class="doctor-avatar mx-auto mb-2" style="width:120px;height:120px" alt="">
+  <h4 class="fw-bold mb-0">{{ doctor.name }}</h4>
+  <p class="text-muted">{{ doctor.specialization }} • {{ doctor.department }}</p>
+  <p><span class="rating-pill">{{ doctor.rating }} ★</span> &nbsp; {{ doctor.experience_years }} Years Experience</p>
+  <p class="small">{{ doctor.hospital_name }}</p>
+  <a href="{{ url_for('appointment.book_appointment', doctor_id=doctor._id) }}" class="btn btn-primary">Book Appointment</a>
+</div>
+{% else %}
+<p class="text-muted">No doctors found for this filter.</p>
+{% endif %}
+{% endblock %}

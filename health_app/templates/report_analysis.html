@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Report Analysis | HealthCare+{% endblock %}
+{% block page_title %}Selected Reports Analysis{% endblock %}
+{% block content %}
+<div class="app-card">
+  <p class="small text-muted"><i class="bi bi-info-circle"></i> {{ result.disclaimer }}</p>
+  <h5>Selected Reports: {{ result.total_reports }}</h5>
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Individual Observations</div>
+  {% for s in result.individual_summaries %}
+  <div class="border-bottom py-2">
+    <strong>{{ s.report_name }}</strong> ({{ s.report_type }}) —
+    {{ s.abnormal_count }} abnormal / {{ s.normal_count }} normal parameter(s)
+  </div>
+  {% endfor %}
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Combined Observations</div>
+  <ul>
+    {% for o in result.combined_observations %}
+    <li>{{ o }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="app-card text-center h-100">
+      <p class="small text-muted mb-1">Recommended Department</p>
+      <h6 class="fw-bold">{{ result.recommended_department or 'General Checkup' }}</h6>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="app-card text-center h-100">
+      <p class="small text-muted mb-1">Recommended Doctor</p>
+      {% if result.recommended_doctor %}
+      <h6 class="fw-bold">{{ result.recommended_doctor.name }}</h6>
+      <p class="small text-muted mb-0">{{ result.recommended_doctor.hospital_name }}</p>
+      <a href="{{ url_for('appointment.book_appointment', doctor_id=result.recommended_doctor._id) }}" class="btn btn-sm btn-primary mt-2">Book Appointment</a>
+      {% else %}
+      <p class="small text-muted mb-0">No specific match found.</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="app-card text-center h-100">
+      <p class="small text-muted mb-1">Recommended Hospital</p>
+      {% if result.recommended_hospital %}
+      <h6 class="fw-bold">🏆 {{ result.recommended_hospital.hospital_name }}</h6>
+      {% else %}
+      <p class="small text-muted mb-0">No hospitals available.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

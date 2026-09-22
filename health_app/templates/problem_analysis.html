@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Problem Analysis | HealthCare+{% endblock %}
+{% block page_title %}Problem Analysis{% endblock %}
+{% block content %}
+<div class="app-card">
+  <div class="app-card-title">Describe your problem</div>
+  <form method="POST">
+    <textarea name="symptom_text" class="form-control mb-3" rows="3" placeholder="e.g. I have pain in my right knee while walking." required>{{ result.symptom_text if result }}</textarea>
+    <button type="submit" class="btn btn-primary">Analyze Problem</button>
+  </form>
+</div>
+
+{% if result %}
+<div class="app-card">
+  <div class="app-card-title">Analysis Result</div>
+  <p class="small text-muted"><i class="bi bi-info-circle"></i> This is an informational recommendation and not a medical diagnosis. Consult a qualified doctor.</p>
+  <p><strong>Department:</strong> {{ result.department }} <span class="badge bg-secondary">{{ result.confidence }} confidence</span></p>
+  {% if result.matched_keywords %}
+  <p class="small text-muted">Matched keywords: {{ result.matched_keywords | join(', ') }}</p>
+  {% endif %}
+
+  {% if result.best_doctor %}
+  <p><strong>Best Doctor:</strong> {{ result.best_doctor.name }} ({{ result.best_doctor.rating }} ★, {{ result.best_doctor.hospital_name }})</p>
+  {% endif %}
+  {% if result.best_hospital %}
+  <p><strong>Best Hospital:</strong> 🏆 {{ result.best_hospital.hospital_name }}</p>
+  {% endif %}
+
+  <div class="d-flex gap-2 mt-3">
+    {% if result.best_doctor %}
+    <a href="{{ url_for('appointment.book_appointment', doctor_id=result.best_doctor._id) }}" class="btn btn-success">Book Appointment</a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

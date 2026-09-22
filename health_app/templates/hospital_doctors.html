@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Doctors | HealthCare+{% endblock %}
+{% block page_title %}Manage Doctors{% endblock %}
+{% block content %}
+<div class="app-card">
+  <div class="app-card-title">Add New Doctor</div>
+  <form method="POST">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Specialization</label>
+        <input type="text" name="specialization" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Department</label>
+        <select name="department" class="form-select" required>
+          {% for d in departments %}<option>{{ d.name }}</option>{% endfor %}
+          <option>Bone & Orthopedics</option>
+          <option>Cardiology</option>
+          <option>Liver / Gastroenterology</option>
+          <option>Neurology</option>
+          <option>Pulmonology</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Experience (years)</label>
+        <input type="number" name="experience_years" class="form-control" value="5">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Rating (out of 5)</label>
+        <input type="number" step="0.1" max="5" min="0" name="rating" class="form-control" value="4.5">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Consultation Fee (₹)</label>
+        <input type="number" name="consultation_fee" class="form-control" value="500">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Contact Number</label>
+        <input type="text" name="contact_number" class="form-control">
+      </div>
+      <div class="col-md-3 form-check mt-4">
+        <input type="checkbox" class="form-check-input" name="available_today" id="available_today" checked>
+        <label class="form-check-label" for="available_today">Available Today</label>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Short Description</label>
+        <textarea name="description" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Qualification</label>
+        <input type="text" name="qualification" class="form-control" placeholder="e.g. MBBS, MD (Cardiology)">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Add Doctor</button>
+  </form>
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Current Doctors</div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Photo</th><th>Name</th><th>Department</th><th>Experience</th><th>Rating</th><th>Fee</th><th>Available</th><th></th></tr></thead>
+      <tbody>
+      {% for d in doctors %}
+        <tr>
+          <td>
+            <img src="{{ url_for('media.doctor_image', filename=d.image_filename) if d.image_filename else '/static/images/doctor_default.jpg' }}"
+                 class="doctor-avatar" style="width:52px;height:52px;object-fit:cover;border-radius:50%" alt="{{ d.name }}"
+                 onerror="this.src='/static/images/doctor_default.jpg'">
+            {% if d.image_status %}<div><span class="badge img-status-{{ d.image_status | lower }}">{{ d.image_status }}</span></div>{% endif %}
+          </td>
+          <td>{{ d.name }}
+            {% if d.verified %}<span class="verified-badge"><i class="bi bi-patch-check-fill"></i></span>{% endif %}
+          </td>
+          <td>{{ d.department }}</td>
+          <td>{{ d.experience_years }} yrs</td>
+          <td>{{ d.rating }} ★</td>
+          <td>₹{{ d.consultation_fee|round|int }}</td>
+          <td>{{ 'Yes' if d.available_today else 'No' }}</td>
+          <td>
+            <div class="card-action-row">
+              <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#docImg{{ d._id }}">
+                <i class="bi bi-camera"></i> Photo
+              </button>
+              <form method="POST" action="{{ url_for('doctor.delete_doctor', doctor_id=d._id) }}" onsubmit="return confirm('Remove this doctor?');">
+                <button type="submit" class="btn btn-sm btn-outline-danger">{{ t('common.delete') }}</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <tr class="collapse" id="docImg{{ d._id }}">
+          <td colspan="8">
+            <form method="POST" action="{{ url_for('doctor.upload_doctor_image', doctor_id=d._id) }}"
+                  enctype="multipart/form-data" class="d-flex gap-2 align-items-end flex-wrap">
+              <div class="flex-grow-1">
+                <label class="form-label small">{{ t('images.upload_image') }} (JPG, PNG, WebP — max 5 MB)</label>
+                <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" class="form-control form-control-sm" required>
+              </div>
+              <button type="submit" class="btn btn-sm btn-primary">
+                {{ t('common.upload') if not d.image_filename else t('common.replace') }}
+              </button>
+            </form>
+            {% if d.image_filename %}
+            <form method="POST" action="{{ url_for('doctor.delete_doctor_image', doctor_id=d._id) }}" class="mt-2"
+                  onsubmit="return confirm('Delete this photograph?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i> Delete Photo</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="8" class="text-muted text-center">{{ t('hospital.no_doctors') }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

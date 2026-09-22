@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Appointments | HealthCare+{% endblock %}
+{% block page_title %}Manage Appointments{% endblock %}
+{% block content %}
+<div class="app-card">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Reason</th><th>Status</th><th>Update</th><th>Prescription</th></tr></thead>
+      <tbody>
+      {% for a in appointments %}
+        <tr>
+          <td>{{ a.user_name }}</td>
+          <td>{{ a.doctor_name }}</td>
+          <td>{{ a.date }}</td>
+          <td>{{ a.time }}</td>
+          <td class="small">{{ a.reason or '-' }}</td>
+          <td><span class="badge {{ 'bg-success' if a.status == 'Confirmed' else ('bg-secondary' if a.status == 'Completed' else ('bg-danger' if a.status == 'Cancelled' else 'bg-warning text-dark')) }}">{{ a.status }}</span></td>
+          <td>
+            <form method="POST" action="{{ url_for('hospital.update_appointment_status', appt_id=a._id) }}" class="d-flex gap-1">
+              <select name="status" class="form-select form-select-sm">
+                {% for s in ['Pending', 'Confirmed', 'Completed', 'Cancelled'] %}
+                <option {{ 'selected' if a.status == s }}>{{ s }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit" class="btn btn-sm btn-primary">Update</button>
+            </form>
+          </td>
+          <td>
+            {% if a.status != 'Cancelled' %}
+            <a href="{{ url_for('appointment.create_prescription', appt_id=a._id) }}" class="btn btn-sm btn-outline-primary">Prescribe</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="8" class="text-muted text-center">No appointments yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

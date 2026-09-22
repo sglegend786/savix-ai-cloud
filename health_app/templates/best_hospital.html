@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Best Hospital | HealthCare+{% endblock %}
+{% block page_title %}Best Hospital{% endblock %}
+{% block content %}
+{% if hospital %}
+<div class="app-card text-center">
+  <span class="badge-best mb-2 d-inline-block"><i class="bi bi-trophy"></i> BEST HOSPITAL</span>
+  <h3 class="fw-bold">{{ hospital.hospital_name }}</h3>
+  <p class="text-muted">{{ hospital.city }}, {{ hospital.state }}</p>
+  <h5 class="text-success">Overall Score: {{ hospital.score }}%</h5>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="app-card">
+      <div class="app-card-title">Score Breakdown</div>
+      <ul class="list-unstyled small">
+        <li class="d-flex justify-content-between border-bottom py-1"><span>Rating (30%)</span><strong>{{ hospital.score_breakdown.rating }} pts</strong></li>
+        <li class="d-flex justify-content-between border-bottom py-1"><span>Doctor Availability (25%)</span><strong>{{ hospital.score_breakdown.doctor_availability }} pts</strong></li>
+        <li class="d-flex justify-content-between border-bottom py-1"><span>Cost (20%)</span><strong>{{ hospital.score_breakdown.cost }} pts</strong></li>
+        <li class="d-flex justify-content-between border-bottom py-1"><span>Distance (15%)</span><strong>{{ hospital.score_breakdown.distance }} pts</strong></li>
+        <li class="d-flex justify-content-between py-1"><span>Emergency/24x7 (10%)</span><strong>{{ hospital.score_breakdown.emergency_247 }} pts</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="app-card">
+      <div class="app-card-title">Hospital Info</div>
+      <p class="small mb-1"><i class="bi bi-people"></i> {{ hospital.doctor_count }} Doctors</p>
+      <p class="small mb-1"><i class="bi bi-currency-rupee"></i> Avg Cost ₹{{ hospital.avg_cost|round|int }}</p>
+      <p class="small mb-1"><i class="bi bi-geo-alt"></i> {{ hospital.distance_km }} km away</p>
+      <p class="small mb-3">
+        {% if hospital.emergency %}<span class="badge bg-danger">Emergency</span>{% endif %}
+        {% if hospital.available_247 %}<span class="badge bg-success">24x7</span>{% endif %}
+      </p>
+      <a href="{{ url_for('user.hospital_detail', hospital_id=hospital._id) }}" class="btn btn-primary btn-sm w-100">View Full Details</a>
+    </div>
+  </div>
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">All Ranked Hospitals</div>
+  <ol class="mb-0">
+    {% for h in all_ranked %}
+    <li class="mb-1">{{ h.hospital_name }} — {{ h.score }}%</li>
+    {% endfor %}
+  </ol>
+</div>
+{% else %}
+<p class="text-muted">No hospitals available yet.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h4><i class="bi bi-shield-lock"></i> Admin Dashboard</h4>
+        <p class="text-muted">Manage hospital registrations</p>
+        
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Hospital Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for h in hospitals %}
+                        <tr>
+                            <td>{{ h.id }}</td>
+                            <td>{{ h.name }}</td>
+                            <td>{{ h.email }}</td>
+                            <td>
+                                {% if h.is_approved %}
+                                    <span class="badge bg-success">Approved</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not h.is_approved %}
+                                <form action="{{ url_for('approve_hospital', hosp_id=h.id) }}" method="POST" style="display:inline;">
+                                    <button class="btn btn-sm btn-outline-success">Approve</button>
+                                </form>
+                                {% else %}
+                                    <button class="btn btn-sm btn-secondary" disabled>Approved</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

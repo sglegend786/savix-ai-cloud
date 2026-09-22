@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Live Queue | HealthCare+{% endblock %}
+{% block page_title %}Live Queue & Token System{% endblock %}
+{% block content %}
+<div class="app-card">
+  <form method="GET" class="d-flex gap-2 align-items-end mb-3">
+    <div>
+      <label class="form-label small">Date</label>
+      <input type="date" name="date" value="{{ date }}" class="form-control form-control-sm">
+    </div>
+    <button type="submit" class="btn btn-sm btn-outline-primary">View</button>
+  </form>
+
+  <form method="POST" action="{{ url_for('hospital.queue_call_next') }}" class="mb-3">
+    <input type="hidden" name="date" value="{{ date }}">
+    <button type="submit" class="btn btn-primary"><i class="bi bi-megaphone"></i> Call Next Token</button>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Token</th><th>Patient</th><th>Doctor</th><th>Status</th><th>Position</th><th>Est. Wait</th><th></th></tr></thead>
+      <tbody>
+      {% for t in tokens %}
+        <tr class="{{ 'table-warning' if t.queue_status == 'IN_PROGRESS' }}">
+          <td class="fw-bold">TKN-{{ t.token_number }}</td>
+          <td>{{ t.user_name }}</td>
+          <td>{{ t.doctor_name }}</td>
+          <td><span class="badge bg-{{ 'success' if t.queue_status == 'IN_PROGRESS' else ('secondary' if t.queue_status == 'WAITING' else 'light text-dark') }}">{{ t.queue_status }}</span></td>
+          <td>{% if t.queue_status == 'WAITING' %}{{ t.position }} ahead{% else %}-{% endif %}</td>
+          <td>{% if t.queue_status == 'WAITING' %}~{{ t.wait_minutes }} min{% else %}-{% endif %}</td>
+          <td>
+            {% if t.queue_status in ['WAITING', 'IN_PROGRESS'] %}
+            <form method="POST" action="{{ url_for('hospital.queue_complete', appt_id=t._id) }}">
+              <button type="submit" class="btn btn-sm btn-outline-success">Mark Completed</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="text-muted text-center">No tokens issued for this date yet — confirm an appointment to assign one.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

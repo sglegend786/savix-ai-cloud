@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Create System Admin | HealthCare+{% endblock %}
+{% block public_content %}
+<div class="public-nav">
+  <a href="{{ url_for('index') }}" class="text-white text-decoration-none d-flex align-items-center gap-2">
+    <i class="bi bi-shield-plus fs-3 text-primary"></i>
+    <div><div class="brand-title">HealthCare+</div></div>
+  </a>
+</div>
+
+<div class="auth-form-wrap">
+  <h4 class="fw-bold mb-1"><i class="bi bi-shield-lock"></i> Create System Admin Account</h4>
+  <p class="text-muted small mb-4">
+    This one-time setup page is only available because no System Admin account exists yet.
+    Once you create one, this page locks itself and every future login goes through the normal admin login.
+  </p>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">Full Name *</label>
+      <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email *</label>
+      <input type="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Password * <span class="text-muted small">(min. 6 characters)</span></label>
+      <input type="password" name="password" class="form-control" minlength="6" required>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Create Admin Account</button>
+  </form>
+</div>
+{% endblock %}

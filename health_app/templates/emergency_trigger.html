@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Trigger Emergency SOS | HealthCare+{% endblock %}
+{% block page_title %}Trigger Emergency SOS{% endblock %}
+{% block content %}
+<div class="alert alert-warning small"><i class="bi bi-exclamation-triangle"></i> This creates a real emergency record and (simulated) notifies the nearest suitable hospital. Emergency services are NOT actually called — no real telecom/SMS integration exists in this demo.</div>
+<div class="app-card">
+  <div class="app-card-title">Patient: {{ patient.name }}</div>
+  <form method="POST">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Emergency Type *</label>
+        <select name="emergency_type" class="form-select" required>
+          <option>Severe breathing difficulty</option>
+          <option>Suspected cardiac event</option>
+          <option>Severe bleeding</option>
+          <option>Unconscious / not responding</option>
+          <option>Fall / injury</option>
+          <option>Other critical condition</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Blood Group (if known)</label>
+        <input type="text" name="blood_group" class="form-control" placeholder="e.g. O+">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Essential Medical Summary</label>
+        <textarea name="summary" class="form-control" rows="2" placeholder="Allergies, ongoing medication, key history..."></textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-danger mt-3"><i class="bi bi-exclamation-octagon"></i> Trigger SOS</button>
+  </form>
+</div>
+{% endblock %}

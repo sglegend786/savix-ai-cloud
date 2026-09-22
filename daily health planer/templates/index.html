@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Daily Life Manager</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body class="{% if theme == 'dark' %}dark-mode{% endif %}"></body>
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<div class="logo" style="margin-bottom:40px;">
+<a href="/" style="display:inline-flex; align-items:center; text-decoration:none; gap:8px; margin-bottom:0;">
+  <span style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#0F172A; color:#FFFFFF; border-radius:8px; font-weight:900; font-size:15px; font-family:sans-serif; box-shadow:0 2px 10px rgba(0,0,0,0.2);">Sx</span>
+  <span style="font-weight:800; font-size:20px; letter-spacing:-0.5px; color:#FFFFFF; font-family:sans-serif; margin-bottom:0; line-height:1;">SAVIX</span>
+</a>
+</div>
+
+<ul>
+
+<li class="active">
+<a href="/" class="text-white text-decoration-none">
+<i class="fa-solid fa-house"></i> Dashboard
+</a>
+</li>
+
+<li>
+<a href="/tasks" class="text-white text-decoration-none">
+<i class="fa-solid fa-list-check"></i> Tasks
+</a>
+</li>
+
+<li>
+<a href="/calendar" class="text-white text-decoration-none">
+<i class="fa-solid fa-calendar-days"></i> Calendar
+</a>
+</li>
+
+<li>
+<a href="/analytics" style="text-decoration:none;color:inherit;">
+    <i class="fa-solid fa-chart-column"></i>
+    Analytics
+</a>
+</li>
+
+<li>
+<a href="/profile" class="text-white text-decoration-none">
+<i class="fa-solid fa-user"></i> Profile
+</a>
+</li>
+
+<li>
+<a href="/settings" class="text-white text-decoration-none">
+<i class="fa-solid fa-gear"></i> Settings
+</a>
+</li>
+
+<li class="mt-4">
+<a href="http://127.0.0.1:8080/index.html" class="text-warning text-decoration-none fw-bold">
+<i class="fa-solid fa-arrow-left"></i> Back to SAVIX Hub
+</a>
+</li>
+</ul>
+
+</div>
+
+<!-- Main Content -->
+
+<div class="main">
+
+<!-- Top Navbar -->
+
+<div class="topbar">
+
+<div>
+
+<h2>DAILY LIFE MANAGER</h2>
+
+<p>Manage your daily tasks efficiently</p>
+
+</div>
+
+<div class="profile">
+
+<i class="fa-solid fa-circle-user fa-3x"></i>
+
+</div>
+
+</div>
+
+<!-- Dashboard Cards -->
+
+<!-- Notification Controls -->
+<div class="mb-4">
+
+    <button id="enableNotificationsBtn"
+            class="btn btn-primary">
+        🔔 Enable Notifications
+    </button>
+
+    <button id="disableNotificationsBtn"
+            class="btn btn-outline-danger"
+            style="display: none;">
+        🔕 Disable Notifications
+    </button>
+
+    <p id="notificationStatus" class="mt-2"></p>
+
+</div>
+
+<div class="row mt-4">
+
+<div class="col-lg-3">
+
+<div class="dashboard-card blue">
+
+<i class="fa-solid fa-list"></i>
+
+<h5>Total Tasks</h5>
+
+<h2>{{ total }}</h2>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="dashboard-card green">
+
+<i class="fa-solid fa-circle-check"></i>
+
+<h5>Completed</h5>
+
+<h2>{{ completed }}</h2>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="dashboard-card orange">
+
+<i class="fa-solid fa-clock"></i>
+
+<h5>Pending</h5>
+
+<h2>{{ pending }}</h2>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="dashboard-card red">
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+<h5>High Priority</h5>
+
+<h2>{{ high }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= TASK REMINDERS ================= -->
+
+<div class="row mb-4">
+
+    <!-- Overdue -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm border-danger h-100">
+            <div class="card-body">
+                <h5 class="text-danger">
+                    🔴 Overdue
+                </h5>
+
+                {% if overdue_tasks %}
+                    {% for task in overdue_tasks %}
+                        <div class="mb-2">
+                            <strong>{{ task.title }}</strong><br>
+                            <small>
+                                Start: {{ task.start_date }} <br>
+                                End: {{ task.end_date }} <br>
+                                Times: {{ task.times | join(', ') }}
+                            </small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted mb-0">
+                        No overdue tasks 🎉
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Due Today -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm border-warning h-100">
+            <div class="card-body">
+                <h5 class="text-warning">
+                    🟠 Due Today
+                </h5>
+
+                {% if today_tasks %}
+                    {% for task in today_tasks %}
+                        <div class="mb-2">
+                            <strong>{{ task.title }}</strong><br>
+                            <small>
+                                Start: {{ task.start_date }} <br>
+                                End: {{ task.end_date }} <br>
+                                Times: {{ task.times | join(', ') }}
+                            </small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted mb-0">
+                        No tasks due today.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Tomorrow -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm border-info h-100">
+            <div class="card-body">
+                <h5 class="text-info">
+                    🟡 Tomorrow
+                </h5>
+
+                {% if tomorrow_tasks %}
+                    {% for task in tomorrow_tasks %}
+                        <div class="mb-2">
+                            <strong>{{ task.title }}</strong><br>
+                            <small>
+                                Start: {{ task.start_date }} <br>
+                                End: {{ task.end_date }} <br>
+                                Times: {{ task.times | join(', ') }}
+                            </small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted mb-0">
+                        No tasks due tomorrow.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Upcoming -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm border-primary h-100">
+            <div class="card-body">
+                <h5 class="text-primary">
+                    🔵 Upcoming
+                </h5>
+
+                {% if upcoming_tasks %}
+                    {% for task in upcoming_tasks[:5] %}
+                        <div class="mb-2">
+                            <strong>{{ task.title }}</strong><br>
+                            <small>
+                                Start: {{ task.start_date }} <br>
+                                End: {{ task.end_date }} <br>
+                                Times: {{ task.times | join(', ') }}
+                            </small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted mb-0">
+                        No upcoming tasks.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ================= END TASK REMINDERS ================= -->
+
+<!-- Add Task Card -->
+
+<div class="card task-card mt-4">
+
+<div class="card-body">
+
+<h3>
+
+<i class="fa-solid fa-plus"></i>
+
+Add New Task
+
+</h3>
+
+<form action="/add" method="POST">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>
+
+Task Title
+
+</label>
+
+<input
+type="text"
+name="title"
+class="form-control"
+placeholder="Enter task title"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>
+
+Category
+
+</label>
+
+<select name="category"
+ class="form-select" required>
+
+<option value="Study">Study</option>
+
+<option value="Personal">Personal</option>
+
+<option value="Health">Health</option>
+
+<option value="Shopping">Shopping</option>
+
+<option value="Office">Office</option>
+
+</select>
+
+</div>
+
+<div class="col-12 mb-3">
+
+<label>
+
+Description
+
+</label>
+
+<textarea
+name="description"
+class="form-control"
+rows="4"
+placeholder="Write task description..."></textarea>
+
+</div>
+
+<div class="col-md-6">
+
+<label>
+
+Priority
+
+</label>
+
+<select name="priority"
+class="form-select">
+
+<option value="Low"
+    {% if default_priority == 'Low' %}selected{% endif %}>
+    Low
+</option>
+
+<option value="Medium"
+    {% if default_priority == 'Medium' %}selected{% endif %}>
+    Medium
+</option>
+
+<option value="High"
+    {% if default_priority == 'High' %}selected{% endif %}>
+    High
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+<label>Start Date</label>
+<input type="date" name="start_date" class="form-control" required>
+</div>
+<div class="col-md-4">
+<label>End Date</label>
+<input type="date" name="end_date" class="form-control" required>
+</div>
+<div class="col-md-4">
+<label>Times</label>
+<div id="times-container">
+    <div class="input-group mb-2">
+        <input type="time" name="times" class="form-control" required>
+        <button type="button" class="btn btn-outline-secondary" onclick="addTimeField()">+</button>
+    </div>
+</div>
+<script>
+function addTimeField() {
+    const container = document.getElementById('times-container');
+    const div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = '<input type="time" name="times" class="form-control" required><button type="button" class="btn btn-outline-danger" onclick="this.parentElement.remove()">-</button>';
+    container.appendChild(div);
+}
+</script>
+</div>
+
+<div class="col-12 mt-4">
+
+<button class="btn btn-primary w-100">
+
+<i class="fa-solid fa-plus"></i>
+
+Add Task
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+<!-- Task List -->
+
+<div class="row mt-4">
+
+<div class="col-lg-8">
+
+<div class="card shadow-lg border-0 rounded-4">
+
+<div class="card-body">
+
+<h4 class="mb-4">
+<i class="fa-solid fa-list-check"></i>
+Today's Tasks
+</h4>
+
+<table class="table table-hover align-middle">
+
+<thead>
+
+<tr>
+
+<th>Task</th>
+
+<th>Description</th>
+
+<th>Category</th>
+
+<th>Priority</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% if tasks %}
+
+{% for task in tasks %}
+
+<tr>
+
+<td>{{ task.title }}</td>
+
+<td>{{ task.description }}</td>
+<td>{{ task.category }}</td>
+
+<td>
+
+<span class="badge bg-primary">
+
+{{ task.priority }}
+
+</span>
+
+</td>
+
+
+<td>
+{% if task.status == "Completed" %}
+<span class="badge bg-success">Completed</span>
+{% else %}
+<span class="badge bg-warning text-dark">Pending</span>
+{% endif %}
+</td>
+
+<td>
+{% if task.status != "Completed" %}
+<a href="/complete/{{ task.task_id }}" class="btn btn-success btn-sm">
+<i class="fa-solid fa-check"></i>
+</a>
+{% endif %}
+
+  <a href="/delete/{{ task.task_id }}" class="btn btn-danger btn-sm">
+  <i class="fa-solid fa-trash"></i>
+  </a>
+
+  {% if task.status != "Completed" %}
+  <button type="button" class="btn btn-warning btn-sm text-dark" data-bs-toggle="modal" data-bs-target="#extendModal{{ task.task_id }}">
+      <i class="fa-solid fa-clock"></i>
+  </button>
+  <div class="modal fade" id="extendModal{{ task.task_id }}" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="/extend/{{ task.task_id }}" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Extend Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <label>Extend By</label>
+          <select name="extend_by" class="form-select mb-2" onchange="document.getElementById('customDate{{ task.task_id }}').style.display = this.value === 'custom' ? 'block' : 'none'">
+              <option value="1_week">1 Week</option>
+              <option value="2_weeks">2 Weeks</option>
+              <option value="custom">Custom Date</option>
+          </select>
+          <div id="customDate{{ task.task_id }}" style="display:none;">
+              <label>Custom Date</label>
+              <input type="date" name="custom_date" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Extend</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
+  </td>
+
+
+
+</tr>
+
+{% endfor %}
+
+{% else %}
+
+<tr>
+
+<td colspan="4" class="text-center">
+
+No tasks added yet.
+
+</td>
+
+</tr>
+
+{% endif %}
+
+</tbody>    
+
+
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-4">
+
+<div class="card shadow-lg border-0 rounded-4">
+
+<div class="card-body">
+
+
+<h4>Task Summary</h4>
+
+<div class="mt-4">
+
+<p><strong>Total Tasks:</strong> {{ total }}</p>
+
+<p><strong>Completed:</strong> {{ completed }}</p>
+
+<p><strong>Pending:</strong> {{ pending }}</p>
+
+<p><strong>High Priority:</strong> {{ high }}</p>
+
+</div>
+
+<hr>
+
+{% if total == 0 %}
+
+<div class="alert alert-info">
+
+No tasks available.<br>
+
+Add your first task to get started!
+
+</div>
+
+{% endif %}
+
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<footer class="text-center mt-5 mb-3">
+
+<p class="text-secondary">
+
+© 2026 Daily Life Manager | Smart India Hackathon
+
+</p>
+
+</footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+
+</body>
+
+</html>

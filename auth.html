@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAVIX_AI | Login & Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=8">
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000;
+  }
+  .auth-container {
+    background: #111;
+    padding: 40px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .auth-container h2 { margin-bottom: 24px; text-align: center; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; margin-bottom: 8px; font-size: 14px; color: #aaa; }
+  .field input {
+    width: 100%; padding: 12px; border-radius: 8px;
+    background: #222; border: 1px solid #333; color: #fff;
+  }
+  .btn-submit {
+    width: 100%; padding: 14px; border-radius: 8px; margin-top: 16px;
+    background: #fff; color: #000; font-weight: 600; border: none; cursor: pointer;
+  }
+  .toggle-auth {
+    text-align: center; margin-top: 16px; font-size: 14px; color: #aaa; cursor: pointer;
+  }
+  .toggle-auth span { color: #fff; text-decoration: underline; }
+</style>
+<script id="savix_theme_init">if(localStorage.getItem('savix_theme') === 'light'){document.documentElement.setAttribute('data-theme', 'light');}</script>
+</head>
+<body>
+
+<div class="auth-container">
+  <h2 id="authTitle" class="futureFramework__text-gradient">Welcome Back</h2>
+  
+  <form id="authForm">
+    <div class="field" id="nameField" style="display: none;">
+      <label>Full Name</label>
+      <input type="text" id="nameInput" placeholder="Enter your full name">
+    </div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="emailInput" required placeholder="Enter your email">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="passwordInput" required placeholder="Enter password">
+    </div>
+    <button type="submit" class="btn-submit" id="submitBtn">Login</button>
+  </form>
+
+  <div class="toggle-auth" id="toggleAuth">
+    Don't have an account? <span>Register here</span>
+  </div>
+</div>
+
+<script>
+  let isLogin = true;
+  const authTitle = document.getElementById('authTitle');
+  const nameField = document.getElementById('nameField');
+  const submitBtn = document.getElementById('submitBtn');
+  const toggleAuth = document.getElementById('toggleAuth');
+  const authForm = document.getElementById('authForm');
+
+  toggleAuth.addEventListener('click', () => {
+    isLogin = !isLogin;
+    if(isLogin) {
+      authTitle.textContent = "Welcome Back";
+      nameField.style.display = "none";
+      submitBtn.textContent = "Login";
+      toggleAuth.innerHTML = `Don't have an account? <span>Register here</span>`;
+    } else {
+      authTitle.textContent = "Create Account";
+      nameField.style.display = "block";
+      submitBtn.textContent = "Register";
+      toggleAuth.innerHTML = `Already have an account? <span>Login here</span>`;
+    }
+  });
+
+  authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value;
+    const password = document.getElementById('passwordInput').value;
+    const name = document.getElementById('nameInput').value;
+
+    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+    const payload = isLogin ? { email, password } : { email, password, name, phone: "0000000000" };
+
+    try {
+      submitBtn.textContent = "Processing...";
+      const res = await fetch(`http://localhost:5000${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      
+      if(data.success) {
+        localStorage.setItem('savix_token', data.token);
+        alert(isLogin ? "Login successful!" : "Registration successful!");
+        window.location.href = 'index.html'; // Go back to main UI
+      } else {
+        alert(data.message || "Authentication failed");
+        submitBtn.textContent = isLogin ? "Login" : "Register";
+      }
+    } catch(err) {
+      alert("Error connecting to server. Is the backend running?");
+      submitBtn.textContent = isLogin ? "Login" : "Register";
+    }
+  });
+</script>
+
+  
+  <button id="themeToggleBtn" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: #FFF; color: #000; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;" aria-label="Toggle Theme">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('themeToggleBtn');
+      const htmlElement = document.documentElement;
+      
+      const sunIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+      const moonIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      
+      const savedTheme = localStorage.getItem('savix_theme');
+      if (savedTheme) {
+        htmlElement.setAttribute('data-theme', savedTheme);
+        toggleBtn.innerHTML = savedTheme === 'light' ? moonIcon : sunIcon;
+        toggleBtn.style.background = savedTheme === 'light' ? '#0F172A' : '#FFF';
+        toggleBtn.style.color = savedTheme === 'light' ? '#FFF' : '#000';
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        htmlElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('savix_theme', newTheme);
+        toggleBtn.innerHTML = newTheme === 'light' ? moonIcon : sunIcon;
+        toggleBtn.style.background = newTheme === 'light' ? '#0F172A' : '#FFF';
+        toggleBtn.style.color = newTheme === 'light' ? '#FFF' : '#000';
+      });
+    });
+  </script>
+</body>
+</html>

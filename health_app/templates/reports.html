@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}My Reports | HealthCare+{% endblock %}
+{% block page_title %}My Reports{% endblock %}
+{% block content %}
+<div class="app-card">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <a href="{{ url_for('reports.upload_report') }}" class="btn btn-primary btn-sm"><i class="bi bi-upload"></i> Upload New Report</a>
+    <div class="d-flex gap-2">
+      <button type="button" id="selectAllReports" class="btn btn-sm btn-outline-secondary">Select / Deselect All</button>
+      <a href="{{ url_for('reports.analyze_all') }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-collection"></i> Analyze All Reports</a>
+    </div>
+  </div>
+
+  <form method="POST" action="{{ url_for('reports.analyze_selected') }}">
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th></th><th>Report Name</th><th>Type</th><th>Upload Date</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for r in reports %}
+          <tr>
+            <td><input type="checkbox" class="form-check-input checkbox-report" name="report_ids" value="{{ r._id }}"></td>
+            <td>{{ r.report_name }}</td>
+            <td>{{ r.report_type }}</td>
+            <td>{{ r.upload_date.strftime('%d %b %Y') }}</td>
+            <td><span class="badge bg-success">{{ r.analysis_status }}</span></td>
+            <td class="d-flex gap-1">
+              <a href="{{ url_for('reports.view_report', report_id=r._id) }}" class="btn btn-sm btn-outline-primary">View</a>
+              <form method="POST" action="{{ url_for('reports.delete_report', report_id=r._id) }}" onsubmit="return confirm('Delete this report?');">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="text-muted text-center">No reports uploaded yet.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if reports %}
+    <div class="d-flex justify-content-between align-items-center">
+      <span class="small text-muted">Selected: <span id="selectedCount">0</span></span>
+      <button type="submit" id="analyzeSelectedBtn" class="btn btn-success" disabled>
+        <i class="bi bi-clipboard2-pulse"></i> Analyze Selected Reports
+      </button>
+    </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

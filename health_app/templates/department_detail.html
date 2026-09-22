@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ department.name }} | {{ t('app_name') }}{% endblock %}
+{% block page_title %}{{ department.name }}{% endblock %}
+{% block content %}
+<div class="app-card">
+  <h5 class="fw-bold mb-1">{{ department.name }}</h5>
+  {% if department.description %}<p class="text-muted small mb-2">{{ department.description }}</p>{% endif %}
+  <div class="row small">
+    {% if department.specialist_type %}<div class="col-md-4"><strong>{{ t('department.specialist_type') }}:</strong> {{ department.specialist_type }}</div>{% endif %}
+    {% if department.timings %}<div class="col-md-4"><strong>{{ t('common.timings') }}:</strong> {{ department.timings }}</div>{% endif %}
+    {% if department.contact %}<div class="col-md-4"><strong>{{ t('common.contact') }}:</strong> {{ department.contact }}</div>{% endif %}
+    <div class="col-md-12 mt-2"><strong>{{ t('hospital.title') }}:</strong>
+      <a href="{{ url_for('user.hospital_detail', hospital_id=hospital._id) }}">{{ hospital.hospital_name }}</a>
+      {% if hospital.city %}<span class="text-muted">— {{ hospital.city }}</span>{% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">{{ t('hospital.doctors') }}</div>
+  <div class="row g-3">
+    {% for d in doctors %}
+    <div class="col-md-4">
+      <div class="border rounded p-2 text-center">
+        <img src="{{ d.image_url or '/static/images/doctor_default.jpg' }}" class="doctor-avatar mb-2" style="height:100px" alt="{{ d.name }}"
+             onerror="this.src='/static/images/doctor_default.jpg'">
+        <h6 class="mb-0">{{ d.name }}
+          {% if d.verified %}<span class="verified-badge"><i class="bi bi-patch-check-fill"></i></span>{% endif %}
+        </h6>
+        <p class="small text-muted mb-1">{{ d.specialization }}</p>
+        <a href="{{ url_for('doctor.doctor_detail', doctor_id=d._id) }}" class="btn btn-sm btn-outline-primary w-100 mt-2">{{ t('common.view_profile') }}</a>
+      </div>
+    </div>
+    {% else %}
+    <p class="text-muted small">{{ t('department.no_doctors') }}</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

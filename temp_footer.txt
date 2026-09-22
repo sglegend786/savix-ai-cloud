@@ -1,0 +1,134 @@
+<footer class="fittr-footer">
+  <div class="wrap">
+    <div class="footer-top-grid">
+      <!-- Col 1: Brand & Contact -->
+      <div>
+        <a class="fittr-brand" href="index.html" style="margin-bottom:12px;display:inline-flex">
+          <span class="brand-badge">Sx</span>
+          <span>SAVIX</span>
+        </a>
+        <p style="font-size:13.5px;color:var(--text-ash-2);line-height:1.6;margin-bottom:16px">
+          The largest connected AI health, diagnostics, and medical ecosystem. Unifying continuous monitoring, expert doctors, generic medicine, and emergency response into one single record.
+        </p>
+
+        <div class="footer-contact-box">
+          <div class="footer-country-tabs">
+            <button class="active">India</button> |
+            <button>USA</button> |
+            <button>Singapore</button>
+          </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> 
+            <a href="tel:8077892854" style="color: inherit; text-decoration: none;">8077892854</a>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> 
+            <a href="mailto:shubhamgoeltps@gmail.com" style="color: inherit; text-decoration: none;">shubhamgoeltps@gmail.com</a>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg> 
+            <a href="https://www.linkedin.com/in/shubham-goel-5832a828a?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" style="color: inherit; text-decoration: none;">Shubham Goel</a>
+          </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="margin-top:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span style="line-height:1.4">Uttar Pradesh, Allahabad, 35/7 Lukerganj, B.Tech Student, CSE Department, United College of Engineering and Research, Allahabad</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2: Company -->
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html#mission">Our Vision</a></li>
+          <li><a href="mailto:savix.admin.17@gmail.com">Help &amp; Support</a></li>
+          <li><a href="about.html#faq">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Offerings -->
+      <div class="footer-col">
+        <h4>Offerings</h4>
+        <ul>
+          <li><a href="services.html#care">Doctor Consultations</a></li>
+          <li><a href="services.html#wearables">SAVIX Watch Pro</a></li>
+                    <li><a href="ecosystem.html">Corporate Wellness</a></li>
+          <li><a href="services.html#diagnostics">Diagnostic Labs</a></li>
+          <li><a href="services.html#emergency">1-Tap SOS Network</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Tools -->
+      <div class="footer-col">
+        <h4>Free Health Tools</h4>
+        <ul>
+          <li><a href="services.html">BMR Calculator</a></li>
+          <li><a href="services.html">Macro Calculator</a></li>
+          <li><a href="services.html">Body Fat Calculator</a></li>
+          <li><a href="services.html">1RM Strength Calculator</a></li>
+          <li><a href="services.html">Biomarker OCR Tool</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 5: Legal -->
+      <div class="footer-col">
+        <h4>Legal &amp; Privacy</h4>
+        <ul>
+          <li><a href="about.html#disclaimer">Terms &amp; Conditions</a></li>
+          <li><a href="about.html#disclaimer">Privacy Policy</a></li>
+          <li><a href="about.html#disclaimer">Clinical AI Ethics</a></li>
+          <li><a href="about.html#disclaimer">Device Warranty</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SEO & Knowledge Accordions -->
+    <div class="footer-accordions">
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>The world's most accessible health &amp; medical monitoring platform</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>SAVIX_AI bridges continuous sensor hardware, diagnostic laboratory OCR, and certified physicians. Designed to reduce medical expenses across urban and rural communities alike.</p>
+        </div>
+      </div>
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>Heart Rate Variability (HRV) &amp; Recovery Science</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>HRV is one of the most accurate clinical indicators of autonomous nervous system balance, physical strain, and cardiovascular healthspan.</p>
+        </div>
+      </div>
+      <div class="f-acc-item">
+        <button class="f-acc-trigger">
+          <span>Generic Medicine Price Comparison &amp; Jan Aushadhi</span>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="f-acc-panel">
+          <p>Our intelligent pharmacy compare automatically matches branded doctor prescriptions with identical certified generic salts, saving families up to 70%.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom-bar">
+      <div>ï¿½ 2026 SAVIX_AI. All rights reserved.</div>
+
+      <div class="certifications-badge-group">
+        <div class="cert-badge"><span>??</span> HIPAA Compliant</div>
+        <div class="cert-badge"><span>???</span> GDPR Certified</div>
+        <div class="cert-badge"><span>?</span> DPDPA Verified</div>
+      </div>
+
+      <div class="social-icons-group">
+        <a class="social-icon-btn" href="#" aria-label="Instagram">IG</a>
+        <a class="social-icon-btn" href="#" aria-label="LinkedIn">IN</a>
+        <a class="social-icon-btn" href="#" aria-label="Twitter">X</a>
+      </div>
+    </div>
+  </div>
+</footer>

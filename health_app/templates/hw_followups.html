@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Follow-ups | HealthCare+{% endblock %}
+{% block page_title %}Follow-ups{% endblock %}
+{% block content %}
+
+{% macro followup_table(visits, show_action) %}
+<div class="table-responsive">
+  <table class="table align-middle">
+    <thead><tr><th>Patient</th><th>Follow-up Date</th><th>Priority</th>{% if show_action %}<th>Action</th>{% endif %}</tr></thead>
+    <tbody>
+    {% for v in visits %}
+      <tr>
+        <td><a href="{{ url_for('health_worker.patient_detail', patient_id=v.patient_id) }}">{{ v.patient_snapshot.name }}</a></td>
+        <td>{{ v.follow_up.date }}</td>
+        <td><span class="badge badge-priority-{{ v.triage.priority | lower }}">{{ v.triage.priority }}</span></td>
+        {% if show_action %}
+        <td>
+          <form method="POST" action="{{ url_for('health_worker.complete_followup', visit_id=v._id) }}">
+            <button type="submit" class="btn btn-sm btn-success">Mark Completed</button>
+          </form>
+        </td>
+        {% endif %}
+      </tr>
+    {% else %}
+      <tr><td colspan="4" class="text-muted text-center">None.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}
+
+<div class="app-card">
+  <div class="app-card-title text-danger">Pending (overdue)</div>
+  {{ followup_table(pending, true) }}
+</div>
+<div class="app-card">
+  <div class="app-card-title">Upcoming</div>
+  {{ followup_table(upcoming, true) }}
+</div>
+<div class="app-card">
+  <div class="app-card-title">Completed</div>
+  {{ followup_table(completed, false) }}
+</div>
+{% endblock %}

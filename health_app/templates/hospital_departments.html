@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}{{ t('nav.manage_departments') }} | {{ t('app_name') }}{% endblock %}
+{% block page_title %}{{ t('nav.manage_departments') }}{% endblock %}
+{% block content %}
+
+<div class="app-card">
+  <div class="app-card-title">{{ t('department.add') }}</div>
+  <form method="POST" class="row g-2">
+    <div class="col-md-4">
+      <label class="form-label small">{{ t('department.name') }} *</label>
+      <input type="text" name="name" class="form-control form-control-sm" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label small">{{ t('department.specialist_type') }}</label>
+      <input type="text" name="specialist_type" class="form-control form-control-sm" placeholder="e.g. Cardiologist">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label small">{{ t('department.available_timings') }}</label>
+      <input type="text" name="timings" class="form-control form-control-sm" placeholder="9:00 AM - 5:00 PM">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label small">{{ t('department.contact_number') }}</label>
+      <input type="text" name="contact" class="form-control form-control-sm">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small">{{ t('common.status') }}</label>
+      <select name="status" class="form-select form-select-sm">
+        <option>Active</option><option>Inactive</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label small">{{ t('common.description') }}</label>
+      <input type="text" name="description" class="form-control form-control-sm" placeholder="Heart & cardiovascular care">
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> {{ t('common.add') }}</button>
+    </div>
+  </form>
+</div>
+
+{% for d in departments %}
+<div class="app-card">
+  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <div>
+      <h6 class="fw-bold mb-1">
+        {{ d.name }}
+        <span class="badge bg-{{ 'success' if d.get('status', 'Active') == 'Active' else 'secondary' }}">{{ d.get('status', 'Active') }}</span>
+        <span class="badge bg-light text-dark">{{ d.doctor_count }} {{ t('nav.doctors') }}</span>
+      </h6>
+      {% if d.description %}<p class="small text-muted mb-1">{{ d.description }}</p>{% endif %}
+      <p class="small mb-0">
+        {% if d.specialist_type %}<strong>{{ t('department.specialist_type') }}:</strong> {{ d.specialist_type }} &nbsp;{% endif %}
+        {% if d.timings %}<strong>{{ t('common.timings') }}:</strong> {{ d.timings }} &nbsp;{% endif %}
+        {% if d.contact %}<strong>{{ t('common.contact') }}:</strong> {{ d.contact }}{% endif %}
+      </p>
+    </div>
+    <div class="card-action-row">
+      <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#editDept{{ d._id }}">
+        <i class="bi bi-pencil"></i> {{ t('common.edit') }}
+      </button>
+      <form method="POST" action="{{ url_for('hospital.toggle_department', dept_id=d._id) }}">
+        <button type="submit" class="btn btn-sm btn-outline-secondary">
+          {{ t('common.deactivate') if d.get('status', 'Active') == 'Active' else t('common.activate') }}
+        </button>
+      </form>
+      <form method="POST" action="{{ url_for('hospital.delete_department', dept_id=d._id) }}"
+            onsubmit="return confirm('Delete this department?');">
+        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <div class="collapse mt-3" id="editDept{{ d._id }}">
+    <form method="POST" action="{{ url_for('hospital.edit_department', dept_id=d._id) }}" class="row g-2">
+      <div class="col-md-4">
+        <label class="form-label small">{{ t('department.name') }}</label>
+        <input type="text" name="name" class="form-control form-control-sm" value="{{ d.name }}" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label small">{{ t('department.specialist_type') }}</label>
+        <input type="text" name="specialist_type" class="form-control form-control-sm" value="{{ d.get('specialist_type', '') }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label small">{{ t('department.available_timings') }}</label>
+        <input type="text" name="timings" class="form-control form-control-sm" value="{{ d.get('timings', '') }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label small">{{ t('department.contact_number') }}</label>
+        <input type="text" name="contact" class="form-control form-control-sm" value="{{ d.get('contact', '') }}">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">{{ t('common.status') }}</label>
+        <select name="status" class="form-select form-select-sm">
+          <option {{ 'selected' if d.get('status', 'Active') == 'Active' }}>Active</option>
+          <option {{ 'selected' if d.get('status') == 'Inactive' }}>Inactive</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label small">{{ t('common.description') }}</label>
+        <input type="text" name="description" class="form-control form-control-sm" value="{{ d.get('description', '') }}">
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-sm btn-primary">{{ t('common.update') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% else %}
+<p class="text-muted">{{ t('hospital.no_departments') }}</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Hospital' if role == 'hospital' else ('Health Worker' if role == 'health_worker' else ('Admin' if role == 'admin' else 'User')) }} Login | HealthCare+{% endblock %}
+{% block public_content %}
+<div class="public-nav">
+  <a href="{{ url_for('index') }}" class="text-white text-decoration-none d-flex align-items-center gap-2">
+    <i class="bi bi-shield-plus fs-3 text-primary"></i>
+    <div><div class="brand-title">HealthCare+</div></div>
+  </a>
+</div>
+
+<div class="auth-form-wrap">
+  <h4 class="fw-bold mb-1">{{ 'Hospital Admin Login' if role == 'hospital' else ('Health Worker Login' if role == 'health_worker' else ('System Admin Login' if role == 'admin' else 'Patient Login')) }}</h4>
+  <p class="text-muted small mb-4">{{ t('auth.enter_credentials') }}</p>
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.email') }}</label>
+      <input type="email" name="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ t('auth.password') }}</label>
+      <input type="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">{{ t('auth.login_button') }}</button>
+  </form>
+  {% if role != 'admin' %}
+  <p class="text-center mt-3 small">
+    {{ t('auth.dont_have_account') }}
+    <a href="{{ url_for('auth.hospital_register') if role == 'hospital' else (url_for('auth.health_worker_register') if role == 'health_worker' else url_for('auth.user_register')) }}">{{ t('auth.register_here') }}</a>
+  </p>
+  {% elif no_admin_exists %}
+  <p class="text-center mt-3 small">
+    No System Admin account exists yet.
+    <a href="{{ url_for('admin.register') }}">Create the first one here</a>
+  </p>
+  {% endif %}
+  <p class="text-center small d-flex flex-column gap-1">
+    {% if role != 'hospital' %}<a href="{{ url_for('auth.hospital_login') }}">{{ t('auth.login_as_hospital') }}</a>{% endif %}
+    {% if role != 'user' %}<a href="{{ url_for('auth.user_login') }}">{{ t('auth.login_as_patient') }}</a>{% endif %}
+    {% if role != 'health_worker' %}<a href="{{ url_for('auth.health_worker_login') }}">{{ t('auth.login_as_worker') }}</a>{% endif %}
+    {% if role != 'admin' %}<a href="{{ url_for('admin.login') }}">{{ t('auth.login_as_admin') }}</a>{% endif %}
+  </p>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+Flask==3.0.3
+pymongo==4.8.0
+Werkzeug==3.0.4
+reportlab==4.2.2
+pdfplumber==0.11.4
+Pillow==10.4.0
+scikit-learn==1.5.1

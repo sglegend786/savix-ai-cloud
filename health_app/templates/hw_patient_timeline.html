@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Health Timeline: {{ patient.name }} | HealthCare+{% endblock %}
+{% block page_title %}Health Timeline — {{ patient.name }}{% endblock %}
+{% block content %}
+<a href="{{ url_for('health_worker.patient_timeline_pdf', patient_id=patient._id) }}" class="btn btn-outline-primary btn-sm mb-3"><i class="bi bi-file-earmark-pdf"></i> Export as PDF</a>
+<div class="app-card">
+  {% for e in events %}
+  <div class="border-bottom py-2">
+    <div class="d-flex justify-content-between">
+      <span class="badge bg-secondary">{{ e.type }}</span>
+      <span class="small text-muted">{{ e.date.strftime('%d %b %Y, %H:%M') if e.date }}</span>
+    </div>
+    <div class="small mt-1">{{ e.text }}</div>
+  </div>
+  {% else %}
+  <p class="text-muted small mb-0">No events recorded yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

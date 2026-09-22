@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Live Consultation | HealthCare+{% endblock %}
+{% block page_title %}Live Consultation{% endblock %}
+{% block content %}
+<div class="app-card">
+  <p class="small text-muted mb-0"><i class="bi bi-info-circle"></i> Live consultation opens a free Jitsi Meet video room shared between you and the doctor. This is a demo integration for academic purposes.</p>
+</div>
+
+<div class="row g-3">
+  {% for d in doctors %}
+  <div class="col-md-6 col-lg-4">
+    <div class="app-card text-center">
+      <img src="{{ d.image_url or '/static/images/doctor_default.jpg' }}" class="doctor-avatar mb-2" style="height:110px" alt="">
+      <h6 class="fw-bold mb-0">{{ d.name }}</h6>
+      <p class="small text-muted mb-1">{{ d.specialization }} • {{ d.hospital_name }}</p>
+      <span class="badge bg-success mb-2">Online</span><br>
+      <a href="https://meet.jit.si/{{ d.room_name }}" target="_blank" class="btn btn-success btn-sm w-100">
+        <i class="bi bi-camera-video"></i> Start Live Consultation
+      </a>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">No doctors are currently available for live consultation.</p>
+  {% endfor %}
+</div>
+{% endblock %}

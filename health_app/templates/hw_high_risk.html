@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}High-Risk Patients | HealthCare+{% endblock %}
+{% block page_title %}High-Risk Patients{% endblock %}
+{% block content %}
+{% for p in patients %}
+<div class="high-risk-card">
+  <div class="d-flex justify-content-between align-items-start">
+    <div>
+      <div class="fw-bold">{{ p.name }} <span class="small text-muted fw-normal">{{ p.age }}/{{ p.gender }} &middot; {{ p.village }}</span></div>
+      {% if p.last_visit %}
+      <div class="mt-1">
+        <span class="vital-chip">HR {{ p.last_visit.vitals.heart_rate or '-' }}</span>
+        <span class="vital-chip">SpO2 {{ p.last_visit.vitals.spo2 or '-' }}%</span>
+        <span class="vital-chip">Temp {{ p.last_visit.vitals.temperature or '-' }}°F</span>
+      </div>
+      {% endif %}
+      {% if p.last_referral %}
+      <div class="small text-muted mt-1">Referral: {{ p.last_referral.referralId }} — {{ p.last_referral.status }}</div>
+      {% else %}
+      <div class="small text-muted mt-1">No referral created yet.</div>
+      {% endif %}
+    </div>
+    <a href="{{ url_for('health_worker.patient_detail', patient_id=p._id) }}" class="btn btn-sm btn-outline-danger">View</a>
+  </div>
+</div>
+{% else %}
+<p class="text-muted">No high-risk patients currently flagged. Great news!</p>
+{% endfor %}
+{% endblock %}

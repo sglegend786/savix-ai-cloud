@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}All Reports Analysis | HealthCare+{% endblock %}
+{% block page_title %}All Reports Analysis{% endblock %}
+{% block content %}
+<div class="app-card">
+  <p class="small text-muted"><i class="bi bi-info-circle"></i> {{ result.disclaimer }}</p>
+  <h5>Total Reports: {{ result.total_reports }}</h5>
+  <p class="small mb-0">Normal Parameters: {{ result.total_normal_parameters }} &nbsp;|&nbsp; Abnormal Parameters: {{ result.total_abnormal_parameters }}</p>
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Key Observations</div>
+  <ul>
+    {% for o in result.combined_observations %}
+    <li>{{ o }}</li>
+    {% endfor %}
+  </ul>
+  {% if result.contributing_reports %}
+  <p class="small text-muted mb-0">Reports contributing to the main recommendation: {{ result.contributing_reports | join(', ') }}</p>
+  {% endif %}
+</div>
+
+<div class="app-card">
+  <div class="app-card-title">Report-by-Report Summary</div>
+  <table class="table table-sm">
+    <thead><tr><th>Report</th><th>Type</th><th>Normal</th><th>Abnormal</th></tr></thead>
+    <tbody>
+    {% for s in result.individual_summaries %}
+      <tr><td>{{ s.report_name }}</td><td>{{ s.report_type }}</td><td>{{ s.normal_count }}</td><td>{{ s.abnormal_count }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="app-card text-center h-100">
+      <p class="small text-muted mb-1">Recommended Specialist</p>
+      <h6 class="fw-bold">{{ result.recommended_department or 'General Checkup' }}</h6>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="app-card text-center h-100">
+      <p class="small text-muted mb-1">Recommended Doctor</p>
+      {% if result.recommended_doctor %}
+      <h6 class="fw-bold">{{ result.recommended_doctor.name }}</h6>
+      <p class="small text-muted mb-0">{{ result.recommended_doctor.hospital_name }}</p>
+      <a href="{{ url_for('appointment.book_appointment', doctor_id=result.recommended_doctor._id) }}" class="btn btn-sm btn-primary mt-2">Book Appointment</a>
+      {% else %}
+      <p class="small text-muted mb-0">No specific match found.</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="app-card text-center h-100">
+      <p class="small text-muted mb-1">Recommended Hospital</p>
+      {% if result.recommended_hospital %}
+      <h6 class="fw-bold">🏆 {{ result.recommended_hospital.hospital_name }}</h6>
+      {% else %}
+      <p class="small text-muted mb-0">No hospitals available.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

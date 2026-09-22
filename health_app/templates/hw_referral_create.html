@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Create Referral | HealthCare+{% endblock %}
+{% block page_title %}Create Referral{% endblock %}
+{% block content %}
+<div class="app-card">
+  <div class="app-card-title">Refer {{ patient.name if patient else visit.patient_snapshot.name }}</div>
+  <p class="small text-muted">
+    Triage result: <span class="badge badge-priority-{{ visit.triage.priority | lower }}">{{ visit.triage.priority }}</span>
+    &middot; {{ visit.triage.message }}
+  </p>
+
+  {% if recommended_hospitals %}
+  <div class="mb-3">
+    <div class="fw-semibold small mb-2"><i class="bi bi-signpost-2"></i> Suggested destinations for {{ visit.triage.suggested_department }}</div>
+    {% for h in recommended_hospitals %}
+    <div class="d-flex justify-content-between align-items-start border rounded p-2 mb-2 {{ 'border-success' if cheapest and h.hospital_name == cheapest.hospital_name }}">
+      <div>
+        <div class="fw-semibold small">{{ h.hospital_name }} <span class="badge bg-light text-dark">score {{ h.score }}</span>
+          {% if cheapest and h.hospital_name == cheapest.hospital_name %}<span class="badge bg-success">Lowest Est. Cost</span>{% endif %}
+        </div>
+        <div class="small text-muted">{{ h.explanation }}</div>
+        <div class="small mt-1">
+          Est. total: <strong>₹{{ h.estimated_cost.total }}</strong>
+          <span class="text-muted">(consult ₹{{ h.estimated_cost.consultation }} + tests ₹{{ h.estimated_cost.tests }} + medicines ₹{{ h.estimated_cost.medicines }} + travel ₹{{ h.estimated_cost.travel }})</span>
+        </div>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline-primary use-hospital-btn" data-hospital="{{ h.hospital_name }}">Use</button>
+    </div>
+    {% endfor %}
+    <p class="small text-muted mb-0"><i class="bi bi-info-circle"></i> Suggestion and cost estimate only — not a guaranteed appointment, admission or final bill. The health worker makes the final decision.</p>
+  </div>
+  {% endif %}
+
+  <form method="POST" id="referralFromVisitForm" class="offline-capable-form" data-record-type="referral"
+        data-patient-id="{{ visit.patient_id }}" data-patient-name="{{ patient.name if patient else visit.patient_snapshot.name }}"
+        data-visit-id="{{ visit._id }}">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">From Facility</label>
+        <input type="text" class="form-control" value="{{ facility }}" disabled>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Refer To (Facility) *</label>
+        <input type="text" name="toFacility" class="form-control" placeholder="e.g. District Hospital, Barabanki" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Specialist / Department</label>
+        <input type="text" name="specialist" class="form-control" value="{{ visit.triage.suggested_department }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Priority</label>
+        <select name="priority" class="form-select">
+          {% for p in ['High', 'Medium', 'Low'] %}
+          <option {{ 'selected' if visit.triage.priority.title() == p }}>{{ p }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Reason for Referral</label>
+        <textarea name="reason" class="form-control" rows="2">{{ visit.triage.message }}</textarea>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Appointment Date</label>
+        <input type="date" name="appointmentDate" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Expected Arrival Date</label>
+        <input type="date" name="expectedArrivalDate" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Follow-up Date</label>
+        <input type="date" name="followUpDate" class="form-control">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Notes</label>
+        <textarea name="notes" class="form-control" rows="2"></textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-danger mt-3"><i class="bi bi-signpost-split"></i> Create Referral</button>
+    <p class="small text-muted mt-2 mb-0" id="offlineHintReferral" style="display:none;">
+      <i class="bi bi-wifi-off"></i> No internet right now — this referral will be saved on this device and synced automatically once connectivity returns.
+    </p>
+  </form>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+document.querySelectorAll(".use-hospital-btn").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    document.querySelector('input[name="toFacility"]').value = btn.dataset.hospital;
+  });
+});
+</script>
+{% endblock %}

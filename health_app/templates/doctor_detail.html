@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ doctor.name }} | {{ t('app_name') }}{% endblock %}
+{% block page_title %}{{ t('doctor.title') }}{% endblock %}
+{% block content %}
+<div class="app-card">
+  <div class="d-flex gap-3 flex-wrap align-items-start">
+    <img src="{{ doctor.image_url or '/static/images/doctor_default.jpg' }}" class="doctor-avatar"
+         style="width:130px;height:130px;object-fit:cover" alt="{{ doctor.name }}"
+         onerror="this.src='/static/images/doctor_default.jpg'">
+    <div class="flex-grow-1">
+      <h4 class="fw-bold mb-1">
+        {{ doctor.name }}
+        {% if doctor.verified %}<span class="verified-badge"><i class="bi bi-patch-check-fill"></i> {{ t('common.verified') }}</span>{% endif %}
+        <span class="rating-pill">{{ doctor.rating }} ★</span>
+      </h4>
+      <p class="text-muted small mb-1">{{ doctor.specialization }}</p>
+      <div class="row small">
+        {% if doctor.qualification %}<div class="col-md-6"><strong>{{ t('doctor.qualification') }}:</strong> {{ doctor.qualification }}</div>{% endif %}
+        <div class="col-md-6"><strong>{{ t('doctor.department') }}:</strong> {{ doctor.department or '-' }}</div>
+        <div class="col-md-6"><strong>{{ t('hospital.title') }}:</strong>
+          {% if hospital %}<a href="{{ url_for('user.hospital_detail', hospital_id=hospital._id) }}">{{ doctor.hospital_name }}</a>
+          {% else %}{{ doctor.hospital_name }}{% endif %}
+        </div>
+        <div class="col-md-6"><strong>{{ t('doctor.experience') }}:</strong> {{ t('doctor.years_experience', years=doctor.experience_years) }}</div>
+        <div class="col-md-6"><strong>{{ t('doctor.consultation_fee') }}:</strong> ₹{{ doctor.consultation_fee|round|int }}</div>
+        <div class="col-md-6"><strong>{{ t('doctor.availability') }}:</strong>
+          {% if doctor.available_today %}<span class="badge bg-success">{{ t('doctor.available_today') }}</span>
+          {% else %}<span class="badge bg-secondary">{{ t('doctor.not_available_today') }}</span>{% endif %}
+        </div>
+        {% if doctor.contact_number %}<div class="col-md-6"><strong>{{ t('common.contact') }}:</strong> {{ doctor.contact_number }}</div>{% endif %}
+      </div>
+      {% if doctor.description %}
+      <p class="small mt-2 mb-0"><strong>{{ t('doctor.about') }}:</strong> {{ doctor.description }}</p>
+      {% endif %}
+
+      {% if current_role == 'user' %}
+      <a href="{{ url_for('appointment.book_appointment', doctor_id=doctor._id) }}" class="btn btn-primary mt-3">
+        <i class="bi bi-calendar-plus"></i> {{ t('doctor.book_appointment') }}
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% if hospital %}
+<div class="app-card">
+  <div class="app-card-title">{{ t('hospital.title') }}</div>
+  <p class="small mb-1"><strong>{{ hospital.hospital_name }}</strong>
+    {% if hospital.verified %}<span class="verified-badge"><i class="bi bi-patch-check-fill"></i> {{ t('common.verified') }}</span>{% endif %}
+  </p>
+  <p class="small text-muted mb-2">
+    <i class="bi bi-geo-alt"></i>
+    {% if hospital.address or hospital.city %}
+      {{ hospital.address }}{% if hospital.city %}, {{ hospital.city }}{% endif %}{% if hospital.state %}, {{ hospital.state }}{% endif %}
+    {% else %}{{ t('location.not_available') }}{% endif %}
+  </p>
+  <div class="card-action-row">
+    <a href="{{ url_for('user.hospital_detail', hospital_id=hospital._id) }}" class="btn btn-sm btn-outline-primary">{{ t('common.view_details') }}</a>
+    {% if hospital.latitude and hospital.longitude %}
+    <a href="https://www.google.com/maps/dir/?api=1&destination={{ hospital.latitude }},{{ hospital.longitude }}"
+       target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary">
+      <i class="bi bi-compass"></i> {{ t('location.get_directions') }}
+    </a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

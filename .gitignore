@@ -1,0 +1,34 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.class
+.env
+venv/
+env/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+.idea/
+.vscode/
+dist/
+build/
+
+# Ignore Database Journals and Data
+health_app/data/db/
+data/
+db/
+*.db
+
+# Ignore Secrets and Credentials
+*service-account*.json
+firebase-service-account.json
+credentials.json

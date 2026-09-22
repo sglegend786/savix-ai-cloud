@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Wearable Monitoring | HealthCare+{% endblock %}
+{% block page_title %}Wearable Monitoring — {{ patient.name }}{% endblock %}
+{% block content %}
+<div class="alert alert-info small"><i class="bi bi-info-circle"></i> DEMO/SIMULATED — no real device is connected. This shows the architecture for future wearable integration: a reading feeds straight into the same triage engine used for manual vitals.</div>
+
+<form method="POST" action="{{ url_for('wearable.simulate', patient_id=patient._id) }}" class="mb-3">
+  <button type="submit" class="btn btn-primary"><i class="bi bi-smartwatch"></i> Simulate a New Reading</button>
+</form>
+
+<div class="app-card">
+  <div class="app-card-title">Reading History</div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Time</th><th>Heart Rate</th><th>SpO2</th><th>Temp</th><th>Activity</th><th>Risk</th></tr></thead>
+      <tbody>
+      {% for r in readings %}
+        <tr>
+          <td class="small">{{ r.recorded_at.strftime('%d %b %Y, %H:%M') if r.recorded_at }} <span class="badge bg-secondary">SIMULATED</span></td>
+          <td>{{ r.heart_rate }} bpm</td>
+          <td>{{ r.spo2 }}%</td>
+          <td>{{ r.temperature }}°F</td>
+          <td>{{ r.activity }}</td>
+          <td><span class="badge badge-priority-{{ r.triage.priority | lower }}">{{ r.triage.priority }}</span></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="text-muted text-center">No readings yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Emergency Alerts | HealthCare+{% endblock %}
+{% block page_title %}Emergency Alerts{% endblock %}
+{% block content %}
+{% for a in alerts %}
+<div class="high-risk-card">
+  <div class="d-flex justify-content-between align-items-start">
+    <div>
+      <div class="fw-bold">{{ a.patient_name }} <span class="badge bg-danger">{{ a.state.replace('_',' ') }}</span></div>
+      <div class="small text-muted">{{ a.emergency_type }} &middot; triggered by {{ a.triggered_by_name }} &middot; {{ a.createdAt.strftime('%d %b %Y, %H:%M') if a.createdAt }}</div>
+      {% if a.nearest_hospital %}<div class="small mt-1"><i class="bi bi-hospital"></i> Nearest suitable hospital: <strong>{{ a.nearest_hospital }}</strong> <span class="text-muted">(simulated notification)</span></div>{% endif %}
+      {% if a.essential_summary %}<div class="small mt-1">{{ a.essential_summary }}</div>{% endif %}
+    </div>
+    {% if a.state != 'RESOLVED' %}
+    <form method="POST" action="{{ url_for('emergency.resolve', alert_id=a._id) }}">
+      <button type="submit" class="btn btn-sm btn-outline-success">Mark Resolved</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% else %}
+<p class="text-muted">No emergency alerts recorded.</p>
+{% endfor %}
+{% endblock %}
