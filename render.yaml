@@ -1,0 +1,55 @@
+services:
+  - type: web
+    name: savix-auth
+    env: node
+    rootDir: central_auth
+    buildCommand: npm install
+    startCommand: node server.js
+
+  - type: web
+    name: savix-pharmacy-api
+    env: node
+    rootDir: pharm/savitri-backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+
+  - type: web
+    name: savix-scheme-api
+    env: node
+    rootDir: health scheme navigator/backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+
+  - type: web
+    name: savix-tasks-api
+    env: python
+    rootDir: daily health planer
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+
+  - type: web
+    name: savix-finance-api
+    env: python
+    rootDir: medial finance and insurance/savix_ai
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+
+  - type: web
+    name: savix-hospital-api
+    env: python
+    rootDir: hospital_management
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+
+  - type: web
+    name: savix-health-app-api
+    env: python
+    rootDir: health_app
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
