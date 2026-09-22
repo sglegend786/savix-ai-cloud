@@ -36,7 +36,7 @@
   // App specific routing mapping
   const appRoutes = {
     'scheme': 'http://127.0.0.1:5173/sso',
-    'tasks': 'http://127.0.0.1:5000/sso',
+    'tasks': 'https://savix-tasks-api.onrender.com/sso',
     'finance': 'http://127.0.0.1:5001/sso',
     'pharm': 'http://127.0.0.1:3001/sso',
     'hospital': 'http://127.0.0.1:5004/sso'
