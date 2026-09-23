@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Investments - SAVIX AI{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h4 class="mb-0">Investment Schemes</h4>
+  <form method="GET" action="{{ url_for('investments.compare_page') }}" id="compareForm">
+    <button type="submit" class="btn btn-outline-primary btn-sm" id="compareBtn" disabled>
+      <i class="bi bi-columns-gap"></i> Compare Selected (<span id="compareCount">0</span>)
+    </button>
+  </form>
+</div>
+
+<div class="alert alert-info small">
+  <i class="bi bi-info-circle"></i> Indicative / reference information — verify current rates with the official provider before investing.
+</div>
+
+<div class="row g-4">
+  {% for scheme_type, group_schemes in schemes|groupby('scheme_type') %}
+  <div class="col-md-6 col-lg-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-light border-bottom-0 pt-3 pb-2">
+        <h5 class="mb-0 text-primary fw-bold">{{ scheme_type }}</h5>
+      </div>
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          {% for s in group_schemes %}
+          <li class="list-group-item py-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="form-check">
+                <input class="form-check-input compare-checkbox" type="checkbox" form="compareForm" name="scheme_id" value="{{ s.id }}" id="chk{{ s.id }}">
+                <label class="form-check-label fw-bold text-dark" for="chk{{ s.id }}">{{ s.provider }}</label>
+              </div>
+              <span class="badge bg-success bg-opacity-10 text-success border border-success">{{ s.interest_rate }}% p.a.</span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-secondary flex-fill" data-bs-toggle="modal" data-bs-target="#detailsModal{{ s.id }}">Details</button>
+              <button class="btn btn-sm btn-primary flex-fill" data-bs-toggle="modal" data-bs-target="#investModal{{ s.id }}">Calc / Invest</button>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% for s in schemes %}
+  <div class="modal fade" id="detailsModal{{ s.id }}" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title">{{ s.name }}</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <p>{{ s.description }}</p>
+          <ul class="list-unstyled small">
+            <li><strong>Provider:</strong> {{ s.provider }}</li>
+            <li><strong>Max Investment:</strong> {{ '₹' ~ s.maximum_investment|int if s.maximum_investment else 'No upper limit' }}</li>
+            <li><strong>Tax Notes:</strong> {{ s.tax_notes }}</li>
+            <li><strong>Premature Withdrawal:</strong> {{ s.premature_withdrawal_info }}</li>
+            <li><strong>Last Updated:</strong> {{ s.updated_at.strftime('%d %b %Y') }}</li>
+          </ul>
+          
+          {% if s.official_link %}
+          <div class="mb-3">
+            <strong>Official Provider Link:</strong><br>
+            <a href="{{ s.official_link }}" target="_blank" rel="noopener noreferrer" class="small text-decoration-none">
+              <i class="bi bi-box-arrow-up-right"></i> Visit Official Website
+            </a>
+          </div>
+          {% endif %}
+          
+          {% if s.investment_steps %}
+          <div class="mb-3">
+            <strong>How to Invest:</strong>
+            <div class="small p-2 bg-light mt-1" style="white-space: pre-wrap; border-radius: 4px;">{{ s.investment_steps }}</div>
+          </div>
+          {% endif %}
+
+          <p class="text-muted small mb-0">Indicative / reference information — verify current rates with the official provider before investing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="investModal{{ s.id }}" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title">{{ s.name }} — Calculator</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <div class="row g-2 mb-2">
+            <div class="col"><label class="form-label small">Amount (₹)</label>
+              <input type="number" class="form-control calc-amount" id="amount{{ s.id }}" value="{{ s.minimum_investment|int if s.minimum_investment else 1000 }}"></div>
+            <div class="col"><label class="form-label small">Rate (% p.a.)</label>
+              <input type="number" step="0.1" class="form-control calc-rate" id="rate{{ s.id }}" value="{{ s.interest_rate }}"></div>
+            <div class="col"><label class="form-label small">Years</label>
+              <input type="number" step="0.5" class="form-control calc-years" id="years{{ s.id }}" value="1"></div>
+          </div>
+          <button class="btn btn-sm btn-outline-primary mb-2" onclick="calcReturn({{ s.id }}, 'lumpsum')">Calculate Estimated Return</button>
+          <div id="result{{ s.id }}" class="small"></div>
+          <p class="text-muted small">Illustrative calculation only. Actual returns/rates may differ.</p>
+          <hr>
+          <form method="POST" action="{{ url_for('investments.invest_in_scheme', scheme_id=s.id) }}" class="row g-2">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="col"><label class="form-label small">Invest Amount (₹)</label><input type="number" name="amount" class="form-control" required></div>
+            <div class="col"><label class="form-label small">Tenure (yrs)</label><input type="number" name="tenure" class="form-control" value="1" required></div>
+            <div class="col-12 mt-2"><button type="submit" class="btn btn-primary w-100">Record Investment</button></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+{% if my_investments %}
+<div class="panel mt-3">
+  <h6 class="mb-2">Your Tracked Investments</h6>
+  <table class="table table-sm">
+    <thead><tr><th>Scheme</th><th>Amount</th><th>Start Date</th><th>Tenure</th><th>Expected Rate</th><th>Action</th></tr></thead>
+    <tbody>
+    {% for inv in my_investments %}
+      <tr>
+        <td>{{ inv.scheme.name }}</td>
+        <td>₹{{ inv.amount|int }}</td>
+        <td>{{ inv.start_date.strftime('%d %b %Y') }}</td>
+        <td>{{ inv.tenure }} yrs</td>
+        <td>{{ inv.expected_rate }}%</td>
+        <td>
+          <form method="POST" action="{{ url_for('investments.remove_investment', investment_id=inv.id) }}" style="display:inline;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i> Remove</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.querySelectorAll('.compare-checkbox').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const checked = document.querySelectorAll('.compare-checkbox:checked');
+    document.getElementById('compareCount').textContent = checked.length;
+    document.getElementById('compareBtn').disabled = checked.length < 2;
+  });
+});
+
+async function calcReturn(id, mode) {
+  const amount = document.getElementById('amount' + id).value;
+  const rate = document.getElementById('rate' + id).value;
+  const years = document.getElementById('years' + id).value;
+  const res = await fetch("{{ url_for('investments.calculate_returns') }}", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ mode, amount, rate, years })
+  });
+  const data = await res.json();
+  document.getElementById('result' + id).innerHTML =
+    `Invested: ₹${data.invested} &nbsp; | &nbsp; Est. Interest: ₹${data.estimated_interest} &nbsp; | &nbsp; <strong>Est. Maturity: ₹${data.estimated_maturity}</strong>`;
+}
+</script>
+{% endblock %}

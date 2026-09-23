@@ -1,0 +1,140 @@
+﻿{% extends "base.html" %}
+{% block title %}Health Insurance Advisor - SAVIX AI{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h4 class="mb-0">🛡️ Health Insurance Advisor</h4>
+    <p class="text-muted mb-0">Calculate, Compare, and Find the Best Health Coverage</p>
+  </div>
+</div>
+
+<div id="insurance-app">
+  <!-- Multi-step Form -->
+  <div id="form-container" class="panel">
+    <div class="progress mb-4" style="height: 5px;">
+      <div id="form-progress" class="progress-bar bg-primary" role="progressbar" style="width: 25%"></div>
+    </div>
+    
+    <form id="insurance-form">
+      <!-- Step 1: Personal Profile -->
+      <div class="step-content active" id="step-1">
+        <h5>1. Personal Profile</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Age</label>
+            <input type="number" name="age" class="form-control" required min="1">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Annual Income (₹)</label>
+            <input type="number" name="budget" class="form-control" placeholder="Optional">
+          </div>
+          <div class="col-md-12">
+            <label class="form-label">Special Categories (Tick all that apply)</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="is_ex_serviceman" id="ex_serviceman">
+              <label class="form-check-label" for="ex_serviceman">Ex-Serviceman</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="is_capf" id="capf">
+              <label class="form-check-label" for="capf">CAPF Personnel</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="is_govt_employee" id="govt">
+              <label class="form-check-label" for="govt">Government Employee</label>
+            </div>
+          </div>
+        </div>
+        <div class="text-end mt-4">
+          <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next <i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Step 2: Family Info & Requirements -->
+      <div class="step-content d-none" id="step-2">
+        <h5>2. Insurance Requirements</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Required Coverage (₹)</label>
+            <select name="coverageRequired" class="form-select">
+              <option value="100000">₹1 Lakh</option>
+              <option value="500000" selected>₹5 Lakh</option>
+              <option value="1000000">₹10 Lakh</option>
+              <option value="2500000">₹25 Lakh</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Family Members Covered</label>
+            <input type="number" name="familyMembers" class="form-control" value="1" min="1">
+          </div>
+          <div class="col-md-12">
+            <label class="form-label">I specifically need: (Tick all that apply)</label>
+            <div class="form-check">
+              <input class="form-check-input req-check" type="checkbox" value="family" id="req_family">
+              <label class="form-check-label" for="req_family">Family Protection</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input req-check" type="checkbox" value="maternity" id="req_mat">
+              <label class="form-check-label" for="req_mat">Maternity Coverage</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input req-check" type="checkbox" value="critical_illness" id="req_crit">
+              <label class="form-check-label" for="req_crit">Critical Illness Protection</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input req-check" type="checkbox" value="cancer" id="req_cancer">
+              <label class="form-check-label" for="req_cancer">Cancer Protection</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input req-check" type="checkbox" value="cashless" id="req_cash">
+              <label class="form-check-label" for="req_cash">Cashless Network</label>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-outline-secondary" onclick="nextStep(1)"><i class="bi bi-arrow-left"></i> Back</button>
+          <button type="button" class="btn btn-success" onclick="submitForm()">Calculate & Compare <i class="bi bi-check2"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Results Container -->
+  <div id="results-container" class="d-none">
+    <button class="btn btn-outline-primary mb-3" onclick="resetForm()"><i class="bi bi-arrow-left"></i> Modify Details</button>
+    
+    <div class="alert alert-info small">
+      <i class="bi bi-info-circle"></i> Information is for comparison/educational purposes. Final eligibility, premium and policy terms must be confirmed from the official provider.
+    </div>
+
+    <!-- Recommendations -->
+    <h5 class="mb-3">🏆 Top Recommendations</h5>
+    <div class="row g-3" id="recommendations-row">
+      <!-- Injected by JS -->
+    </div>
+
+    <h5 class="mt-4 mb-3">⚖️ Detailed Comparison Table</h5>
+    <div class="table-responsive bg-white rounded shadow-sm">
+      <table class="table table-bordered align-middle mb-0 text-sm">
+        <thead class="table-light">
+          <tr>
+            <th>Policy / Scheme</th>
+            <th>Category</th>
+            <th>SAVIX Score</th>
+            <th>Premium</th>
+            <th>Coverage</th>
+            <th>Eligibility</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="comparison-tbody">
+          <!-- Injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/insurance.js') }}"></script>
+{% endblock %}
