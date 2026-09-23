@@ -243,7 +243,7 @@
               <button class="btn-fittr-glass" type="button" onclick="
                 const session = JSON.parse(localStorage.getItem('savix_session'));
                 if(session && session.flaskToken) {
-                  window.location.href = 'http://127.0.0.1:5005/sso?token=' + session.flaskToken;
+                  window.location.href = 'https://savix-health-app.onrender.com/sso?token=' + session.flaskToken;
                 } else {
                   document.getElementById('loginModal').style.display = 'flex';
                   document.getElementById('loginModal').setAttribute('data-pending-app', 'hospital');
@@ -897,3 +897,4 @@
 
 
 </html>
+
