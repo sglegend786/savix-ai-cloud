@@ -39,7 +39,7 @@
     'tasks': 'https://savix-tasks-api.onrender.com/sso',
     'finance': 'https://savix-finance-api.onrender.com/sso',
     'pharm': 'https://savix-pharmacy-api.onrender.com/sso',
-    'hospital': 'http://127.0.0.1:5004/sso'
+    'hospital': 'https://savix-hospital-api.onrender.com/sso'
   };
   window.savixToast = (text) => {
     if(!toast) return;
@@ -149,6 +149,7 @@
   });
 
 })();
+
 
 
 
