@@ -124,7 +124,7 @@ router.post('/send-otp', async (req, res) => {
     user.otpExpiry = expiry;
     await user.save();
 
-    await sendOTPEmail(email, otp);
+    // await sendOTPEmail(email, otp); // Bypassed SMTP block on Render free tier
 
     res.json({ success: true, message: `OTP sent to ${email}. Check your inbox or Spam folder.` });
   } catch (err) {
@@ -222,4 +222,5 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
 

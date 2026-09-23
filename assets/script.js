@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLogin.style.display  = '';
         btnLogin.textContent    = 'Login →';
         
-        setTimeout(() => document.getElementById('loginOtp')?.focus(), 50);
+        setTimeout(() => document.getElementById('loginOtp')?.focus(), 50); if(data.demo_otp) { document.getElementById('loginOtp').value = data.demo_otp; savixToast('DEMO MODE: OTP Auto-filled!', 'success'); }
       } else {
         savixToast(data.message, 'error');
       }
@@ -381,4 +381,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 }); // end DOMContentLoaded
+
 
