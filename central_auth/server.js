@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 // Connect to MongoDB and start
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect((process.env.MONGO_URI || 'mongodb+srv://shubhamgoeltps_db_user:Shubham786@schemesathi.1vdnaig.mongodb.net/savix_central?appName=SchemeSathi'))
   .then(() => {
     console.log('✅ Connected to MongoDB Atlas (savix_central)');
     app.listen(PORT, () => {
@@ -32,3 +32,4 @@ mongoose.connect(process.env.MONGO_URI)
     console.error('❌ MongoDB connection failed:', err.message);
     process.exit(1);
   });
+

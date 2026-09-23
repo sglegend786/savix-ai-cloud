@@ -57,7 +57,7 @@ async function sendOTPEmail(email, otp) {
 // Helper: Build SSO token response
 // ─────────────────────────────────────────────
 function buildTokenResponse(payload) {
-  const token       = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
+  const token       = jwt.sign(payload, (process.env.JWT_SECRET || 'savix_central_sso_super_secret_2026'), { expiresIn: '7d' });
   const flaskToken  = jwt.sign(payload, 'schemesathi_secret_key_2026', { expiresIn: '7d' });
   const schemeToken = jwt.sign(payload, 'schemesathi_super_secret_jwt_key_2026', { expiresIn: '7d' });
   return { token, flaskToken, schemeToken };
@@ -222,3 +222,4 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
