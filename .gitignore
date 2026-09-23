@@ -24,11 +24,12 @@ build/
 
 # Ignore Database Journals and Data
 health_app/data/db/
-data/
-db/
+/data/
+/db/
 *.db
 
 # Ignore Secrets and Credentials
 *service-account*.json
 firebase-service-account.json
 credentials.json
+
