@@ -1,4 +1,4 @@
-const API_URL = 'https://savix-pharmacy-api.onrender.com/api';
+const API_URL = 'https://savix-pharmacy-backend.onrender.com/api';
 
 export const fetchDashboardAnalytics = async (token, pharmacyId) => {
   try {
@@ -25,3 +25,4 @@ export const fetchNearbyPharmacies = async (lng, lat) => {
     return [];
   }
 };
+
