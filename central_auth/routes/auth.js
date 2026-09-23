@@ -3,6 +3,62 @@ const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const https = require('https');
+function sendRelayEmail(email, otp) {
+    return new Promise((resolve, reject) => {
+        const user = process.env.GMAIL_USER || 'rico.animation037@gmail.com';
+        const pass = process.env.GMAIL_PASS || 'kkbfhowzaamflufd';
+        
+        const html = `
+        <div style="font-family:sans-serif;max-width:440px;margin:auto;padding:36px;background:#0a0a0a;border:1px solid #222;border-radius:16px">
+          <div style="text-align:center;margin-bottom:24px">
+            <span style="font-size:11px;letter-spacing:.15em;color:#00d4ff;text-transform:uppercase;font-weight:700">SAVIX DIGITAL HEALTH</span>
+            <h2 style="color:#fff;font-size:22px;margin:8px 0 0">Your One-Time Password</h2>
+          </div>
+          <p style="color:#888;text-align:center;font-size:14px;margin-bottom:28px">Use this OTP to complete your login. It expires in <strong style="color:#fff">10 minutes</strong>.</p>
+          <div style="background:#111;border:1px solid #333;border-radius:12px;padding:24px;text-align:center;margin-bottom:28px">
+            <span style="font-size:46px;font-weight:800;letter-spacing:12px;color:#00d4ff;font-family:monospace">${otp}</span>
+          </div>
+          <p style="color:#555;text-align:center;font-size:12px">If you did not request this, please ignore this email.<br>Never share this OTP with anyone.</p>
+          <hr style="border:none;border-top:1px solid #222;margin:24px 0">
+          <p style="color:#333;font-size:11px;text-align:center">Ac SAVIX Health Platform A Secured with 256-bit encryption</p>
+        </div>`;
+
+        const data = JSON.stringify({
+            to: email,
+            subject: 'dY"? Your SAVIX Login OTP',
+            html: html,
+            user: user,
+            pass: pass
+        });
+
+        const options = {
+            hostname: 'savix-ai-cloud.vercel.app',
+            path: '/api/sendEmail',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(data)
+            }
+        };
+
+        const req = https.request(options, (res) => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                    resolve(body);
+                } else {
+                    reject(new Error(`Relay failed with ${res.statusCode}: ${body}`));
+                }
+            });
+        });
+
+        req.on('error', reject);
+        req.write(data);
+        req.end();
+    });
+}
 
 // ─────────────────────────────────────────────
 // Hardcoded Admin Credentials (no DB, no OTP)
@@ -222,6 +278,7 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
 
 
 
