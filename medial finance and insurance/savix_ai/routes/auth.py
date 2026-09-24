@@ -33,7 +33,7 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for("dashboard.dashboard"))
     # Redirect directly to Savix AI Main UI instead of local login
-    return redirect("http://127.0.0.1:8080/index.html")
+    return redirect("https://savix-ai-cloud.vercel.app/index.html")
 
 
 @auth_bp.route("/register", methods=["GET", "POST"])
@@ -159,6 +159,6 @@ def logout():
     _log_audit("logout", user_id=current_user.id)
     logout_user()
     flash("You have been logged out.", "info")
-    return redirect("http://127.0.0.1:8080/index.html?logout=true")
+    return redirect("https://savix-ai-cloud.vercel.app/index.html?logout=true")
 
 

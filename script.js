@@ -38,7 +38,7 @@
     'scheme': 'http://localhost:5173/sso',
     'tasks': 'https://savix-tasks-api-9lyi.onrender.com/sso',
     'finance': 'https://savix-finance-api-zqa8.onrender.com/sso',
-    'pharm': 'http://localhost:3001/sso',
+    'pharm': 'https://savix-pharmacy-omega.vercel.app/sso',
     'hospital': 'https://savix-hospital-api-7qqi.onrender.com/sso'
   };
   window.savixToast = (text) => {

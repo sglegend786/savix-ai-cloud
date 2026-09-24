@@ -22,7 +22,7 @@ app.secret_key = 'schemesathi_secret_key_2026'
 def require_auth():
     allowed_endpoints = ['sso_login', 'static']
     if request.endpoint not in allowed_endpoints and not session.get('user_id'):
-        return redirect("http://127.0.0.1:8080/index.html")
+        return redirect("https://savix-ai-cloud.vercel.app/index.html")
 
 @app.route('/sso')
 def sso_login():

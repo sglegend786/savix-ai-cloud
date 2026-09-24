@@ -97,7 +97,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('savitri_token');
     localStorage.removeItem('savitri_user');
     setUser(null);
-    window.location.replace('http://127.0.0.1:8080/index.html?logout=true');
+    window.location.replace('https://savix-ai-cloud.vercel.app/index.html?logout=true');
   };
 
   return (

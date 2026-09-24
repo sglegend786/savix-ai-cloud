@@ -15,7 +15,7 @@ db.init_app(app)
 def require_auth():
     allowed_endpoints = ['sso', 'sso_login', 'static', 'hospital_login', 'admin_login', 'hospital_register']
     if request.endpoint not in allowed_endpoints and not session.get('user_id'):
-        return redirect("http://127.0.0.1:8080/index.html")
+        return redirect("https://savix-ai-cloud.vercel.app/index.html")
 
 # Attempt to connect to MongoDB if needed by the utils
 try:
@@ -31,7 +31,7 @@ def login_required_role(role):
         def decorated_function(*args, **kwargs):
             if 'user_id' not in session or session.get('role') != role:
                 if role == 'user':
-                    return redirect("http://127.0.0.1:8080/index.html")
+                    return redirect("https://savix-ai-cloud.vercel.app/index.html")
                 elif role == 'hospital':
                     return redirect(url_for('hospital_login'))
                 elif role == 'admin':
@@ -58,7 +58,7 @@ def index():
 def sso():
     token = request.args.get('token')
     if not token:
-        return redirect("http://127.0.0.1:8080/index.html")
+        return redirect("https://savix-ai-cloud.vercel.app/index.html")
     
     try:
         decoded = jwt.decode(token, 'schemesathi_secret_key_2026', algorithms=['HS256'])

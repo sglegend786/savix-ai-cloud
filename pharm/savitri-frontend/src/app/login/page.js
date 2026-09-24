@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export default function Login() {
   useEffect(() => {
-    window.location.replace("http://127.0.0.1:8080/index.html");
+    window.location.replace("https://savix-ai-cloud.vercel.app/index.html");
   }, []);
 
   return (
