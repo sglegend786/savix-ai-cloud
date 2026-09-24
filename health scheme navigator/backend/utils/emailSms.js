@@ -111,7 +111,7 @@ export const sendEmail = async (to, subject, html) => {
           </div>
           <p style="color:#6b8071;font-size:13px;margin-top:16px;">
             Ye notification aapke SchemeSathi account ke liye hai.<br/>
-            <a href="http://localhost:5174" style="color:#3f7c54;">SchemeSathi kholen</a>
+            <a href="https://savix-scheme-ui.vercel.app" style="color:#3f7c54;">SchemeSathi kholen</a>
           </p>
         </div>`,
     });

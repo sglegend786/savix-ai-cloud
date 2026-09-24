@@ -71,7 +71,7 @@ export const notifyAllUsers = async (scheme, options = { push: true, email: true
                 </div>
                 <p style="color:#6b8071;font-size:13px;margin-top:16px;">
                   Check your SchemeSathi dashboard for more details.<br/>
-                  <a href="http://localhost:5174" style="color:#3f7c54;">Open SchemeSathi</a>
+                  <a href="https://savix-scheme-ui.vercel.app" style="color:#3f7c54;">Open SchemeSathi</a>
                 </p>
               </div>`,
           });
@@ -97,7 +97,7 @@ export const notifyAllUsers = async (scheme, options = { push: true, email: true
           allTokens,
           `🇮🇳 New Scheme: ${scheme.name}`,
           scheme.description?.slice(0, 100) || "Ek nayi sarkari yojana publish hui hai!",
-          { url: scheme.link || "http://localhost:5174" }
+          { url: scheme.link || "https://savix-scheme-ui.vercel.app" }
         );
       }
     }

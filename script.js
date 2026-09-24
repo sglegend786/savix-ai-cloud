@@ -35,7 +35,7 @@
   const toast = document.getElementById('toast');
   // App specific routing mapping
   const appRoutes = {
-    'scheme': 'http://localhost:5173/sso',
+    'scheme': 'https://savix-scheme-ui.vercel.app/sso',
     'tasks': 'https://savix-tasks-api-9lyi.onrender.com/sso',
     'finance': 'https://savix-finance-api-zqa8.onrender.com/sso',
     'pharm': 'https://savix-pharmacy-omega.vercel.app/sso',
