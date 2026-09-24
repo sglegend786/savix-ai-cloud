@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 import jwt
 import requests as http_requests
 
-NOTIFY_API = 'https://savix-auth.onrender.com/api/notify'
+NOTIFY_API = 'http://localhost:4000/api/notify'
 
 def notify(endpoint, payload):
     """Fire-and-forget to SAVIX notification API."""
@@ -441,6 +441,6 @@ def settings():
     )
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5002))
     app.run(host='0.0.0.0', port=port, debug=False)
 

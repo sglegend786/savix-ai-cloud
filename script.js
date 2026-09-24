@@ -35,11 +35,11 @@
   const toast = document.getElementById('toast');
   // App specific routing mapping
   const appRoutes = {
-    'scheme': 'https://savix-scheme-ui.onrender.com/sso',
-    'tasks': 'https://savix-tasks-api.onrender.com/sso',
-    'finance': 'https://savix-finance-api.onrender.com/sso',
-    'pharm': 'https://savix-pharmacy-api.onrender.com/sso',
-    'hospital': 'https://savix-hospital-api.onrender.com/sso'
+    'scheme': 'http://localhost:5173/sso',
+    'tasks': 'http://localhost:5002/sso',
+    'finance': 'http://localhost:5001/sso',
+    'pharm': 'http://localhost:3001/sso',
+    'hospital': 'http://localhost:5004/sso'
   };
   window.savixToast = (text) => {
     if(!toast) return;

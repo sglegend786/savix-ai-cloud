@@ -21,7 +21,7 @@ import { AuthContext } from "../context/AuthContext";
 // API URL
 // ==========================================
 
-const API_URL = "/api/schemes";
+const API_URL = "/api/schemes/schemes";
 
 
 // ==========================================

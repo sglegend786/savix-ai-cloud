@@ -1,5 +1,5 @@
 import axios from 'axios';
-axios.defaults.baseURL = 'https://savix-scheme-backend.onrender.com';
+axios.defaults.baseURL = 'http://localhost:5005';
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";

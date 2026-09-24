@@ -20,7 +20,7 @@ def create_app():
     os.makedirs(Config.HOSPITAL_IMAGE_FOLDER, exist_ok=True)
     os.makedirs(Config.DOCTOR_IMAGE_FOLDER, exist_ok=True)
 
-    client = MongoClient(Config.MONGO_URI)
+    client = MongoClient(Config.MONGO_URI, connect=False)
     db = client[Config.MONGO_DB_NAME]
     app.db = db  # attach db to app so blueprints can use current_app.db
 

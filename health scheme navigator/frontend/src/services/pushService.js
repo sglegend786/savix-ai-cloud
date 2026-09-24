@@ -38,7 +38,7 @@ export const subscribeToPush = async (token) => {
     });
 
     // Send subscription to backend
-    await fetch("/api/push/subscribe", {
+    await fetch("/api/schemes/push/subscribe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const unsubscribeFromPush = async (token) => {
       const sub = await registration.pushManager.getSubscription();
       if (sub) await sub.unsubscribe();
     }
-    await fetch("/api/push/unsubscribe", {
+    await fetch("/api/schemes/push/unsubscribe", {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

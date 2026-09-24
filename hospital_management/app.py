@@ -13,7 +13,7 @@ db.init_app(app)
 
 @app.before_request
 def require_auth():
-    allowed_endpoints = ['sso_login', 'static', 'hospital_login', 'admin_login', 'hospital_register']
+    allowed_endpoints = ['sso', 'sso_login', 'static', 'hospital_login', 'admin_login', 'hospital_register']
     if request.endpoint not in allowed_endpoints and not session.get('user_id'):
         return redirect("http://127.0.0.1:8080/index.html")
 
@@ -58,10 +58,10 @@ def index():
 def sso():
     token = request.args.get('token')
     if not token:
-        return redirect("http://127.0.0.1:5000/login?redirect=http://127.0.0.1:5004/sso")
+        return redirect("http://127.0.0.1:8080/index.html")
     
     try:
-        decoded = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        decoded = jwt.decode(token, 'schemesathi_secret_key_2026', algorithms=['HS256'])
         session['user_id'] = decoded.get('id')
         session['name'] = decoded.get('name')
         session['email'] = decoded.get('email')
@@ -79,8 +79,8 @@ def sso():
         return redirect(url_for('patient_dashboard'))
     except jwt.ExpiredSignatureError:
         return "SSO Error: Token has expired", 401
-    except jwt.InvalidTokenError:
-        return "SSO Error: Invalid token", 401
+    except jwt.InvalidTokenError as e:
+        return f"SSO Error: Invalid token - {str(e)}", 401
 
 @app.route('/logout')
 def logout():
@@ -176,5 +176,5 @@ with app.app_context():
         db.session.commit()
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5004))
     app.run(host='0.0.0.0', port=port, debug=False)

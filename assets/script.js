@@ -3,15 +3,15 @@
    Central Auth API: http://localhost:4000
 ═══════════════════════════════════════════════════ */
 
-const AUTH_API = 'https://savix-auth.onrender.com/api/auth';
+const AUTH_API = 'http://localhost:4000/api/auth';
 
   // 🚀 Application Routing Map
   const appRoutes = {
-    scheme:   'https://savix-scheme-ui.onrender.com/sso',
-    tasks:    'https://savix-tasks-api.onrender.com/sso',
-    finance:  'https://savix-finance-api.onrender.com/sso',
-    pharm:    'https://savix-pharmacy-api.onrender.com/sso',
-    hospital: 'https://savix-hospital-api.onrender.com/sso',
+    scheme:   'http://localhost:5173/sso',
+    tasks:    'http://localhost:5002/sso',
+    finance:  'http://localhost:5001/sso',
+    pharm:    'http://localhost:3001/sso',
+    hospital: 'http://localhost:5000/sso',
     sos:      '/SOS/index.html'
   };
 

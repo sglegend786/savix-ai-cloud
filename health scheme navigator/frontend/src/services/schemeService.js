@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://savix-scheme-backend.onrender.com/api/schemes" });
+const API = axios.create({ baseURL: "http://localhost:5005/api/schemes" });
 
 export const getAllSchemes = async (params = {}) => {
   const response = await API.get("/", { params });

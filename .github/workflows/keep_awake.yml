@@ -1,0 +1,29 @@
+name: Keep Render Services Awake
+
+on:
+  schedule:
+    # Runs every 14 minutes from 3:00 AM to 6:59 PM UTC (approx 8:30 AM to 12:30 AM IST)
+    - cron: '*/14 3-18 * * *'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  ping-services:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping All Services
+        run: |
+          # Replace these URLs with your actual Render deployment URLs once you have them
+          urls=(
+            "https://savix-auth.onrender.com"
+            "https://savix-pharmacy-api.onrender.com"
+            "https://savix-scheme-api.onrender.com"
+            "https://savix-tasks-api.onrender.com"
+            "https://savix-finance-api.onrender.com"
+            "https://savix-hospital-api.onrender.com"
+            "https://savix-health-app-api.onrender.com"
+          )
+          
+          for url in "${urls[@]}"; do
+            echo "Pinging $url..."
+            curl -s -o /dev/null -w "%{http_code}\n" "$url" || echo "Failed to ping $url"
+          done

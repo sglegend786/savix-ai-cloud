@@ -22,7 +22,7 @@ function NotificationBell() {
   const fetchNotifications = async () => {
     if (!token) return;
     try {
-      const res = await fetch("/api/notifications/my", {
+      const res = await fetch("/api/schemes/notifications/my", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -45,7 +45,7 @@ function NotificationBell() {
   // Mark all as read
   const markAllRead = async () => {
     try {
-      await fetch("/api/notifications/mark-read", {
+      await fetch("/api/schemes/notifications/mark-read", {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
       });

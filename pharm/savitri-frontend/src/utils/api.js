@@ -1,4 +1,4 @@
-const API_URL = 'https://savix-pharmacy-backend.onrender.com/api';
+const API_URL = 'http://localhost:5003/api';
 
 export const fetchDashboardAnalytics = async (token, pharmacyId) => {
   try {

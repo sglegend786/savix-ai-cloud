@@ -54,7 +54,7 @@ function Register() {
       if (payload.age) payload.age = Number(payload.age);
       if (payload.annualIncome) payload.annualIncome = Number(payload.annualIncome);
 
-      const response = await axios.post("/api/auth/register", payload);
+      const response = await axios.post("/api/schemes/auth/register", payload);
       if (response.data.success) {
         toast.success("Account created! Please login.");
         navigate("/login");
