@@ -90,7 +90,7 @@ copy .env.example .env
   https://console.cloud.google.com/apis/credentials:
   1. Create a project → OAuth consent screen → External.
   2. Create OAuth Client ID → Web application.
-  3. Add authorized redirect URI: `http://127.0.0.1:5000/auth/google/callback`
+  3. Add authorized redirect URI: `https://savix-health-app-api.onrender.com/auth/google/callback`
   4. Copy the generated Client ID and Client Secret into `.env`.
 
   If you leave these blank, the app still runs fine — the Google button is
@@ -126,7 +126,7 @@ python app.py
 8. **Open in your browser**
 
 ```
-http://127.0.0.1:5000
+https://savix-health-app-api.onrender.com
 ```
 
 ## How to Use

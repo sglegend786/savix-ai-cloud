@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 import jwt
 import requests as http_requests
 
-NOTIFY_API = 'http://localhost:4000/api/notify'
+NOTIFY_API = 'https://savix-auth-2aso.onrender.com/api/notify'
 
 def notify(endpoint, payload):
     """Fire-and-forget to SAVIX notification API."""

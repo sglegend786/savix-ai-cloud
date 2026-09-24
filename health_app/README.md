@@ -202,7 +202,7 @@ for production, add indexes on `care_patients.phone`,
 
 ```bash
 python seed_data.py     # optional — populates demo data (see below)
-python app.py            # http://localhost:5000
+python app.py            # https://savix-health-app-api.onrender.com
 ```
 
 ## 14. Login Accounts — Fresh Start By Default

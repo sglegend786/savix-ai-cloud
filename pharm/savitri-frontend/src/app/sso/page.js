@@ -13,7 +13,7 @@ function SSOHandler() {
     
     if (token) {
       // Send token to our local backend to verify and get local token
-      fetch('http://localhost:5003/api/auth/sso', {
+      fetch('https://savix-pharmacy-api-sy7t.onrender.com/api/auth/sso', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token })

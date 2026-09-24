@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5005/api" });
+const API = axios.create({ baseURL: "https://savix-scheme-api.onrender.com/api" });
 
 // Attach JWT to every request if present
 API.interceptors.request.use((config) => {

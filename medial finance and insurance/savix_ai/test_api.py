@@ -1,6 +1,6 @@
 ﻿import requests
 
-url = "http://127.0.0.1:5001/api/insurance/recommend"
+url = "https://savix-finance-api-zqa8.onrender.com/api/insurance/recommend"
 payload = {
   "age": 28,
   "familyMembers": 3,

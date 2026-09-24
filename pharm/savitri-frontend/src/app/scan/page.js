@@ -21,7 +21,7 @@ export default function PrescriptionScanner() {
 
   const processTextWithBackend = async (textToProcess) => {
     try {
-      const response = await fetch('http://localhost:5003/api/search/match-prescription-text', {
+      const response = await fetch('https://savix-pharmacy-api-sy7t.onrender.com/api/search/match-prescription-text', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: textToProcess })

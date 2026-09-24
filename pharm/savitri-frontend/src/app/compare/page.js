@@ -242,7 +242,7 @@ function CompareContent() {
   const fetchSuggestions = useCallback(async (val) => {
     if (!val || val.length < 2) { setSuggestions([]); return; }
     try {
-      const res = await fetch(`http://localhost:5003/api/medicines/search-master?q=${encodeURIComponent(val)}&limit=8`);
+      const res = await fetch(`https://savix-pharmacy-api-sy7t.onrender.com/api/medicines/search-master?q=${encodeURIComponent(val)}&limit=8`);
       const data = await res.json();
       setSuggestions(Array.isArray(data) ? data : []);
     } catch { setSuggestions([]); }
@@ -280,7 +280,7 @@ function CompareContent() {
       try {
         if (searchQuery) {
           // Compare mode
-          const url = `http://localhost:5003/api/search/compare-prices?medicineName=${encodeURIComponent(searchQuery)}&lat=${location.lat}&lng=${location.lng}&maxDistance=${radius}`;
+          const url = `https://savix-pharmacy-api-sy7t.onrender.com/api/search/compare-prices?medicineName=${encodeURIComponent(searchQuery)}&lat=${location.lat}&lng=${location.lng}&maxDistance=${radius}`;
           const res = await fetch(url);
           const data = await res.json();
 
@@ -310,7 +310,7 @@ function CompareContent() {
           setNearbyPharmacies([]);
         } else {
           // Nearby mode (no search query)
-          const url = `http://localhost:5003/api/search/nearby-pharmacies?lat=${location.lat}&lng=${location.lng}&maxDistance=${radius}`;
+          const url = `https://savix-pharmacy-api-sy7t.onrender.com/api/search/nearby-pharmacies?lat=${location.lat}&lng=${location.lng}&maxDistance=${radius}`;
           const res = await fetch(url);
           const data = await res.json();
 

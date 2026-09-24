@@ -1,17 +1,17 @@
 /* ═══════════════════════════════════════════════════
    SAVIX Main UI – Auth + SSO Script v9.0
-   Central Auth API: http://localhost:4000
+   Central Auth API: https://savix-auth-2aso.onrender.com
 ═══════════════════════════════════════════════════ */
 
-const AUTH_API = 'http://localhost:4000/api/auth';
+const AUTH_API = 'https://savix-auth-2aso.onrender.com/api/auth';
 
   // 🚀 Application Routing Map
   const appRoutes = {
     scheme:   'http://localhost:5173/sso',
-    tasks:    'http://localhost:5002/sso',
-    finance:  'http://localhost:5001/sso',
+    tasks:    'https://savix-tasks-api-9lyi.onrender.com/sso',
+    finance:  'https://savix-finance-api-zqa8.onrender.com/sso',
     pharm:    'http://localhost:3001/sso',
-    hospital: 'http://localhost:5000/sso',
+    hospital: 'https://savix-health-app-api.onrender.com/sso',
     sos:      '/SOS/index.html'
   };
 

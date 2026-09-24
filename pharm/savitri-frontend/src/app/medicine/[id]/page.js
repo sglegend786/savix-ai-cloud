@@ -35,7 +35,7 @@ export default function MedicineDetailPage() {
   useEffect(() => {
     const fetchMedicine = async () => {
       try {
-        const res = await fetch(`http://localhost:5003/api/medicines/master/${id}`);
+        const res = await fetch(`https://savix-pharmacy-api-sy7t.onrender.com/api/medicines/master/${id}`);
         if (!res.ok) throw new Error('Medicine not found');
         const data = await res.json();
         setMedicine(data);

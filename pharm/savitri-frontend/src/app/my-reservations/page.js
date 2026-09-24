@@ -87,7 +87,7 @@ export default function MyReservations() {
     router.push('/checkout');
   };
 
-  const { data, error, isLoading } = useSWR('http://localhost:5003/api/reservations', fetcher, { refreshInterval: 5000 });
+  const { data, error, isLoading } = useSWR('https://savix-pharmacy-api-sy7t.onrender.com/api/reservations', fetcher, { refreshInterval: 5000 });
   
   const reservations = data || [];
   const loading = isLoading;

@@ -76,7 +76,7 @@ export default function Home() {
   const fetchSuggestions = async (val) => {
     if (!val || val.length < 2) { setSuggestions([]); return; }
     try {
-      const res = await fetch(`http://localhost:5003/api/medicines/search-master?q=${encodeURIComponent(val)}&limit=7`);
+      const res = await fetch(`https://savix-pharmacy-api-sy7t.onrender.com/api/medicines/search-master?q=${encodeURIComponent(val)}&limit=7`);
       const data = await res.json();
       setSuggestions(Array.isArray(data) ? data : []);
     } catch { setSuggestions([]); }
@@ -103,12 +103,12 @@ export default function Home() {
           
           try {
             // 1. Fetch nearby pharmacies
-            const pharmRes = await fetch(`http://localhost:5003/api/search/nearby-pharmacies?lat=${lat}&lng=${lng}&maxDistance=15000`);
+            const pharmRes = await fetch(`https://savix-pharmacy-api-sy7t.onrender.com/api/search/nearby-pharmacies?lat=${lat}&lng=${lng}&maxDistance=15000`);
             const pharmData = await pharmRes.json();
             if(pharmRes.ok) setNearbyPharmacies(pharmData.slice(0, 3)); // Top 3
 
             // 2. Fetch compare prices for a common med (e.g. Paracetamol)
-            const medRes = await fetch(`http://localhost:5003/api/search/compare-prices?medicineName=Paracetamol&lat=${lat}&lng=${lng}&maxDistance=15000`);
+            const medRes = await fetch(`https://savix-pharmacy-api-sy7t.onrender.com/api/search/compare-prices?medicineName=Paracetamol&lat=${lat}&lng=${lng}&maxDistance=15000`);
             const medData = await medRes.json();
             if(medRes.ok) setTrendingMeds(medData.results?.slice(0, 3) || []);
           } catch(err) {

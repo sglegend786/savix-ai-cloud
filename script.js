@@ -36,10 +36,10 @@
   // App specific routing mapping
   const appRoutes = {
     'scheme': 'http://localhost:5173/sso',
-    'tasks': 'http://localhost:5002/sso',
-    'finance': 'http://localhost:5001/sso',
+    'tasks': 'https://savix-tasks-api-9lyi.onrender.com/sso',
+    'finance': 'https://savix-finance-api-zqa8.onrender.com/sso',
     'pharm': 'http://localhost:3001/sso',
-    'hospital': 'http://localhost:5004/sso'
+    'hospital': 'https://savix-hospital-api-7qqi.onrender.com/sso'
   };
   window.savixToast = (text) => {
     if(!toast) return;

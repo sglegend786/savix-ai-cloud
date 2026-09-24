@@ -70,7 +70,7 @@ export default function PharmacyDashboard() {
         const token = localStorage.getItem('savitri_token');
         if (!token) return;
 
-        const res = await fetch('http://localhost:5003/api/pharmacies/dashboard/analytics', {
+        const res = await fetch('https://savix-pharmacy-api-sy7t.onrender.com/api/pharmacies/dashboard/analytics', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

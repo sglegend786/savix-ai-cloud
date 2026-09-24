@@ -32,7 +32,7 @@ export default function CheckoutPage() {
 
       // We send a separate request for each item in the cart
       const promises = cart.map(item => {
-        return fetch('http://localhost:5003/api/reservations', {
+        return fetch('https://savix-pharmacy-api-sy7t.onrender.com/api/reservations', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

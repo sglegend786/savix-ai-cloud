@@ -14,12 +14,12 @@ jobs:
         run: |
           # Replace these URLs with your actual Render deployment URLs once you have them
           urls=(
-            "https://savix-auth.onrender.com"
-            "https://savix-pharmacy-api.onrender.com"
+            "https://savix-auth-2aso.onrender.com"
+            "https://savix-pharmacy-api-sy7t.onrender.com"
             "https://savix-scheme-api.onrender.com"
-            "https://savix-tasks-api.onrender.com"
-            "https://savix-finance-api.onrender.com"
-            "https://savix-hospital-api.onrender.com"
+            "https://savix-tasks-api-9lyi.onrender.com"
+            "https://savix-finance-api-zqa8.onrender.com"
+            "https://savix-hospital-api-7qqi.onrender.com"
             "https://savix-health-app-api.onrender.com"
           )
           
