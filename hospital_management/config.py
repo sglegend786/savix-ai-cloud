@@ -6,4 +6,4 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # MongoDB config for the legacy health tools
-    MONGO_URI = 'mongodb://localhost:27017/hospital_db'
+    MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://localhost:27017/hospital_db')
